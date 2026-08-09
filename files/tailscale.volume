@@ -1,0 +1,5 @@
+[Unit]
+Description=Tailscale Volume
+
+[Volume]
+VolumeName=tailscale

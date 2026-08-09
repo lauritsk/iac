@@ -1,0 +1,31 @@
+[Unit]
+Description=Radarr Container
+
+[Container]
+ContainerName=radarr
+Image=lscr.io/linuxserver/radarr:version-6.3.0.10514@sha256:a45b5ab0f850f39edb4cc9c95bbd967b52ddc3d4574a4dfb45561177db6c88f4
+Memory=1G
+PidsLimit=256
+PodmanArgs=--cpus=2
+
+Environment=TZ=Europe/Tallinn
+
+User=1000
+Group=1000
+UserNS=keep-id
+ReadOnly=True
+NoNewPrivileges=true
+
+Mount=type=tmpfs,destination=/run,U=true,exec
+Volume=radarr.volume:/config:Z,U
+Volume=/mnt/media:/data:z
+
+Network=proxy.network
+
+HealthCmd=curl -fsS http://127.0.0.1:7878/ >/dev/null || exit 1
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

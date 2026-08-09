@@ -1,0 +1,30 @@
+[Unit]
+Description=Prowlarr Container
+
+[Container]
+ContainerName=prowlarr
+Image=lscr.io/linuxserver/prowlarr:version-2.5.2.5491@sha256:1295cff29d10b486c0d8324d1559a552140a5932bf8b3d87e398654414f63f92
+Memory=1G
+PidsLimit=256
+PodmanArgs=--cpus=1
+
+Environment=TZ=Europe/Tallinn
+
+User=1000
+Group=1000
+UserNS=keep-id
+ReadOnly=True
+NoNewPrivileges=true
+
+Mount=type=tmpfs,destination=/run,U=true,exec
+Volume=prowlarr.volume:/config:Z,U
+
+Network=proxy.network
+
+HealthCmd=curl -fsS http://127.0.0.1:9696/ >/dev/null || exit 1
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,34 @@
+[Unit]
+Description=Jellyfin
+
+[Container]
+ContainerName=jellyfin
+Image=ghcr.io/jellyfin/jellyfin:10.11.11@sha256:45f648c382a0c8b552582fcea40e95cb17c5d475473a891cba0eb7523fb92112
+Memory=4G
+PidsLimit=512
+PodmanArgs=--cpus=4
+
+User=1000
+Group=1000
+UserNS=keep-id
+GroupAdd=keep-groups
+ReadOnly=true
+NoNewPrivileges=true
+
+Volume=jellyfin-config.volume:/config:Z,U
+Volume=jellyfin-cache.volume:/cache:Z,U
+Volume=/mnt/media/movies:/media/movies:z
+Volume=/mnt/media/shows:/media/shows:z
+
+Network=proxy.network
+
+AddDevice=/dev/dri/:/dev/dri/
+
+HealthCmd=curl --noproxy localhost -Lk -fsS http://127.0.0.1:8096/health || exit 1
+
+[Service]
+Restart=always
+SuccessExitStatus=0 143
+
+[Install]
+WantedBy=default.target

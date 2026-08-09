@@ -1,0 +1,6 @@
+---
+all:
+  hosts:
+    homelab:
+      ansible_user: karl
+      ansible_become: true

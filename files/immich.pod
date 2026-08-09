@@ -1,0 +1,11 @@
+[Unit]
+Description=Immich Pod
+
+[Pod]
+UserNS=keep-id
+PodName=immich
+
+Network=proxy.network
+
+[Install]
+WantedBy=default.target
