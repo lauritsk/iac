@@ -28,7 +28,7 @@ NoNewPrivileges=true
 Tmpfs=/tmp:rw,nosuid,nodev,mode=1777
 Tmpfs=/run:rw,nosuid,nodev,mode=755
 Volume=tailscale.volume:/var/lib/tailscale:Z,U
-Volume=/home/karl/.config/containers/systemd/serve.json:/config/serve.json:ro,Z
+Volume=/home/karl/.config/tailscale/serve.json:/config/serve.json:ro,Z
 
 Network=proxy.network
 
