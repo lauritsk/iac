@@ -18,4 +18,3 @@ HealthCmd=redis-cli ping || exit 1
 
 [Service]
 Restart=always
-

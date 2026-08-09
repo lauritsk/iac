@@ -11,7 +11,7 @@ Memory=2G
 PidsLimit=512
 PodmanArgs=--cpus=2
 
-Environment="CRON=0 22 * * *"
+Environment="BACKUP_CRON=0 22 * * *"
 Environment=TZ=Europe/Tallinn
 Secret=borgmatic_passphrase,type=env,target=BORG_PASSPHRASE
 Secret=borgmatic_ssh_key,type=mount,target=/root/.ssh/id_ed25519,mode=0600

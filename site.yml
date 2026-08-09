@@ -111,19 +111,6 @@
               34666431333331313766
 
     podman_run_as_user: karl
-    podman_run_as_group: karl
-    podman_systemd_unit_scope: user
-    podman_pull_image: true
-    podman_create_host_directories: true
-    podman_host_directories:
-      /mnt/media/downloads: {owner: 1000, group: 1000, mode: "0775"}
-      /mnt/media/movies: {owner: 1000, group: 1000, mode: "0775"}
-      /mnt/media/shows: {owner: 1000, group: 1000, mode: "0775"}
-      /home/karl/.config/containers/systemd/serve.json:
-        state: file
-        owner: karl
-        group: karl
-        mode: "0600"
     podman_secrets:
       - name: bichon_encrypt_password
         data: "{{ vault_bichon_encrypt_password }}"
@@ -158,9 +145,8 @@
       - file_src: tailscale.volume
       - file_src: transmission.volume
       - file_src: uptime-kuma.volume
-      - file_src: serve.json
-        restarts:
-          - tailscale
+      - file: /home/karl/.config/tailscale/serve.json
+        file_src: serve.json
       - file_src: immich.pod
       - file_src: bichon.container
       - file_src: borgmatic.container
@@ -173,8 +159,53 @@
       - file_src: radarr.container
       - file_src: sonarr.container
       - file_src: tailscale.container
+        restarts_on:
+          - /home/karl/.config/tailscale/serve.json
       - file_src: transmission.container
       - file_src: uptime-kuma.container
+
+  pre_tasks:
+    - name: Ensure the Tailscale config directory is present
+      ansible.builtin.file:
+        path: /home/karl/.config/tailscale
+        state: directory
+        owner: karl
+        group: karl
+        mode: "0700"
+
+    - name: Verify the media filesystem is mounted
+      ansible.builtin.assert:
+        that:
+          - >-
+            ansible_facts['mounts']
+            | selectattr('mount', 'equalto', '/mnt/media')
+            | map(attribute='uuid')
+            | list
+            == ['6e7d45ad-d58b-4721-bed0-8229a9e2d293']
+        fail_msg: The media filesystem is not mounted at /mnt/media
+
+    - name: Ensure media directories are present
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: directory
+        owner: karl
+        group: karl
+        mode: "0775"
+      loop:
+        - /mnt/media/downloads
+        - /mnt/media/movies
+        - /mnt/media/shows
+
+    - name: Ensure IP forwarding is enabled
+      ansible.posix.sysctl:
+        name: "{{ item }}"
+        value: "1"
+        state: present
+        sysctl_set: true
+        sysctl_file: /etc/sysctl.d/99-tailscale-forwarding.conf
+      loop:
+        - net.ipv4.ip_forward
+        - net.ipv6.conf.all.forwarding
 
   roles:
     - role: fedora.linux_system_roles.firewall
@@ -184,13 +215,6 @@
             interface: eno1
             masquerade: true
             state: enabled
-    - role: fedora.linux_system_roles.kernel_settings
-      vars:
-        kernel_settings_sysctl:
-          - name: net.ipv4.ip_forward
-            value: 1
-          - name: net.ipv6.conf.all.forwarding
-            value: 1
     - role: fedora.linux_system_roles.selinux
       vars:
         selinux_policy: targeted
