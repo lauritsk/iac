@@ -1,0 +1,29 @@
+[Unit]
+Description=Uptime Kuma Container
+
+[Container]
+ContainerName=uptime-kuma
+Image=ghcr.io/louislam/uptime-kuma:2.5.0-slim-rootless@sha256:37894805e7df2211dc2c69374034849c9a73efd8dd55469953261cafda091bc4
+Memory=1G
+PidsLimit=256
+PodmanArgs=--cpus=1
+
+User=1000
+Group=1000
+UserNS=keep-id
+ReadOnly=true
+NoNewPrivileges=true
+SecurityLabelDisable=true
+
+Volume=/run/user/1000/podman/podman.sock:/var/run/docker.sock:ro
+Volume=uptime-kuma.volume:/app/data:Z,U
+
+Network=proxy.network
+
+HealthCmd=curl -fsS http://127.0.0.1:3001/ >/dev/null || exit 1
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target

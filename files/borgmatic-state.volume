@@ -1,0 +1,5 @@
+[Unit]
+Description=Borgmatic State Volume
+
+[Volume]
+VolumeName=borgmatic-state

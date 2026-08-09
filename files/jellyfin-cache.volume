@@ -1,0 +1,5 @@
+[Unit]
+Description=Jellyfin Cache Volume
+
+[Volume]
+VolumeName=jellyfin-cache

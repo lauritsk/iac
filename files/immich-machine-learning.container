@@ -1,0 +1,25 @@
+[Unit]
+Description=Immich Machine Learning Container
+
+[Container]
+Pod=immich.pod
+ContainerName=immich-machine-learning
+Image=ghcr.io/immich-app/immich-machine-learning:v3.1.0-openvino@sha256:4b6ef958e7749fc548377bb23ee219c09c74da8decee080d76dc6a388c39b013
+Memory=4G
+PidsLimit=512
+PodmanArgs=--cpus=4
+
+User=1000
+Group=1000
+GroupAdd=keep-groups
+NoNewPrivileges=true
+DropCapability=CAP_NET_RAW
+
+Volume=immich-model-cache.volume:/cache:Z,U
+
+AddDevice=/dev/dri:/dev/dri
+
+HealthCmd=python3 -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3003/', timeout=5)"
+
+[Service]
+Restart=always
