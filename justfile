@@ -29,5 +29,5 @@ check:
 
 # Apply the playbook to the homelab after an explicit confirmation.
 apply:
-    @read -p "Type apply to configure homelab: " reply; test "$$reply" = apply
+    @read -p "Type apply to configure homelab: " reply; test "$reply" = apply
     ansible-playbook {{playbook}}
