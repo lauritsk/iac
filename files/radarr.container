@@ -1,5 +1,6 @@
 [Unit]
 Description=Radarr Container
+RequiresMountsFor=/mnt/extra1 /mnt/extra2
 
 [Container]
 ContainerName=radarr
@@ -18,7 +19,8 @@ NoNewPrivileges=true
 
 Mount=type=tmpfs,destination=/run,U=true,exec
 Volume=radarr.volume:/config:Z,U
-Volume=/mnt/media:/data:z
+Volume=/mnt/extra2/movies:/data/movies:z
+Volume=/mnt/extra1/downloads:/data/downloads:z
 
 Network=proxy.network
 

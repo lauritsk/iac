@@ -1,5 +1,6 @@
 [Unit]
 Description=Transmission Container
+RequiresMountsFor=/mnt/extra1
 
 [Container]
 ContainerName=transmission
@@ -9,6 +10,9 @@ PidsLimit=256
 PodmanArgs=--cpus=2
 
 Environment=TZ=Europe/Tallinn
+Environment=USER=karl
+Environment=FILE__PASS=/run/secrets/transmission_password
+Secret=transmission_password,target=/run/secrets/transmission_password,uid=1000,gid=1000,mode=0400
 
 User=1000
 Group=1000
@@ -18,11 +22,11 @@ NoNewPrivileges=true
 
 Mount=type=tmpfs,destination=/run,U=true,exec
 Volume=transmission.volume:/config:Z,U
-Volume=/mnt/media:/data:z
+Volume=/mnt/extra1:/data:z
 
 Network=proxy.network
 
-HealthCmd=curl -fsS http://127.0.0.1:9091/transmission/web/ >/dev/null || exit 1
+HealthCmd=curl -fsS -u "$USER:$(cat /run/secrets/transmission_password)" http://127.0.0.1:9091/transmission/web/ >/dev/null || exit 1
 
 [Service]
 Restart=always
