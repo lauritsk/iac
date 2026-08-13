@@ -1,5 +1,6 @@
 [Unit]
 Description=Sonarr Container
+RequiresMountsFor=/mnt/media /mnt/extra1
 
 [Container]
 ContainerName=sonarr
@@ -18,7 +19,8 @@ NoNewPrivileges=true
 
 Mount=type=tmpfs,destination=/run,U=true,exec
 Volume=sonarr.volume:/config:Z,U
-Volume=/mnt/media:/data:z
+Volume=/mnt/media/shows:/data/shows:z
+Volume=/mnt/extra1/downloads:/data/downloads:z
 
 Network=proxy.network
 

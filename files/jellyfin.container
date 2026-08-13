@@ -1,5 +1,6 @@
 [Unit]
 Description=Jellyfin
+RequiresMountsFor=/mnt/media /mnt/extra2
 
 [Container]
 ContainerName=jellyfin
@@ -17,7 +18,7 @@ NoNewPrivileges=true
 
 Volume=jellyfin-config.volume:/config:Z,U
 Volume=jellyfin-cache.volume:/cache:Z,U
-Volume=/mnt/media/movies:/media/movies:z
+Volume=/mnt/extra2/movies:/media/movies:z
 Volume=/mnt/media/shows:/media/shows:z
 
 Network=proxy.network

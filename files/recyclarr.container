@@ -1,0 +1,35 @@
+[Unit]
+Description=Recyclarr Container
+Wants=radarr.service sonarr.service
+After=radarr.service sonarr.service
+
+[Container]
+ContainerName=recyclarr
+Image=ghcr.io/recyclarr/recyclarr:8.7.1@sha256:73303ba5ee647b6492fee917d3a781c6e59b6cab08f9dfce9482a950846f564f
+Memory=512M
+PidsLimit=256
+PodmanArgs=--cpus=1
+
+Environment=TZ=Europe/Tallinn
+Environment="CRON_SCHEDULE=0 4 * * *"
+
+User=1000
+Group=1000
+UserNS=keep-id
+ReadOnly=true
+NoNewPrivileges=true
+
+Mount=type=tmpfs,destination=/tmp,U=true
+Volume=recyclarr.volume:/config:Z,U
+Volume=/home/karl/.config/recyclarr/recyclarr.yml:/config/recyclarr.yml:ro,Z
+Secret=recyclarr_api_keys,target=/config/secrets.yml,uid=1000,gid=1000,mode=0400
+
+Network=proxy.network
+
+HealthCmd=pidof supercronic >/dev/null && recyclarr --version >/dev/null || exit 1
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
