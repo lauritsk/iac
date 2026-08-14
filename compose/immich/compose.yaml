@@ -1,0 +1,133 @@
+services:
+  immich-machine-learning:
+    container_name: immich-machine-learning
+    image: ghcr.io/immich-app/immich-machine-learning:v3.1.0-openvino@sha256:4b6ef958e7749fc548377bb23ee219c09c74da8decee080d76dc6a388c39b013
+    restart: unless-stopped
+    mem_limit: 4g
+    pids_limit: 512
+    cpus: 4
+    user: "1000:1000"
+    group_add:
+      - keep-groups
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - NET_RAW
+    volumes:
+      - immich-model-cache:/cache:Z,U
+    devices:
+      - /dev/dri:/dev/dri
+    networks:
+      - proxy
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3003/', timeout=5)"]
+
+  immich-postgres:
+    container_name: immich-postgres
+    image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:bcf63357191b76a916ae5eb93464d65c07511da41e3bf7a8416db519b40b1c23
+    restart: unless-stopped
+    mem_limit: 2g
+    pids_limit: 512
+    cpus: 2
+    shm_size: 128m
+    environment:
+      POSTGRES_DB: immich
+      POSTGRES_USER: immich
+      POSTGRES_PASSWORD_FILE: /run/secrets/immich_db_password
+      POSTGRES_INITDB_ARGS: --data-checksums
+    secrets:
+      - source: immich_db_password
+        target: immich_db_password
+        uid: "1000"
+        gid: "1000"
+        mode: 0400
+    user: "1000:1000"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - NET_RAW
+    volumes:
+      - immich-postgres:/var/lib/postgresql/data:Z,U
+    networks:
+      - proxy
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U immich -d immich"]
+
+  immich-valkey:
+    container_name: immich-valkey
+    image: docker.io/valkey/valkey:9@sha256:8e8d64b405ce18f41b8e5ee20aa4687a8ed0022d1298f2ce31cdcf3a76e09411
+    restart: unless-stopped
+    mem_limit: 512m
+    pids_limit: 256
+    cpus: 1
+    user: "1000:1000"
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - NET_RAW
+    networks:
+      - proxy
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping || exit 1"]
+
+  immich-server:
+    container_name: immich-server
+    image: ghcr.io/immich-app/immich-server:v3.1.0@sha256:b434cb9287eea1471c9974845914d4dd328c9c2d652e446ed4930f99944f0ceb
+    restart: unless-stopped
+    depends_on:
+      - immich-postgres
+      - immich-valkey
+      - immich-machine-learning
+    mem_limit: 4g
+    pids_limit: 512
+    cpus: 4
+    environment:
+      DB_HOSTNAME: immich-postgres
+      DB_PORT: 5432
+      DB_USERNAME: immich
+      DB_PASSWORD_FILE: /run/secrets/immich_db_password
+      DB_DATABASE_NAME: immich
+      REDIS_HOSTNAME: immich-valkey
+      REDIS_PORT: 6379
+      IMMICH_MACHINE_LEARNING_URL: http://immich-machine-learning:3003
+      TZ: Europe/Tallinn
+    secrets:
+      - source: immich_db_password
+        target: immich_db_password
+        uid: "1000"
+        gid: "1000"
+        mode: 0400
+    user: "1000:1000"
+    group_add:
+      - keep-groups
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - NET_RAW
+    volumes:
+      - immich-library:/data:Z,U
+      - /etc/localtime:/etc/localtime:ro
+    devices:
+      - /dev/dri:/dev/dri
+    networks:
+      proxy:
+        aliases:
+          - immich
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:2283/api/server/ping >/dev/null || exit 1"]
+
+secrets:
+  immich_db_password:
+    file: ../secrets/immich_db_password
+
+volumes:
+  immich-library:
+    name: immich-library
+  immich-model-cache:
+    name: immich-model-cache
+  immich-postgres:
+    name: immich-postgres
+
+networks:
+  proxy:
+    name: proxy

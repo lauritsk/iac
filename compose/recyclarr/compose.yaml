@@ -1,0 +1,50 @@
+services:
+  recyclarr:
+    container_name: recyclarr
+    image: ghcr.io/recyclarr/recyclarr:8.7.1@sha256:73303ba5ee647b6492fee917d3a781c6e59b6cab08f9dfce9482a950846f564f
+    restart: unless-stopped
+    mem_limit: 512m
+    pids_limit: 256
+    cpus: 1
+    environment:
+      TZ: Europe/Tallinn
+      CRON_SCHEDULE: 0 4 * * *
+    secrets:
+      - source: radarr_api_key
+        target: radarr_api_key
+        uid: "1000"
+        gid: "1000"
+        mode: 0400
+      - source: sonarr_api_key
+        target: sonarr_api_key
+        uid: "1000"
+        gid: "1000"
+        mode: 0400
+    user: "1000:1000"
+    userns_mode: keep-id
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp
+    volumes:
+      - recyclarr:/config:Z,U
+      - ./recyclarr.yml:/config/recyclarr.yml:ro,Z
+    networks:
+      - proxy
+    healthcheck:
+      test: ["CMD-SHELL", "pidof supercronic >/dev/null && recyclarr --version >/dev/null || exit 1"]
+
+secrets:
+  radarr_api_key:
+    file: ../secrets/radarr_api_key
+  sonarr_api_key:
+    file: ../secrets/sonarr_api_key
+
+volumes:
+  recyclarr:
+    name: recyclarr
+
+networks:
+  proxy:
+    name: proxy

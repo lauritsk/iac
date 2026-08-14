@@ -1,0 +1,41 @@
+services:
+  bichon:
+    container_name: bichon
+    image: docker.io/rustmailer/bichon:2.0.1@sha256:d73d5549cd8661733b09f9ffa164eb2e6f90a6849f0480974e9ee2d9375104dc
+    restart: unless-stopped
+    mem_limit: 512m
+    pids_limit: 256
+    cpus: 1
+    environment:
+      BICHON_ROOT_DIR: /data
+      BICHON_LOG_LEVEL: info
+      BICHON_ENCRYPT_PASSWORD_FILE: /run/secrets/bichon_encrypt_password
+    secrets:
+      - source: bichon_encrypt_password
+        target: bichon_encrypt_password
+        uid: "1000"
+        gid: "1000"
+        mode: 0400
+    user: 1000:1000
+    userns_mode: keep-id
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - bichon:/data:Z,U
+    networks:
+      - proxy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:15630/api/status >/dev/null || exit 1"]
+
+secrets:
+  bichon_encrypt_password:
+    file: ../secrets/bichon_encrypt_password
+
+volumes:
+  bichon:
+    name: bichon
+
+networks:
+  proxy:
+    name: proxy
