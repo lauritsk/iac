@@ -1,0 +1,29 @@
+services:
+  uptime-kuma:
+    container_name: uptime-kuma
+    image: ghcr.io/louislam/uptime-kuma:2.5.0-slim-rootless@sha256:37894805e7df2211dc2c69374034849c9a73efd8dd55469953261cafda091bc4
+    restart: unless-stopped
+    mem_limit: 1g
+    pids_limit: 256
+    cpus: 1
+    user: "1000:1000"
+    userns_mode: keep-id
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+      - label=disable
+    volumes:
+      - /run/user/1000/podman/podman.sock:/var/run/docker.sock:ro
+      - uptime-kuma:/app/data:Z,U
+    networks:
+      - proxy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:3001/ >/dev/null || exit 1"]
+
+volumes:
+  uptime-kuma:
+    name: uptime-kuma
+
+networks:
+  proxy:
+    name: proxy

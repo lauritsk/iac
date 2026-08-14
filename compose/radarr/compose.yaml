@@ -1,0 +1,44 @@
+services:
+  radarr:
+    container_name: radarr
+    image: lscr.io/linuxserver/radarr:version-6.3.0.10514@sha256:a45b5ab0f850f39edb4cc9c95bbd967b52ddc3d4574a4dfb45561177db6c88f4
+    restart: unless-stopped
+    mem_limit: 1g
+    pids_limit: 256
+    cpus: 2
+    environment:
+      TZ: Europe/Tallinn
+      FILE__RADARR__AUTH__APIKEY: /run/secrets/radarr_api_key
+    secrets:
+      - source: radarr_api_key
+        target: radarr_api_key
+        uid: "1000"
+        gid: "1000"
+        mode: 0400
+    user: "1000:1000"
+    userns_mode: keep-id
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /run:exec
+    volumes:
+      - radarr:/config:Z,U
+      - /mnt/extra2/movies:/data/movies:z
+      - /mnt/extra1/downloads:/data/downloads:z
+    networks:
+      - proxy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:7878/ >/dev/null || exit 1"]
+
+secrets:
+  radarr_api_key:
+    file: ../secrets/radarr_api_key
+
+volumes:
+  radarr:
+    name: radarr
+
+networks:
+  proxy:
+    name: proxy
