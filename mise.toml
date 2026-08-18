@@ -5,7 +5,7 @@
 
 [tasks.install]
 description = "Install Ansible collections"
-run = "ansible-galaxy collection install fedora.linux_system_roles"
+run = "ansible-galaxy collection install containers.podman"
 
 [tasks."ignition:generate"]
 description = "Generate the Ignition configuration"

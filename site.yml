@@ -127,76 +127,8 @@
       31623834383464353434336433303139326632303064616162636533633636393939383230623833
       656463323263313139373063336261303634
 
-    podman_run_as_user: core
-    podman_secrets:
-      - name: bichon_encrypt_password
-        data: "{{ vault_bichon_encrypt_password }}"
-      - name: immich_db_password
-        data: "{{ vault_immich_db_password }}"
-      - name: borgmatic_passphrase
-        data: "{{ vault_borgmatic_passphrase }}"
-      - name: borgmatic_ssh_key
-        data: "{{ vault_borgmatic_ssh_key }}"
-      - name: borgmatic_known_hosts
-        data: |
-          u624511.your-storagebox.de ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA5EB5p/5Hp3hGW1oHok+PIOH9Pbn7cnUiGmUEBrCVjnAw+HrKyN8bYVV0dIGllswYXwkG/+bgiBlE6IVIBAq+JwVWu1Sss3KarHY3OvFJUXZoZyRRg/Gc/+LRCE7lyKpwWQ70dbelGRyyJFH36eNv6ySXoUYtGkwlU5IVaHPApOxe4LHPZa/qhSRbPo2hwoh0orCtgejRebNtW5nlx00DNFgsvn8Svz2cIYLxsPVzKgUxs8Zxsxgn+Q/UvR7uq4AbAhyBMLxv7DjJ1pc7PJocuTno2Rw9uMZi1gkjbnmiOh6TTXIEWbnroyIhwc8555uto9melEUmWNQ+C+PwAK+MPw==
-          [u624511.your-storagebox.de]:23 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIICf9svRenC/PLKIL9nk6K/pxQgoiFC41wTNvoIncOxs
-      - name: borgmatic_config
-        data: "{{ vault_borgmatic_config }}"
-      - name: tailscale_oauth_secret
-        data: "{{ vault_tailscale_oauth_secret }}"
-      - name: transmission_password
-        data: "{{ vault_transmission_password }}"
-      - name: recyclarr_api_keys
-        data: "{{ vault_recyclarr_api_keys }}"
-
-    podman_quadlet_specs:
-      - file_src: proxy.network
-      - file_src: bichon.volume
-      - file_src: borgmatic-cache.volume
-      - file_src: borgmatic-config.volume
-      - file_src: borgmatic-state.volume
-      - file_src: immich-library.volume
-      - file_src: immich-model-cache.volume
-      - file_src: immich-postgres.volume
-      - file_src: jellyfin-cache.volume
-      - file_src: jellyfin-config.volume
-      - file_src: prowlarr.volume
-      - file_src: radarr.volume
-      - file_src: recyclarr.volume
-      - file_src: sonarr.volume
-      - file_src: tailscale.volume
-      - file_src: transmission.volume
-      - file_src: uptime-kuma.volume
-      - file: /home/core/.config/tailscale/serve.json
-        file_src: serve.json
-      - file: /home/core/.config/recyclarr/recyclarr.yml
-        file_src: recyclarr.yml
-      - file_src: immich.pod
-      - file_src: bichon.container
-      - file_src: borgmatic.container
-      - file_src: immich-machine-learning.container
-      - file_src: immich-postgres.container
-      - file_src: immich-valkey.container
-      - file_src: immich-server.container
-      - file_src: jellyfin.container
-      - file_src: prowlarr.container
-      - file_src: radarr.container
-      - file_src: sonarr.container
-      - file_src: recyclarr.container
-        restarts_on:
-          - /home/core/.config/recyclarr/recyclarr.yml
-          - recyclarr_api_keys
-      - file_src: tailscale.container
-        restarts_on:
-          - /home/core/.config/tailscale/serve.json
-      - file_src: transmission.container
-        restarts_on:
-          - transmission_password
-      - file_src: uptime-kuma.container
-
-  pre_tasks:
-    - name: Ensure application config directories are present
+  tasks:
+    - name: Ensure configuration and Quadlet directories exist
       ansible.builtin.file:
         path: "{{ item }}"
         state: directory
@@ -206,5 +138,91 @@
       loop:
         - /home/core/.config/tailscale
         - /home/core/.config/recyclarr
+        - /home/core/.config/containers/systemd
 
-    - role: fedora.linux_system_roles.podman
+    - name: Ensure Podman secrets are created
+      containers.podman.podman_secret:
+        name: "{{ item.name }}"
+        data: "{{ item.data }}"
+        state: present
+      loop:
+        - { name: bichon_encrypt_password, data: "{{ vault_bichon_encrypt_password }}", service: bichon.service }
+        - { name: immich_db_password, data: "{{ vault_immich_db_password }}", service: immich-postgres.service }
+        - { name: borgmatic_passphrase, data: "{{ vault_borgmatic_passphrase }}", service: borgmatic.service }
+        - { name: tailscale_oauth_secret, data: "{{ vault_tailscale_oauth_secret }}", service: tailscale.service }
+        - { name: transmission_password, data: "{{ vault_transmission_password }}", service: transmission.service }
+        - { name: recyclarr_api_keys, data: "{{ vault_recyclarr_api_keys }}", service: recyclarr.service }
+      register: podman_secrets
+      notify: Restart secret-dependent services
+
+    - name: Deploy application config files
+      ansible.builtin.copy:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: core
+        group: core
+        mode: "0600"
+      loop:
+        - { src: serve.json, dest: /home/core/.config/tailscale/serve.json, service: tailscale.service }
+        - { src: recyclarr.yml, dest: /home/core/.config/recyclarr/recyclarr.yml, service: recyclarr.service }
+      register: config_files
+      notify: Restart config-dependent services
+
+    - name: Deploy Quadlet spec files
+      ansible.builtin.copy:
+        src: "{{ item.src }}"
+        dest: "/home/core/.config/containers/systemd/{{ item.src }}"
+        owner: core
+        group: core
+        mode: "0644"
+      loop:
+        - { src: proxy.network, service: proxy-network.service }
+        - { src: immich.pod, service: immich-pod.service }
+        - { src: bichon.container, service: bichon.service }
+        - { src: borgmatic.container, service: borgmatic.service }
+        - { src: immich-machine-learning.container, service: immich-machine-learning.service }
+        - { src: immich-postgres.container, service: immich-postgres.service }
+        - { src: immich-valkey.container, service: immich-valkey.service }
+        - { src: immich-server.container, service: immich-server.service }
+        - { src: jellyfin.container, service: jellyfin.service }
+        - { src: prowlarr.container, service: prowlarr.service }
+        - { src: radarr.container, service: radarr.service }
+        - { src: sonarr.container, service: sonarr.service }
+        - { src: recyclarr.container, service: recyclarr.service }
+        - { src: tailscale.container, service: tailscale.service }
+        - { src: transmission.container, service: transmission.service }
+        - { src: uptime-kuma.container, service: uptime-kuma.service }
+      register: quadlet_files
+      notify:
+        - Reload systemd user daemon
+        - Restart quadlet services
+
+  handlers:
+    - name: Reload systemd user daemon
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+        scope: user
+
+    - name: Restart quadlet services
+      ansible.builtin.systemd_service:
+        name: "{{ item.item.service }}"
+        state: restarted
+        scope: user
+      loop: "{{ quadlet_files.results }}"
+      when: item.changed and item.item.service is defined
+
+    - name: Restart config-dependent services
+      ansible.builtin.systemd_service:
+        name: "{{ item.item.service }}"
+        state: restarted
+        scope: user
+      loop: "{{ config_files.results }}"
+      when: item.changed and item.item.service is defined
+
+    - name: Restart secret-dependent services
+      ansible.builtin.systemd_service:
+        name: "{{ item.item.service }}"
+        state: restarted
+        scope: user
+      loop: "{{ podman_secrets.results }}"
+      when: item.changed and item.item.service is defined
