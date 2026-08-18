@@ -12,7 +12,7 @@ Environment=TZ=Europe/Tallinn
 
 User=1000
 Group=1000
-UserNS=keep-id
+UserNS=keep-id:uid=1000,gid=1000
 ReadOnly=True
 NoNewPrivileges=true
 
