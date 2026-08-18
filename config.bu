@@ -9,6 +9,11 @@ passwd:
 
 storage:
   files:
+    - path: /etc/flatcar/enabled-sysext.conf
+      mode: 0644
+      contents:
+        inline: |
+          podman
     - path: /opt/extensions/tailscale/tailscale-v1.102.2-x86-64.raw
       mode: 0644
       contents:
@@ -26,6 +31,12 @@ storage:
           net.ipv4.ip_forward = 1
           net.ipv6.conf.all.forwarding = 1
   links:
+    - path: /etc/extensions/docker-flatcar.raw
+      target: /dev/null
+      overwrite: true
+    - path: /etc/extensions/containerd-flatcar.raw
+      target: /dev/null
+      overwrite: true
     - path: /etc/systemd/system/multi-user.target.wants/tailscaled.service
       target: /usr/local/lib/systemd/system/tailscaled.service
       overwrite: true
