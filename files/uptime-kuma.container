@@ -12,12 +12,12 @@ PodmanArgs=--cpus=1
 
 User=1000
 Group=1000
-UserNS=keep-id
+UserNS=keep-id:uid=1000,gid=1000
 ReadOnly=true
 NoNewPrivileges=true
 SecurityLabelDisable=true
 
-Volume=/run/user/1000/podman/podman.sock:/var/run/docker.sock:ro
+Volume=%t/podman/podman.sock:/var/run/docker.sock:ro
 Volume=uptime-kuma.volume:/app/data:Z,U
 
 Network=proxy.network

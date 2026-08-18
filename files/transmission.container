@@ -1,6 +1,7 @@
 [Unit]
 Description=Transmission Container
-RequiresMountsFor=/mnt/extra1
+RequiresMountsFor=/mnt/media
+ConditionPathIsMountPoint=/mnt/media
 
 [Container]
 ContainerName=transmission
@@ -16,13 +17,13 @@ Secret=transmission_password,target=/run/secrets/transmission_password,uid=1000,
 
 User=1000
 Group=1000
-UserNS=keep-id
+UserNS=keep-id:uid=1000,gid=1000
 ReadOnly=True
 NoNewPrivileges=true
 
 Mount=type=tmpfs,destination=/run,U=true,exec
 Volume=transmission.volume:/config:Z,U
-Volume=/mnt/extra1:/data:z
+Volume=/mnt/media:/data:z
 
 Network=proxy.network
 

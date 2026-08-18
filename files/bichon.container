@@ -16,7 +16,7 @@ Secret=bichon_encrypt_password,type=env,target=BICHON_ENCRYPT_PASSWORD
 
 User=1000
 Group=1000
-UserNS=keep-id
+UserNS=keep-id:uid=1000,gid=1000
 ReadOnly=true
 NoNewPrivileges=true
 
