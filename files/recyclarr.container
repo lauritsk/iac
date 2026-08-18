@@ -21,7 +21,7 @@ NoNewPrivileges=true
 
 Mount=type=tmpfs,destination=/tmp,U=true
 Volume=recyclarr.volume:/config:Z,U
-Volume=/home/karl/.config/recyclarr/recyclarr.yml:/config/recyclarr.yml:ro,Z
+Volume=/home/core/.config/recyclarr/recyclarr.yml:/config/recyclarr.yml:Z,ro
 Secret=recyclarr_api_keys,target=/config/secrets.yml,uid=1000,gid=1000,mode=0400
 
 Network=proxy.network

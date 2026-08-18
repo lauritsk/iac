@@ -1,20 +1,26 @@
 # Homelab IaC
 
-Requires Python 3, `just`, and Tailscale access to `homelab`.
+Requires [`mise`](https://mise.jdx.dev/) and Tailscale access to `homelab`.
+
+Install the tools and Ansible collections:
 
 ```sh
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-just install
+mise install
+mise run install
 ```
 
-Validate and preview before applying:
+Generate the Ignition configuration:
 
 ```sh
-just test
-just check
-just apply
+mise run ignition:generate
 ```
 
-`just apply` requires an explicit confirmation. Keep the local, untracked `ansible_vault_passphrase` file available for all Ansible commands.
+Validate, preview, and deploy:
+
+```sh
+mise run validate
+mise run deploy:check
+mise run deploy
+```
+
+`mise run deploy` requires confirmation. Keep the local, untracked `ansible_vault_passphrase` file available for Ansible commands.

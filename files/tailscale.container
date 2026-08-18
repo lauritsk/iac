@@ -13,7 +13,7 @@ PodmanArgs=--cpus=1
 Environment=TS_STATE_DIR=/var/lib/tailscale
 Environment=TS_USERSPACE=true
 Environment=TS_AUTH_ONCE=true
-Environment=TS_HOSTNAME=homelab-proxy
+Environment=TS_HOSTNAME=proxy
 Environment=TS_EXTRA_ARGS=--advertise-tags=tag:container
 Environment=TS_SERVE_CONFIG=/config/serve.json
 Environment=TS_ENABLE_HEALTH_CHECK=true
@@ -28,7 +28,7 @@ NoNewPrivileges=true
 Tmpfs=/tmp:rw,nosuid,nodev,mode=1777
 Tmpfs=/run:rw,nosuid,nodev,mode=755
 Volume=tailscale.volume:/var/lib/tailscale:Z,U
-Volume=/home/karl/.config/tailscale/serve.json:/config/serve.json:ro,Z
+Volume=/home/core/.config/tailscale/serve.json:/config/serve.json:Z,ro
 
 Network=proxy.network
 

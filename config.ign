@@ -1,0 +1,75 @@
+{
+  "ignition": {
+    "version": "3.4.0"
+  },
+  "passwd": {
+    "users": [
+      {
+        "name": "core",
+        "sshAuthorizedKeys": [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIZnJ+xjVH8DBYOg6HQEa2VN0Np/e7Db13y0pCU/Qqlh karl@laurits.dev"
+        ]
+      }
+    ]
+  },
+  "storage": {
+    "files": [
+      {
+        "path": "/opt/extensions/tailscale/tailscale-v1.102.2-x86-64.raw",
+        "contents": {
+          "source": "https://extensions.flatcar.org/extensions/tailscale-v1.102.2-x86-64.raw"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/sysupdate.tailscale.d/tailscale.conf",
+        "contents": {
+          "source": "https://extensions.flatcar.org/extensions/tailscale.conf"
+        }
+      },
+      {
+        "path": "/etc/sysupdate.d/noop.conf",
+        "contents": {
+          "source": "https://extensions.flatcar.org/extensions/noop.conf"
+        }
+      },
+      {
+        "path": "/etc/sysctl.d/99-tailscale.conf",
+        "contents": {
+          "compression": "",
+          "source": "data:,net.ipv4.ip_forward%20%3D%201%0Anet.ipv6.conf.all.forwarding%20%3D%201%0A"
+        },
+        "mode": 420
+      }
+    ],
+    "links": [
+      {
+        "overwrite": true,
+        "path": "/etc/systemd/system/multi-user.target.wants/tailscaled.service",
+        "target": "/usr/local/lib/systemd/system/tailscaled.service"
+      },
+      {
+        "path": "/etc/extensions/tailscale.raw",
+        "hard": false,
+        "target": "/opt/extensions/tailscale/tailscale-v1.102.2-x86-64.raw"
+      }
+    ]
+  },
+  "systemd": {
+    "units": [
+      {
+        "enabled": true,
+        "name": "systemd-sysupdate.timer"
+      },
+      {
+        "dropins": [
+          {
+            "contents": "[Service]\nExecStartPre=/usr/bin/sh -c \"readlink --canonicalize /etc/extensions/tailscale.raw \u003e /tmp/tailscale\"\nExecStartPre=/usr/lib/systemd/systemd-sysupdate -C tailscale update\nExecStartPost=/usr/bin/sh -c \"readlink --canonicalize /etc/extensions/tailscale.raw \u003e /tmp/tailscale-new\"\nExecStartPost=/usr/bin/sh -c \"if ! cmp --silent /tmp/tailscale /tmp/tailscale-new; then touch /run/reboot-required; fi\"\n",
+            "name": "tailscale.conf"
+          }
+        ],
+        "name": "systemd-sysupdate.service"
+      }
+    ]
+  }
+}
