@@ -1,6 +1,1 @@
-.DS_Store
-.ansible/
-.venv/
 ansible_vault_passphrase
-compose/**/.env
-compose/secrets/*

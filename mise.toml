@@ -1,0 +1,44 @@
+[tools]
+"aqua:coreos/butane" = "latest"
+"pipx:ansible-core" = "latest"
+"pipx:ansible-lint" = "latest"
+
+[tasks.install]
+description = "Install Ansible collections"
+run = "ansible-galaxy collection install fedora.linux_system_roles"
+
+[tasks."ignition:generate"]
+description = "Generate the Ignition configuration"
+run = "butane --strict --pretty --files-dir . --output config.ign config.bu"
+
+[tasks."validate:json"]
+description = "Validate JSON files"
+run = "python3 -m json.tool files/serve.json >/dev/null"
+
+[tasks."validate:ignition"]
+description = "Validate the Butane configuration"
+run = "butane --strict --check --files-dir . config.bu"
+
+[tasks."validate:ansible"]
+description = "Validate the Ansible playbook"
+run = [
+  "ansible-playbook --syntax-check site.yml",
+  "ansible-playbook --list-tasks site.yml >/dev/null",
+]
+
+[tasks.lint]
+description = "Lint Ansible files"
+run = "ansible-lint site.yml"
+
+[tasks.validate]
+description = "Run all local validation"
+depends = ["validate:json", "validate:ignition", "validate:ansible", "lint"]
+
+[tasks."deploy:check"]
+description = "Preview the deployment"
+run = "ansible-playbook --check --diff site.yml"
+
+[tasks.deploy]
+description = "Deploy the Ansible playbook"
+confirm = "Deploy to the homelab?"
+run = "ansible-playbook site.yml"

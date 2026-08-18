@@ -1,6 +1,5 @@
 ---
 all:
   hosts:
-    homelab:
-      ansible_user: karl
-      ansible_become: true
+    hl01:
+      ansible_user: core
