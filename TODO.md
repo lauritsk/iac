@@ -5,3 +5,4 @@
   - SSD will store all configs and databases at /mnt/fast
   - Internal SSD will store OS's including VMs
 2. Ensure fedora linux system role for podman conversion to containers.podman is correct and optimal
+3. Setup opentofu to deploy flatcar on incusos declaratively and automatically activate ansible playbook after provisioning
