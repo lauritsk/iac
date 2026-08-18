@@ -6,3 +6,5 @@
   - Internal SSD will store OS's including VMs
 2. Ensure fedora linux system role for podman conversion to containers.podman is correct and optimal
 3. Setup opentofu to deploy flatcar on incusos declaratively and automatically activate ansible playbook after provisioning
+4. Configure incus to enable secure boot and tpm for the vm
+5. Configure flatcar to encrypt root etc using tpm and verify full bootchain
