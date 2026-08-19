@@ -1,5 +1,0 @@
-[Unit]
-Description=Beszel Agent Data Volume
-
-[Volume]
-VolumeName=beszel-agent-data

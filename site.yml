@@ -2,8 +2,6 @@
 - name: Ensure homelab is configured
   hosts: hl01
   vars:
-    # Replace these bootstrap placeholders with values from the Beszel hub and
-    # encrypt them with Ansible Vault before deploying the local agent.
     vault_beszel_agent_token: <token>
     vault_beszel_agent_key: <key>
     vault_zerobyte_app_secret: !vault |
@@ -142,7 +140,7 @@
       656463323263313139373063336261303634
 
   tasks:
-    - name: Ensure configuration and Quadlet directories exist
+    - name: Ensure application storage directories exist
       ansible.builtin.file:
         path: "{{ item }}"
         state: directory
@@ -150,9 +148,35 @@
         group: core
         mode: "0700"
       loop:
-        - /home/core/.config/tailscale
-        - /home/core/.config/recyclarr
-        - /home/core/.config/containers/systemd
+        - /mnt/fast/beszel-agent/data
+        - /mnt/fast/beszel/data
+        - /mnt/fast/beszel/socket
+        - /mnt/fast/bichon/data
+        - /mnt/fast/borgmatic/cache
+        - /mnt/fast/borgmatic/config
+        - /mnt/fast/borgmatic/state
+        - /mnt/fast/immich/library
+        - /mnt/fast/immich/model-cache
+        - /mnt/fast/immich/postgres
+        - /mnt/fast/jellyfin/cache
+        - /mnt/fast/jellyfin/config
+        - /mnt/fast/prowlarr/config
+        - /mnt/fast/radarr/config
+        - /mnt/fast/recyclarr/config
+        - /mnt/fast/sonarr/config
+        - /mnt/fast/tailscale/config
+        - /mnt/fast/tailscale/data
+        - /mnt/fast/transmission/config
+        - /mnt/fast/uptime-kuma/data
+        - /mnt/fast/zerobyte/data
+
+    - name: Ensure Quadlet directory exists
+      ansible.builtin.file:
+        path: /home/core/.config/containers/systemd
+        state: directory
+        owner: core
+        group: core
+        mode: "0700"
 
     - name: Ensure Podman secrets are created
       containers.podman.podman_secret:
@@ -180,8 +204,8 @@
         group: core
         mode: "0600"
       loop:
-        - { src: serve.json, dest: /home/core/.config/tailscale/serve.json, service: tailscale.service }
-        - { src: recyclarr.yml, dest: /home/core/.config/recyclarr/recyclarr.yml, service: recyclarr.service }
+        - { src: serve.json, dest: /mnt/fast/tailscale/config/serve.json, service: tailscale.service }
+        - { src: recyclarr.yml, dest: /mnt/fast/recyclarr/config/recyclarr.yml, service: recyclarr.service }
       register: config_files
       notify: Restart config-dependent services
 
@@ -194,10 +218,6 @@
         mode: "0644"
       loop:
         - { src: proxy.network, service: proxy-network.service }
-        - { src: beszel-agent-data.volume }
-        - { src: beszel-data.volume }
-        - { src: beszel-socket.volume }
-        - { src: zerobyte.volume }
         - { src: immich.pod, service: immich-pod.service }
         - { src: beszel.container, service: beszel.service }
         - { src: beszel-agent.container, service: beszel-agent.service }

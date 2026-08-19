@@ -21,8 +21,8 @@ UserNS=keep-id:uid=1000,gid=1000
 NoNewPrivileges=true
 SecurityLabelDisable=true
 
-Volume=beszel-agent-data.volume:/var/lib/beszel-agent:Z,U
-Volume=beszel-socket.volume:/beszel_socket:z,U
+Volume=/mnt/fast/beszel-agent/data:/var/lib/beszel-agent:Z
+Volume=/mnt/fast/beszel/socket:/beszel_socket:z
 Volume=%t/podman/podman.sock:/var/run/docker.sock:ro
 
 Network=host

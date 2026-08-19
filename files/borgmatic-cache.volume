@@ -1,5 +1,0 @@
-[Unit]
-Description=Borgmatic Cache Volume
-
-[Volume]
-VolumeName=borgmatic-cache

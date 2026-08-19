@@ -2,8 +2,6 @@
 Description=Zerobyte Container
 After=network-online.target
 Wants=network-online.target
-RequiresMountsFor=/mnt/slow
-ConditionPathIsMountPoint=/mnt/slow
 
 [Container]
 ContainerName=zerobyte
@@ -25,19 +23,9 @@ ReadOnly=True
 NoNewPrivileges=true
 SecurityLabelDisable=true
 
-Volume=zerobyte.volume:/var/lib/zerobyte:Z,U
-Volume=/mnt/slow:/mnt/source/slow:ro
-Volume=tailscale.volume:/mnt/source/tailscale:ro
-Volume=uptime-kuma.volume:/mnt/source/uptime-kuma:ro
-Volume=bichon.volume:/mnt/source/bichon:ro
-Volume=beszel-data.volume:/mnt/source/beszel:ro
-Volume=immich-library.volume:/mnt/source/immich:ro
-Volume=jellyfin-config.volume:/mnt/source/jellyfin:ro
-Volume=transmission.volume:/mnt/source/transmission:ro
-Volume=prowlarr.volume:/mnt/source/prowlarr:ro
-Volume=radarr.volume:/mnt/source/radarr:ro
-Volume=sonarr.volume:/mnt/source/sonarr:ro
-Volume=recyclarr.volume:/mnt/source/recyclarr:ro
+Volume=/mnt/fast/zerobyte/data:/var/lib/zerobyte:Z
+Volume=/mnt/slow:/mnt/slow:ro
+Volume=/mnt/fast:/mnt/fast:ro
 
 Network=proxy.network
 

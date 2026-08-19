@@ -18,8 +18,8 @@ UserNS=keep-id:uid=1000,gid=1000
 ReadOnly=true
 NoNewPrivileges=true
 
-Volume=beszel-data.volume:/beszel_data:Z,U
-Volume=beszel-socket.volume:/beszel_socket:z,U
+Volume=/mnt/fast/beszel/data:/beszel_data:Z
+Volume=/mnt/fast/beszel/socket:/beszel_socket:z
 
 Network=proxy.network
 PublishPort=127.0.0.1:8090:8090

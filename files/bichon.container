@@ -20,7 +20,7 @@ UserNS=keep-id:uid=1000,gid=1000
 ReadOnly=true
 NoNewPrivileges=true
 
-Volume=bichon.volume:/data:Z,U
+Volume=/mnt/fast/bichon/data:/data:Z
 
 Network=proxy.network
 

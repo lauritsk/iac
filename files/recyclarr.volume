@@ -1,5 +1,0 @@
-[Unit]
-Description=Recyclarr Volume
-
-[Volume]
-VolumeName=recyclarr
