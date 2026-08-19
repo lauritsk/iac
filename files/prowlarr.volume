@@ -1,5 +1,0 @@
-[Unit]
-Description=Prowlarr Volume
-
-[Volume]
-VolumeName=prowlarr

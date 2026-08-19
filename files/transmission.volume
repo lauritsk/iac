@@ -1,5 +1,0 @@
-[Unit]
-Description=Transmission Volume
-
-[Volume]
-VolumeName=transmission

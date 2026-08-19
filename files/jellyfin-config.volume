@@ -1,5 +1,0 @@
-[Unit]
-Description=Jellyfin Config Volume
-
-[Volume]
-VolumeName=jellyfin-config

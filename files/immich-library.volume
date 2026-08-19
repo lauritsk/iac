@@ -1,5 +1,0 @@
-[Unit]
-Description=Immich Library Volume
-
-[Volume]
-VolumeName=immich-library

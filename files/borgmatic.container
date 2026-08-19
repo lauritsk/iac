@@ -2,8 +2,6 @@
 Description=Borgmatic
 After=network-online.target
 Wants=network-online.target
-RequiresMountsFor=/mnt/slow
-ConditionPathIsMountPoint=/mnt/slow
 
 [Container]
 ContainerName=borgmatic
@@ -23,20 +21,11 @@ Secret=immich_db_password,type=mount,target=/run/secrets/immich_db_password,mode
 
 SecurityLabelDisable=true
 
-Volume=borgmatic-config.volume:/root/.config/borg:Z
-Volume=borgmatic-cache.volume:/root/.cache/borg:Z
-Volume=borgmatic-state.volume:/root/.local/state/borgmatic:Z
-Volume=/mnt/slow:/mnt/source/slow:ro
-Volume=tailscale.volume:/mnt/source/tailscale:ro
-Volume=uptime-kuma.volume:/mnt/source/uptime-kuma:ro
-Volume=bichon.volume:/mnt/source/bichon:ro
-Volume=immich-library.volume:/mnt/source/immich:ro
-Volume=jellyfin-config.volume:/mnt/source/jellyfin:ro
-Volume=transmission.volume:/mnt/source/transmission:ro
-Volume=prowlarr.volume:/mnt/source/prowlarr:ro
-Volume=radarr.volume:/mnt/source/radarr:ro
-Volume=sonarr.volume:/mnt/source/sonarr:ro
-Volume=recyclarr.volume:/mnt/source/recyclarr:ro
+Volume=/mnt/fast/borgmatic/config:/root/.config/borg:Z
+Volume=/mnt/fast/borgmatic/cache:/root/.cache/borg:Z
+Volume=/mnt/fast/borgmatic/state:/root/.local/state/borgmatic:Z
+Volume=/mnt/fast:/mnt/fast:ro
+Volume=/mnt/slow:/mnt/slow:ro
 
 Network=proxy.network
 

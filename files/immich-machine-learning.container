@@ -15,7 +15,7 @@ GroupAdd=keep-groups
 NoNewPrivileges=true
 DropCapability=CAP_NET_RAW
 
-Volume=immich-model-cache.volume:/cache:Z,U
+Volume=/mnt/fast/immich/model-cache:/cache:Z
 
 AddDevice=/dev/dri:/dev/dri
 

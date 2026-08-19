@@ -1,6 +1,0 @@
-[Unit]
-Description=Immich Postgres Volume
-
-[Volume]
-VolumeName=immich-postgres
-

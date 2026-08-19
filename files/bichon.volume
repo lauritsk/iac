@@ -1,5 +1,0 @@
-[Unit]
-Description=Bichon Volume
-
-[Volume]
-VolumeName=bichon

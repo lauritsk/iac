@@ -17,7 +17,7 @@ ReadOnly=True
 NoNewPrivileges=true
 
 Mount=type=tmpfs,destination=/run,U=true,exec
-Volume=prowlarr.volume:/config:Z,U
+Volume=/mnt/fast/prowlarr/config:/config:Z
 
 Network=proxy.network
 

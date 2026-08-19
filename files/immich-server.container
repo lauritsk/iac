@@ -28,7 +28,7 @@ Environment=REDIS_PORT=6379
 Environment=IMMICH_MACHINE_LEARNING_URL=http://127.0.0.1:3003
 Secret=immich_db_password,type=env,target=DB_PASSWORD
 
-Volume=immich-library.volume:/data:Z,U
+Volume=/mnt/fast/immich/library:/data:Z
 
 Timezone=local
 AddDevice=/dev/dri:/dev/dri

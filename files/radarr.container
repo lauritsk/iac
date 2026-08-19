@@ -1,7 +1,5 @@
 [Unit]
 Description=Radarr Container
-RequiresMountsFor=/mnt/slow
-ConditionPathIsMountPoint=/mnt/slow
 
 [Container]
 ContainerName=radarr
@@ -19,7 +17,7 @@ ReadOnly=True
 NoNewPrivileges=true
 
 Mount=type=tmpfs,destination=/run,U=true,exec
-Volume=radarr.volume:/config:Z,U
+Volume=/mnt/fast/radarr/config:/config:Z
 Volume=/mnt/slow:/data:z
 
 Network=proxy.network

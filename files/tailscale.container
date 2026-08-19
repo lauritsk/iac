@@ -27,8 +27,8 @@ NoNewPrivileges=true
 
 Tmpfs=/tmp:rw,nosuid,nodev,mode=1777
 Tmpfs=/run:rw,nosuid,nodev,mode=755
-Volume=tailscale.volume:/var/lib/tailscale:Z,U
-Volume=/home/core/.config/tailscale/serve.json:/config/serve.json:Z,ro
+Volume=/mnt/fast/tailscale/data:/var/lib/tailscale:Z
+Volume=/mnt/fast/tailscale/config/serve.json:/config/serve.json:Z,ro
 
 Network=proxy.network
 
