@@ -16,6 +16,22 @@
         }
       }
     },
+    "svc:beszel": {
+      "TCP": {
+        "443": {
+          "HTTPS": true
+        }
+      },
+      "Web": {
+        "beszel.cormo-tegu.ts.net:443": {
+          "Handlers": {
+            "/": {
+              "Proxy": "http://beszel:8090"
+            }
+          }
+        }
+      }
+    },
     "svc:immich": {
       "TCP": {
         "443": {
@@ -123,6 +139,22 @@
           "Handlers": {
             "/": {
               "Proxy": "http://uptime-kuma:3001"
+            }
+          }
+        }
+      }
+    },
+    "svc:zerobyte": {
+      "TCP": {
+        "443": {
+          "HTTPS": true
+        }
+      },
+      "Web": {
+        "zerobyte.cormo-tegu.ts.net:443": {
+          "Handlers": {
+            "/": {
+              "Proxy": "http://zerobyte:4096"
             }
           }
         }

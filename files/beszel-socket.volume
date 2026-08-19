@@ -1,0 +1,5 @@
+[Unit]
+Description=Beszel Socket Volume
+
+[Volume]
+VolumeName=beszel-socket

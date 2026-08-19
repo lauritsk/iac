@@ -2,6 +2,20 @@
 - name: Ensure homelab is configured
   hosts: hl01
   vars:
+    # Replace these bootstrap placeholders with values from the Beszel hub and
+    # encrypt them with Ansible Vault before deploying the local agent.
+    vault_beszel_agent_token: <token>
+    vault_beszel_agent_key: <key>
+    vault_zerobyte_app_secret: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      39363535373135333239623835383461383330373336393832626232323137346239363135623961
+      3334386166666333313332396334616538326134393631380a626438353932313766663766626563
+      64626266303433356439386465626562663165316235323662373263326135366135366631343432
+      3132353538333861370a343234353264323931613134373964306639656233393063363461613566
+      34346139626666333638393165653263363335646333323362393130613938653961326365656339
+      34643062623936623430323435353537663833383935353530343465383336306330326264626232
+      35356430646162633866653661643730666536303465663531356638383132316266623733316562
+      64373430393163353734
     vault_borgmatic_passphrase: !vault |
       $ANSIBLE_VAULT;1.1;AES256
       61356634343031313230353063643862636265623534393665646666313838393931333065303330
@@ -146,6 +160,9 @@
         data: "{{ item.data }}"
         state: present
       loop:
+        - { name: beszel_agent_token, data: "{{ vault_beszel_agent_token }}", service: beszel-agent.service }
+        - { name: beszel_agent_key, data: "{{ vault_beszel_agent_key }}", service: beszel-agent.service }
+        - { name: zerobyte_app_secret, data: "{{ vault_zerobyte_app_secret }}", service: zerobyte.service }
         - { name: bichon_encrypt_password, data: "{{ vault_bichon_encrypt_password }}", service: bichon.service }
         - { name: immich_db_password, data: "{{ vault_immich_db_password }}", service: immich-postgres.service }
         - { name: borgmatic_passphrase, data: "{{ vault_borgmatic_passphrase }}", service: borgmatic.service }
@@ -177,7 +194,13 @@
         mode: "0644"
       loop:
         - { src: proxy.network, service: proxy-network.service }
+        - { src: beszel-agent-data.volume }
+        - { src: beszel-data.volume }
+        - { src: beszel-socket.volume }
+        - { src: zerobyte.volume }
         - { src: immich.pod, service: immich-pod.service }
+        - { src: beszel.container, service: beszel.service }
+        - { src: beszel-agent.container, service: beszel-agent.service }
         - { src: bichon.container, service: bichon.service }
         - { src: borgmatic.container, service: borgmatic.service }
         - { src: immich-machine-learning.container, service: immich-machine-learning.service }
@@ -192,6 +215,7 @@
         - { src: tailscale.container, service: tailscale.service }
         - { src: transmission.container, service: transmission.service }
         - { src: uptime-kuma.container, service: uptime-kuma.service }
+        - { src: zerobyte.container, service: zerobyte.service }
       register: quadlet_files
       notify:
         - Reload systemd user daemon
