@@ -1,0 +1,33 @@
+[Unit]
+Description=Beszel Container
+After=network-online.target
+Wants=network-online.target
+
+[Container]
+ContainerName=beszel
+Image=docker.io/henrygd/beszel:latest@sha256:4c51486968efa0b0a702c1b0967966a2e06fb250b7418f3072d2488faea27c51
+Memory=1G
+PidsLimit=256
+PodmanArgs=--cpus=1
+
+Environment=APP_URL=https://beszel.cormo-tegu.ts.net
+
+ReadOnly=true
+NoNewPrivileges=true
+
+Volume=beszel-data.volume:/beszel_data:Z,U
+Volume=beszel-socket.volume:/beszel_socket:z,U
+
+Network=proxy.network
+PublishPort=127.0.0.1:8090:8090
+
+HealthCmd=/beszel health --url http://localhost:8090
+HealthInterval=120s
+HealthStartPeriod=10s
+HealthTimeout=5s
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
