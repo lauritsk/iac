@@ -1,0 +1,39 @@
+---
+- name: Ensure Prowlarr directory exists
+  ansible.builtin.file:
+    path: /mnt/fast/prowlarr/config
+    state: directory
+    owner: core
+    group: core
+    mode: '0700'
+
+- name: Ensure Prowlarr Quadlet is defined
+  containers.podman.podman_container:
+    name: prowlarr
+    state: quadlet
+    image: lscr.io/linuxserver/prowlarr:latest
+    label:
+      io.containers.autoupdate: registry
+    memory: 1G
+    pids_limit: '256'
+    cpus: '1'
+    env:
+      TZ: Europe/Tallinn
+    userns: keep-id:uid=1000,gid=1000
+    read_only: true
+    security_opt:
+      - no-new-privileges
+    mount:
+      - type=tmpfs,destination=/run,U=true,exec
+    volume:
+      - /mnt/fast/prowlarr/config:/config:Z
+    network:
+      - proxy.network
+    healthcheck: curl -fsS http://127.0.0.1:9696/ >/dev/null || exit 1
+    quadlet_options:
+      - |
+        [Install]
+        WantedBy=default.target
+    user: 1000:1000
+    restart_policy: always
+  notify: Restart Prowlarr service

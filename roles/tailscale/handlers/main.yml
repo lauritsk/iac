@@ -1,0 +1,7 @@
+---
+- name: Restart Tailscale service
+  ansible.builtin.systemd_service:
+    name: tailscale.service
+    scope: user
+    daemon_reload: true
+    state: restarted

@@ -1,0 +1,7 @@
+---
+- name: Restart Recyclarr service
+  ansible.builtin.systemd_service:
+    name: recyclarr.service
+    scope: user
+    daemon_reload: true
+    state: restarted

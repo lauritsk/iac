@@ -1,0 +1,59 @@
+---
+- name: Ensure Recyclarr directory exists
+  ansible.builtin.file:
+    path: /mnt/fast/recyclarr/config
+    state: directory
+    owner: core
+    group: core
+    mode: '0700'
+
+- name: Ensure Recyclarr API key secret is present
+  containers.podman.podman_secret:
+    name: recyclarr_api_keys
+    data: '{{ recyclarr_api_keys }}'
+    state: present
+  no_log: true
+  notify: Restart Recyclarr service
+
+- name: Ensure Recyclarr configuration is deployed
+  ansible.builtin.copy:
+    src: recyclarr.yml
+    dest: /mnt/fast/recyclarr/config/recyclarr.yml
+    owner: core
+    group: core
+    mode: '0600'
+  notify: Restart Recyclarr service
+
+- name: Ensure Recyclarr Quadlet is defined
+  containers.podman.podman_container:
+    name: recyclarr
+    state: quadlet
+    image: ghcr.io/recyclarr/recyclarr:latest
+    label:
+      io.containers.autoupdate: registry
+    memory: 512M
+    pids_limit: '256'
+    cpus: '1'
+    env:
+      TZ: Europe/Tallinn
+      CRON_SCHEDULE: 0 4 * * *
+    secrets:
+      - recyclarr_api_keys,target=/config/secrets.yml,uid=1000,gid=1000,mode=0400
+    userns: keep-id:uid=1000,gid=1000
+    read_only: true
+    security_opt:
+      - no-new-privileges
+    mount:
+      - type=tmpfs,destination=/tmp,U=true
+    volume:
+      - /mnt/fast/recyclarr/config:/config:Z
+    network:
+      - proxy.network
+    healthcheck: pidof supercronic >/dev/null && recyclarr --version >/dev/null || exit 1
+    quadlet_options:
+      - |
+        [Install]
+        WantedBy=default.target
+    user: 1000:1000
+    restart_policy: always
+  notify: Restart Recyclarr service

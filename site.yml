@@ -1,134 +1,18 @@
 ---
 - name: Ensure homelab is configured
   hosts: hl01
-  tasks:
-    - name: Ensure application and configuration directories exist
-      ansible.builtin.file:
-        path: "{{ item }}"
-        state: directory
-        owner: core
-        group: core
-        mode: "0700"
-      loop:
-        - /home/core/.config/containers
-        - /home/core/.config/containers/systemd
-        - /mnt/fast/tailscale/config
-        - /mnt/fast/tailscale/data
-        - /mnt/fast/bichon/data
-        - /mnt/fast/immich/postgres
-        - /mnt/fast/immich/model-cache
-        - /mnt/fast/immich/library
-        - /mnt/fast/jellyfin/config
-        - /mnt/fast/jellyfin/cache
-        - /mnt/fast/prowlarr/config
-        - /mnt/fast/radarr/config
-        - /mnt/fast/sonarr/config
-        - /mnt/fast/transmission/config
-        - /mnt/fast/recyclarr/config
-        - /mnt/fast/beszel/data
-        - /mnt/fast/beszel/socket
-        - /mnt/fast/beszel-agent/data
-        - /mnt/fast/uptime-kuma/data
-        - /mnt/fast/zerobyte/data
-
-    - name: Authenticate with container registries
-      containers.podman.podman_login:
-        registry: "{{ item.registry }}"
-        username: "{{ item.username }}"
-        password: "{{ item.password }}"
-        authfile: /home/core/.config/containers/auth.json
-      loop: "{{ vault_registry_credentials }}"
-      loop_control:
-        label: "{{ item.registry }}"
-      no_log: true
-
-    - name: Ensure Podman secrets are created
-      containers.podman.podman_secret:
-        name: "{{ item.name }}"
-        data: "{{ item.data }}"
-        state: present
-      loop:
-        - { name: tailscale_oauth_secret, data: "{{ vault_tailscale_oauth_secret }}", service: tailscale.service }
-        - { name: bichon_encrypt_password, data: "{{ vault_bichon_encrypt_password }}", service: bichon.service }
-        - { name: immich_db_password, data: "{{ vault_immich_db_password }}", service: immich-postgres.service }
-        - { name: transmission_password, data: "{{ vault_transmission_password }}", service: transmission.service }
-        - { name: recyclarr_api_keys, data: "{{ vault_recyclarr_api_keys }}", service: recyclarr.service }
-        - { name: beszel_agent_token, data: "{{ vault_beszel_agent_token }}", service: beszel-agent.service }
-        - { name: beszel_agent_key, data: "{{ vault_beszel_agent_key }}", service: beszel-agent.service }
-        - { name: zerobyte_app_secret, data: "{{ vault_zerobyte_app_secret }}", service: zerobyte.service }
-      register: podman_secrets
-      notify: Restart secret-dependent services
-
-    - name: Deploy application config files
-      ansible.builtin.copy:
-        src: "{{ item.src }}"
-        dest: "{{ item.dest }}"
-        owner: core
-        group: core
-        mode: "0600"
-      loop:
-        - { src: serve.json, dest: /mnt/fast/tailscale/config/serve.json, service: tailscale.service }
-        - { src: recyclarr.yml, dest: /mnt/fast/recyclarr/config/recyclarr.yml, service: recyclarr.service }
-      register: config_files
-      notify: Restart config-dependent services
-
-    - name: Deploy Quadlet spec files
-      ansible.builtin.copy:
-        src: "{{ item.src }}"
-        dest: "/home/core/.config/containers/systemd/{{ item.src }}"
-        owner: core
-        group: core
-        mode: "0644"
-      loop:
-        - { src: proxy.network, service: proxy-network.service }
-        - { src: tailscale.container, service: tailscale.service }
-        - { src: bichon.container, service: bichon.service }
-        - { src: immich.pod, service: immich-pod.service }
-        - { src: immich-postgres.container, service: immich-postgres.service }
-        - { src: immich-valkey.container, service: immich-valkey.service }
-        - { src: immich-machine-learning.container, service: immich-machine-learning.service }
-        - { src: immich-server.container, service: immich-server.service }
-        - { src: jellyfin.container, service: jellyfin.service }
-        - { src: prowlarr.container, service: prowlarr.service }
-        - { src: radarr.container, service: radarr.service }
-        - { src: sonarr.container, service: sonarr.service }
-        - { src: transmission.container, service: transmission.service }
-        - { src: recyclarr.container, service: recyclarr.service }
-        - { src: beszel.container, service: beszel.service }
-        - { src: beszel-agent.container, service: beszel-agent.service }
-        - { src: uptime-kuma.container, service: uptime-kuma.service }
-        - { src: zerobyte.container, service: zerobyte.service }
-      register: quadlet_files
-      notify:
-        - Reload systemd user daemon
-        - Restart quadlet services
-
-  handlers:
-    - name: Reload systemd user daemon
-      ansible.builtin.systemd_service:
-        daemon_reload: true
-        scope: user
-
-    - name: Restart quadlet services
-      ansible.builtin.systemd_service:
-        name: "{{ item.item.service }}"
-        state: restarted
-        scope: user
-      loop: "{{ quadlet_files.results }}"
-      when: item.changed and item.item.service is defined
-
-    - name: Restart config-dependent services
-      ansible.builtin.systemd_service:
-        name: "{{ item.item.service }}"
-        state: restarted
-        scope: user
-      loop: "{{ config_files.results }}"
-      when: item.changed and item.item.service is defined
-
-    - name: Restart secret-dependent services
-      ansible.builtin.systemd_service:
-        name: "{{ item.item.service }}"
-        state: restarted
-        scope: user
-      loop: "{{ podman_secrets.results }}"
-      when: item.changed and item.item.service is defined
+  roles:
+    - role: common
+    - role: tailscale
+    - role: bichon
+    - role: immich
+    - role: jellyfin
+    - role: prowlarr
+    - role: radarr
+    - role: sonarr
+    - role: transmission
+    - role: recyclarr
+    - role: beszel
+    - role: beszel_agent
+    - role: uptime_kuma
+    - role: zerobyte

@@ -1,0 +1,48 @@
+---
+- name: Ensure Bichon directory exists
+  ansible.builtin.file:
+    path: /mnt/fast/bichon/data
+    state: directory
+    owner: core
+    group: core
+    mode: '0700'
+
+- name: Ensure Bichon encryption secret is present
+  containers.podman.podman_secret:
+    name: bichon_encrypt_password
+    data: '{{ bichon_encrypt_password }}'
+    state: present
+  no_log: true
+  notify: Restart Bichon service
+
+- name: Ensure Bichon Quadlet is defined
+  containers.podman.podman_container:
+    name: bichon
+    state: quadlet
+    image: docker.io/rustmailer/bichon:latest
+    label:
+      io.containers.autoupdate: registry
+    memory: 512M
+    pids_limit: '256'
+    cpus: '1'
+    env:
+      BICHON_ROOT_DIR: /data
+      BICHON_LOG_LEVEL: info
+    secrets:
+      - bichon_encrypt_password,type=env,target=BICHON_ENCRYPT_PASSWORD
+    userns: keep-id:uid=1000,gid=1000
+    read_only: true
+    security_opt:
+      - no-new-privileges
+    volume:
+      - /mnt/fast/bichon/data:/data:Z
+    network:
+      - proxy.network
+    healthcheck: curl -fsS http://127.0.0.1:15630/api/status >/dev/null || exit 1
+    quadlet_options:
+      - |
+        [Install]
+        WantedBy=default.target
+    user: 1000:1000
+    restart_policy: always
+  notify: Restart Bichon service

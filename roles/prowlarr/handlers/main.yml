@@ -1,0 +1,7 @@
+---
+- name: Restart Prowlarr service
+  ansible.builtin.systemd_service:
+    name: prowlarr.service
+    scope: user
+    daemon_reload: true
+    state: restarted

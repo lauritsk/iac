@@ -1,0 +1,7 @@
+---
+- name: Restart Transmission service
+  ansible.builtin.systemd_service:
+    name: transmission.service
+    scope: user
+    daemon_reload: true
+    state: restarted

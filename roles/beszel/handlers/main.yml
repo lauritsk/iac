@@ -1,0 +1,7 @@
+---
+- name: Restart Beszel service
+  ansible.builtin.systemd_service:
+    name: beszel.service
+    scope: user
+    daemon_reload: true
+    state: restarted
