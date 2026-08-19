@@ -3,7 +3,8 @@ Description=Jellyfin Container
 
 [Container]
 ContainerName=jellyfin
-Image=ghcr.io/jellyfin/jellyfin:10.11.11@sha256:45f648c382a0c8b552582fcea40e95cb17c5d475473a891cba0eb7523fb92112
+Image=ghcr.io/jellyfin/jellyfin:latest
+AutoUpdate=registry
 Memory=4G
 PidsLimit=512
 PodmanArgs=--cpus=4

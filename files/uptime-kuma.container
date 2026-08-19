@@ -5,7 +5,8 @@ After=podman.socket
 
 [Container]
 ContainerName=uptime-kuma
-Image=ghcr.io/louislam/uptime-kuma:2.5.0-slim-rootless@sha256:37894805e7df2211dc2c69374034849c9a73efd8dd55469953261cafda091bc4
+Image=ghcr.io/louislam/uptime-kuma:2-slim-rootless
+AutoUpdate=registry
 Memory=1G
 PidsLimit=256
 PodmanArgs=--cpus=1

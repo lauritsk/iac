@@ -5,7 +5,8 @@ After=radarr.service sonarr.service
 
 [Container]
 ContainerName=recyclarr
-Image=ghcr.io/recyclarr/recyclarr:8.7.1@sha256:73303ba5ee647b6492fee917d3a781c6e59b6cab08f9dfce9482a950846f564f
+Image=ghcr.io/recyclarr/recyclarr:latest
+AutoUpdate=registry
 Memory=512M
 PidsLimit=256
 PodmanArgs=--cpus=1

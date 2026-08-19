@@ -3,7 +3,8 @@ Description=Transmission Container
 
 [Container]
 ContainerName=transmission
-Image=lscr.io/linuxserver/transmission:version-4.1.3-r0@sha256:81787bc706d3833d252e6d8b94545fea46bf2156f616320991a395619a477d2c
+Image=lscr.io/linuxserver/transmission:latest
+AutoUpdate=registry
 Memory=1G
 PidsLimit=256
 PodmanArgs=--cpus=2

@@ -4,7 +4,8 @@ Description=Zerobyte Container
 [Container]
 ContainerName=zerobyte
 HostName=homelab
-Image=ghcr.io/nicotsx/zerobyte:v0.41.0@sha256:ace36f331f43429e5f9bf108fdffe6c23e0e64a59376ead5d36c8aca893c507d
+Image=ghcr.io/nicotsx/zerobyte:latest
+AutoUpdate=registry
 Memory=2G
 PidsLimit=512
 PodmanArgs=--cpus=2
