@@ -1,7 +1,7 @@
 [Unit]
 Description=Transmission Container
-RequiresMountsFor=/mnt/media
-ConditionPathIsMountPoint=/mnt/media
+RequiresMountsFor=/mnt/slow
+ConditionPathIsMountPoint=/mnt/slow
 
 [Container]
 ContainerName=transmission
@@ -23,7 +23,7 @@ NoNewPrivileges=true
 
 Mount=type=tmpfs,destination=/run,U=true,exec
 Volume=transmission.volume:/config:Z,U
-Volume=/mnt/media:/data:z
+Volume=/mnt/slow:/data:z
 
 Network=proxy.network
 

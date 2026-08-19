@@ -12,6 +12,9 @@ PodmanArgs=--cpus=1
 
 Environment=APP_URL=https://beszel.cormo-tegu.ts.net
 
+User=1000
+Group=1000
+UserNS=keep-id:uid=1000,gid=1000
 ReadOnly=true
 NoNewPrivileges=true
 
@@ -22,9 +25,6 @@ Network=proxy.network
 PublishPort=127.0.0.1:8090:8090
 
 HealthCmd=/beszel health --url http://localhost:8090
-HealthInterval=120s
-HealthStartPeriod=10s
-HealthTimeout=5s
 
 [Service]
 Restart=always

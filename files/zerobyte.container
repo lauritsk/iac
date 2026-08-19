@@ -2,8 +2,8 @@
 Description=Zerobyte Container
 After=network-online.target
 Wants=network-online.target
-RequiresMountsFor=/mnt/media
-ConditionPathIsMountPoint=/mnt/media
+RequiresMountsFor=/mnt/slow
+ConditionPathIsMountPoint=/mnt/slow
 
 [Container]
 ContainerName=zerobyte
@@ -18,11 +18,15 @@ Environment=BASE_URL=https://zerobyte.cormo-tegu.ts.net
 Environment=APP_SECRET_FILE=/run/secrets/zerobyte_app_secret
 Secret=zerobyte_app_secret,type=mount,target=/run/secrets/zerobyte_app_secret,mode=0400
 
+User=1000
+Group=1000
+UserNS=keep-id:uid=1000,gid=1000
+ReadOnly=True
 NoNewPrivileges=true
 SecurityLabelDisable=true
 
 Volume=zerobyte.volume:/var/lib/zerobyte:Z,U
-Volume=/mnt/media:/mnt/source/media:ro
+Volume=/mnt/slow:/mnt/source/slow:ro
 Volume=tailscale.volume:/mnt/source/tailscale:ro
 Volume=uptime-kuma.volume:/mnt/source/uptime-kuma:ro
 Volume=bichon.volume:/mnt/source/bichon:ro
