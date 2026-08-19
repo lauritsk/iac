@@ -3,7 +3,8 @@ Description=Sonarr Container
 
 [Container]
 ContainerName=sonarr
-Image=lscr.io/linuxserver/sonarr:version-4.0.19.2979@sha256:373159ba768e23a3a1c497d9f2b936addf8fd5b1fdce7dd6a14080ac928bfda0
+Image=lscr.io/linuxserver/sonarr:latest
+AutoUpdate=registry
 Memory=1G
 PidsLimit=256
 PodmanArgs=--cpus=2

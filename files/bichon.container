@@ -3,7 +3,8 @@ Description=Bichon Container
 
 [Container]
 ContainerName=bichon
-Image=docker.io/rustmailer/bichon:2.0.1@sha256:d73d5549cd8661733b09f9ffa164eb2e6f90a6849f0480974e9ee2d9375104dc
+Image=docker.io/rustmailer/bichon:latest
+AutoUpdate=registry
 Memory=512M
 PidsLimit=256
 PodmanArgs=--cpus=1

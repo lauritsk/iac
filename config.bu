@@ -31,6 +31,8 @@ storage:
         inline: |
           net.ipv4.ip_forward = 1
           net.ipv6.conf.all.forwarding = 1
+    - path: /var/lib/systemd/linger/core
+      mode: 0644
   links:
     - path: /etc/extensions/docker-flatcar.raw
       target: /dev/null
@@ -43,6 +45,12 @@ storage:
       overwrite: true
     - target: /opt/extensions/tailscale/tailscale-v1.102.2-x86-64.raw
       path: /etc/extensions/tailscale.raw
+      hard: false
+    - path: /etc/systemd/user/sockets.target.wants/podman.socket
+      target: /usr/lib/systemd/user/podman.socket
+      hard: false
+    - path: /etc/systemd/user/timers.target.wants/podman-auto-update.timer
+      target: /usr/lib/systemd/user/podman-auto-update.timer
       hard: false
 
 systemd:
