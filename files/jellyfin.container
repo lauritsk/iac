@@ -1,7 +1,7 @@
 [Unit]
 Description=Jellyfin
-RequiresMountsFor=/mnt/media
-ConditionPathIsMountPoint=/mnt/media
+RequiresMountsFor=/mnt/slow
+ConditionPathIsMountPoint=/mnt/slow
 
 [Container]
 ContainerName=jellyfin
@@ -19,7 +19,7 @@ NoNewPrivileges=true
 
 Volume=jellyfin-config.volume:/config:Z,U
 Volume=jellyfin-cache.volume:/cache:Z,U
-Volume=/mnt/media:/media:z
+Volume=/mnt/slow:/media:z
 
 Network=proxy.network
 

@@ -1,7 +1,7 @@
 [Unit]
 Description=Sonarr Container
-RequiresMountsFor=/mnt/media
-ConditionPathIsMountPoint=/mnt/media
+RequiresMountsFor=/mnt/slow
+ConditionPathIsMountPoint=/mnt/slow
 
 [Container]
 ContainerName=sonarr
@@ -20,7 +20,7 @@ NoNewPrivileges=true
 
 Mount=type=tmpfs,destination=/run,U=true,exec
 Volume=sonarr.volume:/config:Z,U
-Volume=/mnt/media:/data:z
+Volume=/mnt/slow:/data:z
 
 Network=proxy.network
 

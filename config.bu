@@ -31,14 +31,6 @@ storage:
         inline: |
           net.ipv4.ip_forward = 1
           net.ipv6.conf.all.forwarding = 1
-    - path: /etc/tmpfiles.d/media.conf
-      mode: 0644
-      contents:
-        inline: |
-          d /mnt/media           0775 core core -
-          d /mnt/media/downloads 0775 core core -
-          d /mnt/media/movies    0775 core core -
-          d /mnt/media/shows     0775 core core -
   links:
     - path: /etc/extensions/docker-flatcar.raw
       target: /dev/null
@@ -55,17 +47,29 @@ storage:
 
 systemd:
   units:
-    - name: mnt-media.mount
+    - name: mnt-slow.mount
       enabled: true
       contents: |
         [Unit]
-        Description=External media filesystem
+        Description=External HDD filesystem
 
         [Mount]
-        What=/dev/disk/by-uuid/REPLACE_WITH_MEDIA_FILESYSTEM_UUID
-        Where=/mnt/media
-        Options=rw,noatime,nodev,nosuid
-        DirectoryMode=0755
+        What=incus_slow
+        Where=/mnt/slow
+        Type=virtiofs
+
+        [Install]
+        WantedBy=local-fs.target
+    - name: mnt-fast.mount
+      enabled: true
+      contents: |
+        [Unit]
+        Description=External SSD filesystem
+
+        [Mount]
+        What=incus_fast
+        Where=/mnt/fast
+        Type=virtiofs
 
         [Install]
         WantedBy=local-fs.target

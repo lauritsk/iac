@@ -15,6 +15,9 @@ Environment=HUB_URL=http://localhost:8090
 Secret=beszel_agent_token,type=env,target=TOKEN
 Secret=beszel_agent_key,type=env,target=KEY
 
+User=1000
+Group=1000
+UserNS=keep-id:uid=1000,gid=1000
 NoNewPrivileges=true
 SecurityLabelDisable=true
 
@@ -25,7 +28,6 @@ Volume=%t/podman/podman.sock:/var/run/docker.sock:ro
 Network=host
 
 HealthCmd=/agent health
-HealthInterval=120s
 
 [Service]
 Restart=always
