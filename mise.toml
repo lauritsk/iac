@@ -23,13 +23,13 @@ run = "butane --strict --check --files-dir . config.bu"
 [tasks."validate:ansible"]
 description = "Validate the Ansible playbook"
 run = [
-  "ansible-playbook --syntax-check site.yml",
-  "ansible-playbook --list-tasks site.yml >/dev/null",
+  "ansible-playbook --ask-vault-pass --syntax-check site.yml",
+  "ansible-playbook --ask-vault-pass --list-tasks site.yml >/dev/null",
 ]
 
 [tasks.lint]
 description = "Lint Ansible files"
-run = "ansible-lint site.yml"
+run = "ANSIBLE_ASK_VAULT_PASS=true ansible-lint site.yml"
 
 [tasks.validate]
 description = "Run all local validation"
@@ -37,9 +37,9 @@ depends = ["validate:json", "validate:ignition", "validate:ansible", "lint"]
 
 [tasks."deploy:check"]
 description = "Preview the deployment"
-run = "ansible-playbook --check --diff site.yml"
+run = "ansible-playbook --ask-vault-pass --check --diff site.yml"
 
 [tasks.deploy]
 description = "Deploy the Ansible playbook"
 confirm = "Deploy to the homelab?"
-run = "ansible-playbook site.yml"
+run = "ansible-playbook --ask-vault-pass site.yml"
