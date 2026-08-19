@@ -1,6 +1,3 @@
-[Unit]
-Description=Sonarr Container
-
 [Container]
 ContainerName=sonarr
 Image=lscr.io/linuxserver/sonarr:latest

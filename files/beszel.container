@@ -1,6 +1,3 @@
-[Unit]
-Description=Beszel Container
-
 [Container]
 ContainerName=beszel
 Image=docker.io/henrygd/beszel:latest

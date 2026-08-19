@@ -1,5 +1,2 @@
-[Unit]
-Description=Proxy Network
-
 [Network]
 NetworkName=proxy
