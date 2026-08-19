@@ -1,7 +1,7 @@
 [Container]
 ContainerName=prowlarr
 Image=lscr.io/linuxserver/prowlarr:latest
-AutoUpdate=registry
+Label=io.containers.autoupdate=registry
 Memory=1G
 PidsLimit=256
 PodmanArgs=--cpus=1

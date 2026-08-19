@@ -1,7 +1,7 @@
 [Container]
 ContainerName=uptime-kuma
 Image=dhi.io/uptime-kuma:2
-AutoUpdate=registry
+Label=io.containers.autoupdate=registry
 Memory=1G
 PidsLimit=256
 PodmanArgs=--cpus=1

@@ -2,7 +2,7 @@
 Pod=immich.pod
 ContainerName=immich-valkey
 Image=docker.io/valkey/valkey:9
-AutoUpdate=registry
+Label=io.containers.autoupdate=registry
 Memory=512M
 PidsLimit=256
 PodmanArgs=--cpus=1

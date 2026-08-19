@@ -2,7 +2,7 @@
 ContainerName=zerobyte
 HostName=homelab
 Image=ghcr.io/nicotsx/zerobyte:latest
-AutoUpdate=registry
+Label=io.containers.autoupdate=registry
 Memory=2G
 PidsLimit=512
 PodmanArgs=--cpus=2
