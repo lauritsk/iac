@@ -2,7 +2,7 @@
 - name: Ensure homelab is configured
   hosts: hl01
   tasks:
-    - name: Ensure application storage directories exist
+    - name: Ensure application and configuration directories exist
       ansible.builtin.file:
         path: "{{ item }}"
         state: directory
@@ -10,6 +10,8 @@
         group: core
         mode: "0700"
       loop:
+        - /home/core/.config/containers
+        - /home/core/.config/containers/systemd
         - /mnt/fast/tailscale/config
         - /mnt/fast/tailscale/data
         - /mnt/fast/bichon/data
@@ -29,13 +31,16 @@
         - /mnt/fast/uptime-kuma/data
         - /mnt/fast/zerobyte/data
 
-    - name: Ensure Quadlet directory exists
-      ansible.builtin.file:
-        path: /home/core/.config/containers/systemd
-        state: directory
-        owner: core
-        group: core
-        mode: "0700"
+    - name: Authenticate with container registries
+      containers.podman.podman_login:
+        registry: "{{ item.registry }}"
+        username: "{{ item.username }}"
+        password: "{{ item.password }}"
+        authfile: /home/core/.config/containers/auth.json
+      loop: "{{ vault_registry_credentials }}"
+      loop_control:
+        label: "{{ item.registry }}"
+      no_log: true
 
     - name: Ensure Podman secrets are created
       containers.podman.podman_secret:

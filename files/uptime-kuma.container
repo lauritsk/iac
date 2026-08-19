@@ -1,7 +1,5 @@
 [Unit]
 Description=Uptime Kuma Container
-Requires=podman.socket
-After=podman.socket
 
 [Container]
 ContainerName=uptime-kuma
