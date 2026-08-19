@@ -1,7 +1,5 @@
 [Unit]
 Description=Beszel Agent Container
-Requires=beszel.service podman.socket
-After=beszel.service podman.socket
 
 [Container]
 ContainerName=beszel-agent

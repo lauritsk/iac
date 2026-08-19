@@ -1,7 +1,5 @@
 [Unit]
 Description=Recyclarr Container
-Wants=radarr.service sonarr.service
-After=radarr.service sonarr.service
 
 [Container]
 ContainerName=recyclarr
