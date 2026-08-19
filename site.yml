@@ -1,62 +1,6 @@
 ---
 - name: Ensure homelab is configured
   hosts: hl01
-  vars:
-    vault_beszel_agent_token: <token>
-    vault_beszel_agent_key: <key>
-    vault_zerobyte_app_secret: !vault |
-      $ANSIBLE_VAULT;1.1;AES256
-      39363535373135333239623835383461383330373336393832626232323137346239363135623961
-      3334386166666333313332396334616538326134393631380a626438353932313766663766626563
-      64626266303433356439386465626562663165316235323662373263326135366135366631343432
-      3132353538333861370a343234353264323931613134373964306639656233393063363461613566
-      34346139626666333638393165653263363335646333323362393130613938653961326365656339
-      34643062623936623430323435353537663833383935353530343465383336306330326264626232
-      35356430646162633866653661643730666536303465663531356638383132316266623733316562
-      64373430393163353734
-    vault_bichon_encrypt_password: !vault |
-      $ANSIBLE_VAULT;1.1;AES256
-      34393833313063646137306135386665663639363237323466363362343636666163316336636163
-      6133643266336266353264663261663235666536366165620a383139326432333765653561633161
-      31383037363631616334666133333663636336323165636331666162653333373633653634643562
-      6364386265326237660a326537633937383839656536653133383261376131653234333666343635
-      31343261346332346630646663396337346232303936306234353134306431306432
-    vault_immich_db_password: !vault |
-      $ANSIBLE_VAULT;1.1;AES256
-      66383933336264353634393165643263343036613131646663633337313038626466333562646664
-      6136333166393434323964303965633636663361313766610a616234356466386565613837656332
-      63373834636166653037393639663265633664376531396139303839643264373237626161623437
-      3436343239626433390a383130383330623462383862353763363166333837303033313466363931
-      61643838656266626330393738303963616462636534643762623065353464356532313339623133
-      6131666461336465343461663665313235626237393338666332
-    vault_transmission_password: !vault |
-      $ANSIBLE_VAULT;1.1;AES256
-      39356463393937623064653933623833326136396266393630663462336236313033396361316537
-      3438313466336437363466313665623863326336653266340a643232643239663562373964643566
-      33383366616634626332633062613563343937373165333337613234303731663730333063383562
-      3763323834623636320a663266323265636162663961613833396134623832623838373938303634
-      37353537663563646238353438303962393331336165373266343562623738353934
-    vault_recyclarr_api_keys: !vault |
-      $ANSIBLE_VAULT;1.1;AES256
-      39313730353035343261333437353538353437306261343636666263373936613537303065623639
-      3565356165363333323565666230306337393238343531330a353233386561363334626239333963
-      37363331613132373939616266303036303962383032383834313137393030633833633465386562
-      6638646237386264300a626534336435363139316665323332336533363035393165383263626438
-      33323537363561363862353236313133393236623062636262656232643862666566303066343634
-      36363463343064626361633430633631343263616632633336626264646236346532306538376162
-      62323131613731323734663665383062363663343466363964366632376565376166306634323738
-      64613435633335363938633261333630303165633035376465633863663932303366373934363865
-      63653466653761633766383561323331323861313730323761626639383438313836
-    vault_tailscale_oauth_secret: !vault |
-      $ANSIBLE_VAULT;1.1;AES256
-      32613830616464656661303864646461313966353935653737643334363230666462663963343737
-      3162366336653033333235613736643437643038656539650a326332356131306533313433636233
-      65353936623466663439613636353662383432396638376638363861353664636463663264366664
-      6663306332666338320a623865386534636163373032636139306137376235663130366363623832
-      61363533343966353962333732613734336265633232343632393434323163623437346639383062
-      31623834383464353434336433303139326632303064616162636533633636393939383230623833
-      656463323263313139373063336261303634
-
   tasks:
     - name: Ensure application storage directories exist
       ansible.builtin.file:
@@ -66,22 +10,22 @@
         group: core
         mode: "0700"
       loop:
-        - /mnt/fast/beszel-agent/data
-        - /mnt/fast/beszel/data
-        - /mnt/fast/beszel/socket
-        - /mnt/fast/bichon/data
-        - /mnt/fast/immich/library
-        - /mnt/fast/immich/model-cache
-        - /mnt/fast/immich/postgres
-        - /mnt/fast/jellyfin/cache
-        - /mnt/fast/jellyfin/config
-        - /mnt/fast/prowlarr/config
-        - /mnt/fast/radarr/config
-        - /mnt/fast/recyclarr/config
-        - /mnt/fast/sonarr/config
         - /mnt/fast/tailscale/config
         - /mnt/fast/tailscale/data
+        - /mnt/fast/bichon/data
+        - /mnt/fast/immich/postgres
+        - /mnt/fast/immich/model-cache
+        - /mnt/fast/immich/library
+        - /mnt/fast/jellyfin/config
+        - /mnt/fast/jellyfin/cache
+        - /mnt/fast/prowlarr/config
+        - /mnt/fast/radarr/config
+        - /mnt/fast/sonarr/config
         - /mnt/fast/transmission/config
+        - /mnt/fast/recyclarr/config
+        - /mnt/fast/beszel/data
+        - /mnt/fast/beszel/socket
+        - /mnt/fast/beszel-agent/data
         - /mnt/fast/uptime-kuma/data
         - /mnt/fast/zerobyte/data
 
@@ -99,14 +43,14 @@
         data: "{{ item.data }}"
         state: present
       loop:
+        - { name: tailscale_oauth_secret, data: "{{ vault_tailscale_oauth_secret }}", service: tailscale.service }
+        - { name: bichon_encrypt_password, data: "{{ vault_bichon_encrypt_password }}", service: bichon.service }
+        - { name: immich_db_password, data: "{{ vault_immich_db_password }}", service: immich-postgres.service }
+        - { name: transmission_password, data: "{{ vault_transmission_password }}", service: transmission.service }
+        - { name: recyclarr_api_keys, data: "{{ vault_recyclarr_api_keys }}", service: recyclarr.service }
         - { name: beszel_agent_token, data: "{{ vault_beszel_agent_token }}", service: beszel-agent.service }
         - { name: beszel_agent_key, data: "{{ vault_beszel_agent_key }}", service: beszel-agent.service }
         - { name: zerobyte_app_secret, data: "{{ vault_zerobyte_app_secret }}", service: zerobyte.service }
-        - { name: bichon_encrypt_password, data: "{{ vault_bichon_encrypt_password }}", service: bichon.service }
-        - { name: immich_db_password, data: "{{ vault_immich_db_password }}", service: immich-postgres.service }
-        - { name: tailscale_oauth_secret, data: "{{ vault_tailscale_oauth_secret }}", service: tailscale.service }
-        - { name: transmission_password, data: "{{ vault_transmission_password }}", service: transmission.service }
-        - { name: recyclarr_api_keys, data: "{{ vault_recyclarr_api_keys }}", service: recyclarr.service }
       register: podman_secrets
       notify: Restart secret-dependent services
 
@@ -132,21 +76,21 @@
         mode: "0644"
       loop:
         - { src: proxy.network, service: proxy-network.service }
-        - { src: immich.pod, service: immich-pod.service }
-        - { src: beszel.container, service: beszel.service }
-        - { src: beszel-agent.container, service: beszel-agent.service }
+        - { src: tailscale.container, service: tailscale.service }
         - { src: bichon.container, service: bichon.service }
-        - { src: immich-machine-learning.container, service: immich-machine-learning.service }
+        - { src: immich.pod, service: immich-pod.service }
         - { src: immich-postgres.container, service: immich-postgres.service }
         - { src: immich-valkey.container, service: immich-valkey.service }
+        - { src: immich-machine-learning.container, service: immich-machine-learning.service }
         - { src: immich-server.container, service: immich-server.service }
         - { src: jellyfin.container, service: jellyfin.service }
         - { src: prowlarr.container, service: prowlarr.service }
         - { src: radarr.container, service: radarr.service }
         - { src: sonarr.container, service: sonarr.service }
-        - { src: recyclarr.container, service: recyclarr.service }
-        - { src: tailscale.container, service: tailscale.service }
         - { src: transmission.container, service: transmission.service }
+        - { src: recyclarr.container, service: recyclarr.service }
+        - { src: beszel.container, service: beszel.service }
+        - { src: beszel-agent.container, service: beszel-agent.service }
         - { src: uptime-kuma.container, service: uptime-kuma.service }
         - { src: zerobyte.container, service: zerobyte.service }
       register: quadlet_files
