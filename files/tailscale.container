@@ -3,7 +3,7 @@ Description=Tailscale Container
 
 [Container]
 ContainerName=tailscale
-Image=docker.io/tailscale/tailscale:stable
+Image=dhi.io/tailscale:1
 AutoUpdate=registry
 Memory=512M
 PidsLimit=256
