@@ -14,7 +14,7 @@ run = "butane --strict --pretty --files-dir . --output config.ign config.bu"
 
 [tasks."validate:json"]
 description = "Validate JSON files"
-run = "python3 -m json.tool files/serve.json >/dev/null"
+run = "python3 -m json.tool roles/tailscale/files/serve.json >/dev/null"
 
 [tasks."validate:ignition"]
 description = "Validate the Butane configuration"
