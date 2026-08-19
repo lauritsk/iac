@@ -1,0 +1,44 @@
+---
+- name: Ensure Jellyfin directories exist
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: directory
+    owner: core
+    group: core
+    mode: '0700'
+  loop:
+    - /mnt/fast/jellyfin/config
+    - /mnt/fast/jellyfin/cache
+
+- name: Ensure Jellyfin Quadlet is defined
+  containers.podman.podman_container:
+    name: jellyfin
+    state: quadlet
+    image: ghcr.io/jellyfin/jellyfin:latest
+    label:
+      io.containers.autoupdate: registry
+    memory: 4G
+    pids_limit: '512'
+    cpus: '4'
+    userns: keep-id:uid=1000,gid=1000
+    group_add:
+      - keep-groups
+    read_only: true
+    security_opt:
+      - no-new-privileges
+    volume:
+      - /mnt/fast/jellyfin/config:/config:Z
+      - /mnt/fast/jellyfin/cache:/cache:Z
+      - /mnt/slow:/media:z
+    network:
+      - proxy.network
+    device:
+      - /dev/dri/:/dev/dri/
+    healthcheck: curl --noproxy localhost -Lk -fsS http://127.0.0.1:8096/health || exit 1
+    quadlet_options:
+      - |
+        [Install]
+        WantedBy=default.target
+    user: 1000:1000
+    restart_policy: always
+  notify: Restart Jellyfin service

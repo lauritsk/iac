@@ -1,0 +1,58 @@
+---
+- name: Ensure Beszel Agent directory exists
+  ansible.builtin.file:
+    path: /mnt/fast/beszel-agent/data
+    state: directory
+    owner: core
+    group: core
+    mode: '0700'
+
+- name: Ensure Beszel Agent secrets are present
+  containers.podman.podman_secret:
+    name: '{{ item.name }}'
+    data: '{{ item.data }}'
+    state: present
+  loop:
+    - name: beszel_agent_token
+      data: '{{ beszel_agent_token }}'
+    - name: beszel_agent_key
+      data: '{{ beszel_agent_key }}'
+  loop_control:
+    label: '{{ item.name }}'
+  no_log: true
+  notify: Restart Beszel Agent service
+
+- name: Ensure Beszel Agent Quadlet is defined
+  containers.podman.podman_container:
+    name: beszel-agent
+    state: quadlet
+    image: docker.io/henrygd/beszel-agent:latest
+    label:
+      io.containers.autoupdate: registry
+    memory: 512M
+    pids_limit: '256'
+    cpus: '1'
+    env:
+      LISTEN: /beszel_socket/beszel.sock
+      HUB_URL: http://localhost:8090
+    secrets:
+      - beszel_agent_token,type=env,target=TOKEN
+      - beszel_agent_key,type=env,target=KEY
+    userns: keep-id:uid=1000,gid=1000
+    security_opt:
+      - no-new-privileges
+      - label=disable
+    volume:
+      - /mnt/fast/beszel-agent/data:/var/lib/beszel-agent:Z
+      - /mnt/fast/beszel/socket:/beszel_socket:z
+      - '%t/podman/podman.sock:/var/run/docker.sock:ro'
+    network:
+      - host
+    healthcheck: /agent health
+    quadlet_options:
+      - |
+        [Install]
+        WantedBy=default.target
+    user: 1000:1000
+    restart_policy: always
+  notify: Restart Beszel Agent service

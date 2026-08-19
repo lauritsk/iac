@@ -1,0 +1,7 @@
+---
+- name: Restart Bichon service
+  ansible.builtin.systemd_service:
+    name: bichon.service
+    scope: user
+    daemon_reload: true
+    state: restarted

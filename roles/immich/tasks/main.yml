@@ -1,0 +1,145 @@
+---
+- name: Ensure Immich directories exist
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: directory
+    owner: core
+    group: core
+    mode: '0700'
+  loop:
+    - /mnt/fast/immich/postgres
+    - /mnt/fast/immich/model-cache
+    - /mnt/fast/immich/library
+
+- name: Ensure Immich database password secret is present
+  containers.podman.podman_secret:
+    name: immich_db_password
+    data: '{{ immich_db_password }}'
+    state: present
+  no_log: true
+  notify: Restart Immich pod service
+
+- name: Ensure Immich pod Quadlet is defined
+  containers.podman.podman_pod:
+    name: immich
+    state: quadlet
+    userns: keep-id:uid=1000,gid=1000
+    network:
+      - proxy.network
+    quadlet_options:
+      - |
+        [Install]
+        WantedBy=default.target
+  notify: Restart Immich pod service
+
+- name: Ensure Immich PostgreSQL Quadlet is defined
+  containers.podman.podman_container:
+    name: immich-postgres
+    state: quadlet
+    image: ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
+    label:
+      io.containers.autoupdate: registry
+    pod: immich.pod
+    memory: 2G
+    pids_limit: '512'
+    cpus: '2'
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+      - CAP_NET_RAW
+    env:
+      POSTGRES_DB: immich
+      POSTGRES_USER: immich
+      POSTGRES_INITDB_ARGS: --data-checksums
+    secrets:
+      - immich_db_password,type=env,target=POSTGRES_PASSWORD
+    volume:
+      - /mnt/fast/immich/postgres:/var/lib/postgresql/data:Z
+    shm_size: 128m
+    healthcheck: pg_isready -U immich -d immich
+    user: 1000:1000
+    restart_policy: always
+  notify: Restart Immich pod service
+
+- name: Ensure Immich Valkey Quadlet is defined
+  containers.podman.podman_container:
+    name: immich-valkey
+    state: quadlet
+    image: docker.io/valkey/valkey:9
+    label:
+      io.containers.autoupdate: registry
+    pod: immich.pod
+    memory: 512M
+    pids_limit: '256'
+    cpus: '1'
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+      - CAP_NET_RAW
+    healthcheck: redis-cli ping || exit 1
+    user: 1000:1000
+    restart_policy: always
+  notify: Restart Immich pod service
+
+- name: Ensure Immich machine learning Quadlet is defined
+  containers.podman.podman_container:
+    name: immich-machine-learning
+    state: quadlet
+    image: ghcr.io/immich-app/immich-machine-learning:release-openvino
+    label:
+      io.containers.autoupdate: registry
+    pod: immich.pod
+    memory: 4G
+    pids_limit: '512'
+    cpus: '4'
+    group_add:
+      - keep-groups
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+      - CAP_NET_RAW
+    volume:
+      - /mnt/fast/immich/model-cache:/cache:Z
+    device:
+      - /dev/dri:/dev/dri
+    healthcheck: python3 -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:3003/', timeout=5)"
+    user: 1000:1000
+    restart_policy: always
+  notify: Restart Immich pod service
+
+- name: Ensure Immich server Quadlet is defined
+  containers.podman.podman_container:
+    name: immich-server
+    state: quadlet
+    image: ghcr.io/immich-app/immich-server:release
+    label:
+      io.containers.autoupdate: registry
+    pod: immich.pod
+    memory: 4G
+    pids_limit: '512'
+    cpus: '4'
+    group_add:
+      - keep-groups
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+      - CAP_NET_RAW
+    env:
+      DB_HOSTNAME: 127.0.0.1
+      DB_PORT: '5432'
+      DB_USERNAME: immich
+      DB_DATABASE_NAME: immich
+      REDIS_HOSTNAME: 127.0.0.1
+      REDIS_PORT: '6379'
+      IMMICH_MACHINE_LEARNING_URL: http://127.0.0.1:3003
+    secrets:
+      - immich_db_password,type=env,target=DB_PASSWORD
+    volume:
+      - /mnt/fast/immich/library:/data:Z
+    timezone: local
+    device:
+      - /dev/dri:/dev/dri
+    healthcheck: curl -fsS http://127.0.0.1:2283/api/server/ping >/dev/null || exit 1
+    user: 1000:1000
+    restart_policy: always
+  notify: Restart Immich pod service

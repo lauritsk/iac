@@ -1,0 +1,43 @@
+---
+- name: Ensure Beszel directories exist
+  ansible.builtin.file:
+    path: '{{ item }}'
+    state: directory
+    owner: core
+    group: core
+    mode: '0700'
+  loop:
+    - /mnt/fast/beszel/data
+    - /mnt/fast/beszel/socket
+
+- name: Ensure Beszel Quadlet is defined
+  containers.podman.podman_container:
+    name: beszel
+    state: quadlet
+    image: docker.io/henrygd/beszel:latest
+    label:
+      io.containers.autoupdate: registry
+    memory: 1G
+    pids_limit: '256'
+    cpus: '1'
+    env:
+      APP_URL: https://beszel.cormo-tegu.ts.net
+    userns: keep-id:uid=1000,gid=1000
+    read_only: true
+    security_opt:
+      - no-new-privileges
+    volume:
+      - /mnt/fast/beszel/data:/beszel_data:Z
+      - /mnt/fast/beszel/socket:/beszel_socket:z
+    network:
+      - proxy.network
+    publish:
+      - 127.0.0.1:8090:8090
+    healthcheck: /beszel health --url http://localhost:8090
+    quadlet_options:
+      - |
+        [Install]
+        WantedBy=default.target
+    user: 1000:1000
+    restart_policy: always
+  notify: Restart Beszel service

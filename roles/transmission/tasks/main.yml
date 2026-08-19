@@ -1,0 +1,52 @@
+---
+- name: Ensure Transmission directory exists
+  ansible.builtin.file:
+    path: /mnt/fast/transmission/config
+    state: directory
+    owner: core
+    group: core
+    mode: '0700'
+
+- name: Ensure Transmission password secret is present
+  containers.podman.podman_secret:
+    name: transmission_password
+    data: '{{ transmission_password }}'
+    state: present
+  no_log: true
+  notify: Restart Transmission service
+
+- name: Ensure Transmission Quadlet is defined
+  containers.podman.podman_container:
+    name: transmission
+    state: quadlet
+    image: lscr.io/linuxserver/transmission:latest
+    label:
+      io.containers.autoupdate: registry
+    memory: 1G
+    pids_limit: '256'
+    cpus: '2'
+    env:
+      TZ: Europe/Tallinn
+      USER: karl
+      FILE__PASS: /run/secrets/transmission_password
+    secrets:
+      - transmission_password,target=/run/secrets/transmission_password,uid=1000,gid=1000,mode=0400
+    userns: keep-id:uid=1000,gid=1000
+    read_only: true
+    security_opt:
+      - no-new-privileges
+    mount:
+      - type=tmpfs,destination=/run,U=true,exec
+    volume:
+      - /mnt/fast/transmission/config:/config:Z
+      - /mnt/slow:/data:z
+    network:
+      - proxy.network
+    healthcheck: curl -fsS -u "$USER:$(cat /run/secrets/transmission_password)" http://127.0.0.1:9091/transmission/web/ >/dev/null || exit 1
+    quadlet_options:
+      - |
+        [Install]
+        WantedBy=default.target
+    user: 1000:1000
+    restart_policy: always
+  notify: Restart Transmission service

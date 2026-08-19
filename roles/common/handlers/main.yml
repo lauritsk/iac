@@ -1,0 +1,7 @@
+---
+- name: Restart proxy network service
+  ansible.builtin.systemd_service:
+    name: proxy-network.service
+    scope: user
+    daemon_reload: true
+    state: restarted

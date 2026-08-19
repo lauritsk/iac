@@ -1,0 +1,53 @@
+---
+- name: Ensure Zerobyte directory exists
+  ansible.builtin.file:
+    path: /mnt/fast/zerobyte/data
+    state: directory
+    owner: core
+    group: core
+    mode: '0700'
+
+- name: Ensure Zerobyte application secret is present
+  containers.podman.podman_secret:
+    name: zerobyte_app_secret
+    data: '{{ zerobyte_app_secret }}'
+    state: present
+  no_log: true
+  notify: Restart Zerobyte service
+
+- name: Ensure Zerobyte Quadlet is defined
+  containers.podman.podman_container:
+    name: zerobyte
+    state: quadlet
+    image: ghcr.io/nicotsx/zerobyte:latest
+    label:
+      io.containers.autoupdate: registry
+    hostname: homelab
+    memory: 2G
+    pids_limit: '512'
+    cpus: '2'
+    env:
+      TZ: Europe/Tallinn
+      BASE_URL: https://zerobyte.cormo-tegu.ts.net
+      APP_SECRET_FILE: /run/secrets/zerobyte_app_secret
+    secrets:
+      - zerobyte_app_secret,type=mount,target=/run/secrets/zerobyte_app_secret,mode=0400
+    userns: keep-id:uid=1000,gid=1000
+    read_only: true
+    security_opt:
+      - no-new-privileges
+      - label=disable
+    volume:
+      - /mnt/fast/zerobyte/data:/var/lib/zerobyte:Z
+      - /mnt/slow:/mnt/slow:ro
+      - /mnt/fast:/mnt/fast:ro
+    network:
+      - proxy.network
+    healthcheck: wget -qO- http://127.0.0.1:4096/api/healthcheck >/dev/null || exit 1
+    quadlet_options:
+      - |
+        [Install]
+        WantedBy=default.target
+    user: 1000:1000
+    restart_policy: always
+  notify: Restart Zerobyte service
