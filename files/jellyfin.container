@@ -1,5 +1,5 @@
 [Unit]
-Description=Jellyfin
+Description=Jellyfin Container
 
 [Container]
 ContainerName=jellyfin

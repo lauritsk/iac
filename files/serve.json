@@ -16,22 +16,6 @@
         }
       }
     },
-    "svc:beszel": {
-      "TCP": {
-        "443": {
-          "HTTPS": true
-        }
-      },
-      "Web": {
-        "beszel.cormo-tegu.ts.net:443": {
-          "Handlers": {
-            "/": {
-              "Proxy": "http://beszel:8090"
-            }
-          }
-        }
-      }
-    },
     "svc:immich": {
       "TCP": {
         "443": {
@@ -123,6 +107,22 @@
           "Handlers": {
             "/": {
               "Proxy": "http://transmission:9091"
+            }
+          }
+        }
+      }
+    },
+    "svc:beszel": {
+      "TCP": {
+        "443": {
+          "HTTPS": true
+        }
+      },
+      "Web": {
+        "beszel.cormo-tegu.ts.net:443": {
+          "Handlers": {
+            "/": {
+              "Proxy": "http://beszel:8090"
             }
           }
         }

@@ -1,7 +1,5 @@
 [Unit]
-Description=Bichon
-After=network-online.target
-Wants=network-online.target
+Description=Bichon Container
 
 [Container]
 ContainerName=bichon
