@@ -1,7 +1,7 @@
 [Container]
 ContainerName=jellyfin
 Image=ghcr.io/jellyfin/jellyfin:latest
-AutoUpdate=registry
+Label=io.containers.autoupdate=registry
 Memory=4G
 PidsLimit=512
 PodmanArgs=--cpus=4

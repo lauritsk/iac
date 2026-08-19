@@ -2,7 +2,7 @@
 Pod=immich.pod
 ContainerName=immich-server
 Image=ghcr.io/immich-app/immich-server:release
-AutoUpdate=registry
+Label=io.containers.autoupdate=registry
 Memory=4G
 PidsLimit=512
 PodmanArgs=--cpus=4
