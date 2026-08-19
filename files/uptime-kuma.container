@@ -3,7 +3,7 @@ Description=Uptime Kuma Container
 
 [Container]
 ContainerName=uptime-kuma
-Image=ghcr.io/louislam/uptime-kuma:2-slim-rootless
+Image=dhi.io/uptime-kuma:2
 AutoUpdate=registry
 Memory=1G
 PidsLimit=256
