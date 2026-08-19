@@ -1,10 +1,3 @@
-[Unit]
-Description=Immich Server Container
-Requires=immich-postgres.service
-Requires=immich-valkey.service
-Requires=immich-machine-learning.service
-After=immich-postgres.service immich-valkey.service immich-machine-learning.service
-
 [Container]
 Pod=immich.pod
 ContainerName=immich-server

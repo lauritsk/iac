@@ -1,6 +1,3 @@
-[Unit]
-Description=Zerobyte Container
-
 [Container]
 ContainerName=zerobyte
 HostName=homelab

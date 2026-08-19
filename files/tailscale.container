@@ -1,6 +1,3 @@
-[Unit]
-Description=Tailscale Container
-
 [Container]
 ContainerName=tailscale
 Image=dhi.io/tailscale:1

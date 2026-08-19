@@ -1,6 +1,3 @@
-[Unit]
-Description=Uptime Kuma Container
-
 [Container]
 ContainerName=uptime-kuma
 Image=dhi.io/uptime-kuma:2
