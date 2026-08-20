@@ -10,6 +10,14 @@
     - /mnt/fast/jellyfin/config
     - /mnt/fast/jellyfin/cache
 
+- name: Ensure Jellyfin image is present
+  containers.podman.podman_image:
+    name: ghcr.io/jellyfin/jellyfin:latest
+    state: present
+    pull: true
+    auth_file: /home/core/.config/containers/auth.json
+  notify: Restart Jellyfin service
+
 - name: Ensure Jellyfin Quadlet is defined
   containers.podman.podman_container:
     name: jellyfin

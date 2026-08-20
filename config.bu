@@ -4,11 +4,24 @@ version: 1.1.0
 passwd:
   users:
     - name: core
+      groups:
+        - video
+        - render
       ssh_authorized_keys:
         - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIZnJ+xjVH8DBYOg6HQEa2VN0Np/e7Db13y0pCU/Qqlh karl@laurits.dev
 
 storage:
   files:
+    - path: /etc/subuid
+      mode: 0644
+      contents:
+        inline: |
+          core:100000:65536
+    - path: /etc/subgid
+      mode: 0644
+      contents:
+        inline: |
+          core:100000:65536
     - path: /etc/flatcar/enabled-sysext.conf
       mode: 0644
       contents:

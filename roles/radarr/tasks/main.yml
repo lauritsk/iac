@@ -7,6 +7,14 @@
     group: core
     mode: '0700'
 
+- name: Ensure Radarr image is present
+  containers.podman.podman_image:
+    name: lscr.io/linuxserver/radarr:latest
+    state: present
+    pull: true
+    auth_file: /home/core/.config/containers/auth.json
+  notify: Restart Radarr service
+
 - name: Ensure Radarr Quadlet is defined
   containers.podman.podman_container:
     name: radarr

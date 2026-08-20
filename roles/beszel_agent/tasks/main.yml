@@ -22,6 +22,14 @@
   no_log: true
   notify: Restart Beszel Agent service
 
+- name: Ensure Beszel Agent image is present
+  containers.podman.podman_image:
+    name: docker.io/henrygd/beszel-agent:latest
+    state: present
+    pull: true
+    auth_file: /home/core/.config/containers/auth.json
+  notify: Restart Beszel Agent service
+
 - name: Ensure Beszel Agent Quadlet is defined
   containers.podman.podman_container:
     name: beszel-agent

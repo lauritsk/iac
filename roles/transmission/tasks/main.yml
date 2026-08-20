@@ -15,6 +15,14 @@
   no_log: true
   notify: Restart Transmission service
 
+- name: Ensure Transmission image is present
+  containers.podman.podman_image:
+    name: lscr.io/linuxserver/transmission:latest
+    state: present
+    pull: true
+    auth_file: /home/core/.config/containers/auth.json
+  notify: Restart Transmission service
+
 - name: Ensure Transmission Quadlet is defined
   containers.podman.podman_container:
     name: transmission
@@ -30,7 +38,7 @@
       USER: karl
       FILE__PASS: /run/secrets/transmission_password
     secrets:
-      - transmission_password,target=/run/secrets/transmission_password,uid=1000,gid=1000,mode=0400
+      - transmission_password,type=mount,target=/run/secrets/transmission_password,uid=1000,gid=1000,mode=0400
     userns: keep-id:uid=1000,gid=1000
     read_only: true
     security_opt:

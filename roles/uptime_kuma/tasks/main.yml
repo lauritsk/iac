@@ -7,6 +7,14 @@
     group: core
     mode: '0700'
 
+- name: Ensure Uptime Kuma image is present
+  containers.podman.podman_image:
+    name: dhi.io/uptime-kuma:2
+    state: present
+    pull: true
+    auth_file: /home/core/.config/containers/auth.json
+  notify: Restart Uptime Kuma service
+
 - name: Ensure Uptime Kuma Quadlet is defined
   containers.podman.podman_container:
     name: uptime-kuma
@@ -27,7 +35,6 @@
       - /mnt/fast/uptime-kuma/data:/app/data:Z
     network:
       - proxy.network
-    healthcheck: curl -fsS http://127.0.0.1:3001/ >/dev/null || exit 1
     quadlet_options:
       - |
         [Install]

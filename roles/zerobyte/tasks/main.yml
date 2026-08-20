@@ -15,6 +15,14 @@
   no_log: true
   notify: Restart Zerobyte service
 
+- name: Ensure Zerobyte image is present
+  containers.podman.podman_image:
+    name: ghcr.io/nicotsx/zerobyte:latest
+    state: present
+    pull: true
+    auth_file: /home/core/.config/containers/auth.json
+  notify: Restart Zerobyte service
+
 - name: Ensure Zerobyte Quadlet is defined
   containers.podman.podman_container:
     name: zerobyte
@@ -31,7 +39,7 @@
       BASE_URL: https://zerobyte.cormo-tegu.ts.net
       APP_SECRET_FILE: /run/secrets/zerobyte_app_secret
     secrets:
-      - zerobyte_app_secret,type=mount,target=/run/secrets/zerobyte_app_secret,mode=0400
+      - zerobyte_app_secret,type=mount,target=/run/secrets/zerobyte_app_secret,uid=1000,gid=1000,mode=0400
     userns: keep-id:uid=1000,gid=1000
     read_only: true
     security_opt:

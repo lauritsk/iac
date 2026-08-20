@@ -10,6 +10,14 @@
     - /mnt/fast/beszel/data
     - /mnt/fast/beszel/socket
 
+- name: Ensure Beszel image is present
+  containers.podman.podman_image:
+    name: docker.io/henrygd/beszel:latest
+    state: present
+    pull: true
+    auth_file: /home/core/.config/containers/auth.json
+  notify: Restart Beszel service
+
 - name: Ensure Beszel Quadlet is defined
   containers.podman.podman_container:
     name: beszel
@@ -33,7 +41,6 @@
       - proxy.network
     publish:
       - 127.0.0.1:8090:8090
-    healthcheck: /beszel health --url http://localhost:8090
     quadlet_options:
       - |
         [Install]
