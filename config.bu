@@ -12,6 +12,11 @@ passwd:
 
 storage:
   files:
+    - path: /etc/hostname
+      mode: 0644
+      contents:
+        inline: |
+          hl01
     - path: /etc/subuid
       mode: 0644
       contents:
