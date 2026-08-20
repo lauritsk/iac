@@ -5,3 +5,4 @@
     scope: user
     daemon_reload: true
     state: restarted
+  when: not ansible_check_mode

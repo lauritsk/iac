@@ -1,6 +1,13 @@
 # TODO
 
-- Setup opentofu to deploy flatcar on incusos declaratively and automatically activate ansible playbook after provisioning
-- Configure incus to enable secure boot and tpm for the vm
-- Configure flatcar to encrypt root etc using tpm and verify full bootchain
-- Document how incus will share /mnt/slow and /mnt/fast with flatcar (incus-agent or manual mount)
+## IncusOS VM provisioning
+
+- Add OpenTofu configuration to provision the Flatcar VM declaratively.
+- Configure UEFI Secure Boot and a persistent vTPM in the VM definition.
+- Automate delivery of `config.ign` on first boot.
+- Run the Ansible playbook only after Ignition has completed and SSH is ready.
+
+## Shared storage
+
+- Document the Incus disk devices used to expose `/mnt/fast` and `/mnt/slow` through VirtioFS.
+- Confirm whether Flatcar can mount the VirtioFS tags directly at boot or whether the Incus agent is required.

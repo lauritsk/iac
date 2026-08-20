@@ -15,6 +15,14 @@
   no_log: true
   notify: Restart Bichon service
 
+- name: Ensure Bichon image is present
+  containers.podman.podman_image:
+    name: docker.io/rustmailer/bichon:latest
+    state: present
+    pull: true
+    auth_file: /home/core/.config/containers/auth.json
+  notify: Restart Bichon service
+
 - name: Ensure Bichon Quadlet is defined
   containers.podman.podman_container:
     name: bichon

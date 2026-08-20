@@ -1,15 +1,4 @@
 ---
-- name: Ensure application and configuration directories exist
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: directory
-    owner: core
-    group: core
-    mode: "0700"
-  loop:
-    - /home/core/.config/containers
-    - /home/core/.config/containers/systemd
-
 - name: Ensure proxy network Quadlet is defined
   containers.podman.podman_network:
     name: proxy

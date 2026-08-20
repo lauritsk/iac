@@ -24,11 +24,19 @@
     mode: '0600'
   notify: Restart Recyclarr service
 
+- name: Ensure Recyclarr image is present
+  containers.podman.podman_image:
+    name: ghcr.io/recyclarr/recyclarr:8
+    state: present
+    pull: true
+    auth_file: /home/core/.config/containers/auth.json
+  notify: Restart Recyclarr service
+
 - name: Ensure Recyclarr Quadlet is defined
   containers.podman.podman_container:
     name: recyclarr
     state: quadlet
-    image: ghcr.io/recyclarr/recyclarr:latest
+    image: ghcr.io/recyclarr/recyclarr:8
     label:
       io.containers.autoupdate: registry
     memory: 512M
@@ -38,7 +46,7 @@
       TZ: Europe/Tallinn
       CRON_SCHEDULE: 0 4 * * *
     secrets:
-      - recyclarr_api_keys,target=/config/secrets.yml,uid=1000,gid=1000,mode=0400
+      - recyclarr_api_keys,type=mount,target=/config/secrets.yml,uid=1000,gid=1000,mode=0400
     userns: keep-id:uid=1000,gid=1000
     read_only: true
     security_opt:

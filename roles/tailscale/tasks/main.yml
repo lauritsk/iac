@@ -27,6 +27,14 @@
     mode: '0600'
   notify: Restart Tailscale service
 
+- name: Ensure Tailscale image is present
+  containers.podman.podman_image:
+    name: dhi.io/tailscale:1
+    state: present
+    pull: true
+    auth_file: /home/core/.config/containers/auth.json
+  notify: Restart Tailscale service
+
 - name: Ensure Tailscale Quadlet is defined
   containers.podman.podman_container:
     name: tailscale
@@ -59,7 +67,6 @@
       - /mnt/fast/tailscale/config/serve.json:/config/serve.json:Z,ro
     network:
       - proxy.network
-    healthcheck: wget --spider -q http://127.0.0.1:9002/healthz || exit 1
     quadlet_options:
       - |
         [Install]

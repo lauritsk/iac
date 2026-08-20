@@ -7,6 +7,14 @@
     group: core
     mode: '0700'
 
+- name: Ensure Sonarr image is present
+  containers.podman.podman_image:
+    name: lscr.io/linuxserver/sonarr:latest
+    state: present
+    pull: true
+    auth_file: /home/core/.config/containers/auth.json
+  notify: Restart Sonarr service
+
 - name: Ensure Sonarr Quadlet is defined
   containers.podman.podman_container:
     name: sonarr

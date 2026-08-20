@@ -7,6 +7,14 @@
     group: core
     mode: '0700'
 
+- name: Ensure Prowlarr image is present
+  containers.podman.podman_image:
+    name: lscr.io/linuxserver/prowlarr:latest
+    state: present
+    pull: true
+    auth_file: /home/core/.config/containers/auth.json
+  notify: Restart Prowlarr service
+
 - name: Ensure Prowlarr Quadlet is defined
   containers.podman.podman_container:
     name: prowlarr
