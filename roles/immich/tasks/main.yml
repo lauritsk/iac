@@ -56,16 +56,16 @@
     memory: 2G
     pids_limit: '512'
     cpus: '2'
-    security_opt:
-      - no-new-privileges
-    cap_drop:
-      - CAP_NET_RAW
     env:
       POSTGRES_DB: immich
       POSTGRES_USER: immich
       POSTGRES_INITDB_ARGS: --data-checksums
     secrets:
       - immich_db_password,type=env,target=POSTGRES_PASSWORD
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+      - CAP_NET_RAW
     volume:
       - /mnt/fast/immich/postgres:/var/lib/postgresql/data:Z
     shm_size: 128m
@@ -131,12 +131,6 @@
     memory: 4G
     pids_limit: '512'
     cpus: '4'
-    group_add:
-      - keep-groups
-    security_opt:
-      - no-new-privileges
-    cap_drop:
-      - CAP_NET_RAW
     env:
       DB_HOSTNAME: 127.0.0.1
       DB_PORT: '5432'
@@ -147,9 +141,15 @@
       IMMICH_MACHINE_LEARNING_URL: http://127.0.0.1:3003
     secrets:
       - immich_db_password,type=env,target=DB_PASSWORD
+    timezone: Europe/Tallinn
+    group_add:
+      - keep-groups
+    security_opt:
+      - no-new-privileges
+    cap_drop:
+      - CAP_NET_RAW
     volume:
       - /mnt/fast/immich/library:/data:Z
-    timezone: Europe/Tallinn
     device:
       - /dev/dri:/dev/dri
     healthcheck: curl -fsS http://127.0.0.1:2283/api/server/ping >/dev/null || exit 1

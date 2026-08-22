@@ -12,7 +12,7 @@
 
 - name: Ensure Jellyfin image is present
   containers.podman.podman_image:
-    name: ghcr.io/jellyfin/jellyfin:latest
+    name: lscr.io/linuxserver/jellyfin:latest
     state: present
     pull: true
     auth_file: /home/core/.config/containers/auth.json
@@ -22,18 +22,23 @@
   containers.podman.podman_container:
     name: jellyfin
     state: quadlet
-    image: ghcr.io/jellyfin/jellyfin:latest
+    image: lscr.io/linuxserver/jellyfin:latest
     label:
       io.containers.autoupdate: registry
     memory: 4G
     pids_limit: '512'
     cpus: '4'
+    env:
+      TZ: Europe/Tallinn
+      JELLYFIN_PublishedServerUrl: https://jellyfin.cormo-tegu.ts.net
     userns: keep-id:uid=1000,gid=1000
     group_add:
       - keep-groups
     read_only: true
     security_opt:
       - no-new-privileges
+    mount:
+      - type=tmpfs,destination=/run,U=true,exec
     volume:
       - /mnt/fast/jellyfin/config:/config:Z
       - /mnt/fast/jellyfin/cache:/cache:Z
