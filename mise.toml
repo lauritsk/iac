@@ -1,5 +1,4 @@
 [tools]
-opentofu = "latest"
 "aqua:coreos/butane" = "latest"
 "pipx:ansible-core" = "latest"
 "pipx:ansible-lint" = "latest"
