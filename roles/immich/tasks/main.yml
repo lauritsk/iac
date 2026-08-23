@@ -105,7 +105,7 @@
     label:
       io.containers.autoupdate: registry
     pod: immich.pod
-    command: valkey-server --config /etc/valkey/valkey.conf
+    command: valkey-server /etc/valkey/valkey.conf
     memory: 512M
     pids_limit: '256'
     cpus: '1'
@@ -115,7 +115,7 @@
       - CAP_NET_RAW
     volume:
       - /mnt/fast/immich/valkey/valkey.conf:/etc/valkey/valkey.conf:ro
-    healthcheck: valkey-cli ping || exit 1
+    # healthcheck: valkey-cli ping || exit 1
     user: 1000:1000
     restart_policy: always
   notify: Restart Immich pod service
