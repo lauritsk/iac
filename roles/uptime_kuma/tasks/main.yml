@@ -12,7 +12,6 @@
     name: dhi.io/uptime-kuma:2
     state: present
     pull: true
-    auth_file: /home/core/.config/containers/auth.json
   notify: Restart Uptime Kuma service
 
 - name: Ensure Uptime Kuma Quadlet is defined

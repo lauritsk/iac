@@ -9,13 +9,37 @@
   loop:
     - /mnt/fast/immich/postgres
     - /mnt/fast/immich/model-cache
+    - /mnt/fast/immich/valkey
     - /mnt/slow/immich/library
 
-- name: Ensure Immich database password secret is present
+- name: Ensure Immich Valkey config is present
+  ansible.builtin.template:
+    src: valkey.conf.j2
+    dest: /mnt/fast/immich/valkey/valkey.conf
+    owner: core
+    group: core
+    mode: '0400'
+  notify: Restart Immich pod service
+
+- name: Ensure Immich secrets are present
   containers.podman.podman_secret:
-    name: immich_db_password
-    data: '{{ immich_db_password }}'
+    name: '{{ item.name }}'
+    data: '{{ item.data }}'
     state: present
+    force: true
+  loop:
+    - name: immich_db_hostname
+      data: '{{ immich_db_hostname }}'
+    - name: immich_db_name
+      data: '{{ immich_db_name }}'
+    - name: immich_db_username
+      data: '{{ immich_db_username }}'
+    - name: immich_db_password
+      data: '{{ immich_db_password }}'
+    - name: immich_valkey_password
+      data: '{{ immich_valkey_password }}'
+  loop_control:
+    label: '{{ item.name }}'
   no_log: true
   notify: Restart Immich pod service
 
@@ -24,10 +48,9 @@
     name: '{{ item }}'
     state: present
     pull: true
-    auth_file: /home/core/.config/containers/auth.json
   loop:
     - ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
-    - docker.io/valkey/valkey:9
+    - dhi.io/valkey:9
     - ghcr.io/immich-app/immich-machine-learning:release-openvino
     - ghcr.io/immich-app/immich-server:release
   notify: Restart Immich pod service
@@ -78,10 +101,11 @@
   containers.podman.podman_container:
     name: immich-valkey
     state: quadlet
-    image: docker.io/valkey/valkey:9
+    image: dhi.io/valkey:9
     label:
       io.containers.autoupdate: registry
     pod: immich.pod
+    command: valkey-server --config /etc/valkey/valkey.conf
     memory: 512M
     pids_limit: '256'
     cpus: '1'
@@ -89,7 +113,9 @@
       - no-new-privileges
     cap_drop:
       - CAP_NET_RAW
-    healthcheck: redis-cli ping || exit 1
+    volume:
+      - /mnt/fast/immich/valkey/valkey.conf:/etc/valkey/valkey.conf:ro
+    healthcheck: valkey-cli ping || exit 1
     user: 1000:1000
     restart_policy: always
   notify: Restart Immich pod service
@@ -200,7 +226,7 @@
       REDIS_HOSTNAME: 127.0.0.1
       REDIS_PORT: 6379
       # REDIS_USERNAME: ''
-      # REDIS_PASSWORD_FILE: ''
+      REDIS_PASSWORD_FILE: /run/secrets/immich_valkey_password
       # REDIS_DBINDEX: 0
       # IMMICH_TELEMETRY_INCLUDE: ''
       # IMMICH_TELEMETRY_EXCLUDE: ''
@@ -210,6 +236,7 @@
       - immich_db_name,type=mount,target=/run/secrets/immich_db_name
       - immich_db_username,type=mount,target=/run/secrets/immich_db_username
       - immich_db_password,type=mount,target=/run/secrets/immich_db_password
+      - immich_valkey_password,type=mount,target=/run/secrets/immich_valkey_password
     group_add:
       - keep-groups
     security_opt:

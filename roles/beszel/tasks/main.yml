@@ -8,14 +8,32 @@
     mode: '0700'
   loop:
     - /mnt/fast/beszel/data
-    - /mnt/fast/beszel/socket
+
+- name: Ensure Beszel secrets are present
+  containers.podman.podman_secret:
+    name: '{{ item.name }}'
+    data: '{{ item.data }}'
+    state: present
+    force: true
+  loop:
+    - name: beszel_auto_login
+      data: '{{ beszel_auto_login }}'
+    - name: beszel_user_email
+      data: '{{ beszel_user_email }}'
+    - name: beszel_user_password
+      data: '{{ beszel_user_password }}'
+    - name: beszel_heartbeat_url
+      data: '{{ beszel_heartbeat_url }}'
+  loop_control:
+    label: '{{ item.name }}'
+  no_log: true
+  notify: Restart Beszel service
 
 - name: Ensure Beszel image is present
   containers.podman.podman_image:
     name: docker.io/henrygd/beszel:latest
     state: present
     pull: true
-    auth_file: /home/core/.config/containers/auth.json
   notify: Restart Beszel service
 
 - name: Ensure Beszel Quadlet is defined
@@ -52,7 +70,6 @@
       - no-new-privileges
     volume:
       - /mnt/fast/beszel/data:/beszel_data
-      - /mnt/fast/beszel/socket:/beszel_socket
     network:
       - proxy.network
     healthcheck: /beszel health --url http://localhost:8090

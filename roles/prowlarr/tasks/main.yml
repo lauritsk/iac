@@ -12,7 +12,6 @@
     name: lscr.io/linuxserver/prowlarr:latest
     state: present
     pull: true
-    auth_file: /home/core/.config/containers/auth.json
   notify: Restart Prowlarr service
 
 - name: Ensure Prowlarr Quadlet is defined

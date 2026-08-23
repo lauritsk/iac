@@ -12,7 +12,6 @@
     name: lscr.io/linuxserver/sonarr:latest
     state: present
     pull: true
-    auth_file: /home/core/.config/containers/auth.json
   notify: Restart Sonarr service
 
 - name: Ensure Sonarr Quadlet is defined
