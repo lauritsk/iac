@@ -40,11 +40,6 @@
     name: tailscale
     state: quadlet
     image: dhi.io/tailscale:1
-    label:
-      io.containers.autoupdate: registry
-    memory: 512M
-    pids_limit: '256'
-    cpus: '1'
     env:
       TS_STATE_DIR: /var/lib/tailscale
       TS_USERSPACE: 'true'
@@ -55,22 +50,27 @@
       TS_ENABLE_HEALTH_CHECK: 'true'
     secrets:
       - tailscale_oauth_secret,type=env,target=TS_AUTHKEY
-    userns: keep-id:uid=1000,gid=1000
-    read_only: true
-    security_opt:
-      - no-new-privileges
+    label:
+      io.containers.autoupdate: registry
+    network:
+      - proxy.network
     tmpfs:
       /tmp: rw,nosuid,nodev,mode=1777
       /run: rw,nosuid,nodev,mode=755
     volume:
       - /mnt/fast/tailscale/data:/var/lib/tailscale
       - /mnt/fast/tailscale/config/serve.json:/config/serve.json:ro
-    network:
-      - proxy.network
+    read_only: true
+    user: 1000:1000
+    userns: keep-id:uid=1000,gid=1000
+    security_opt:
+      - no-new-privileges
+    memory: 512M
+    pids_limit: '256'
+    cpus: '1'
+    restart_policy: always
     quadlet_options:
       - |
         [Install]
         WantedBy=default.target
-    user: 1000:1000
-    restart_policy: always
   notify: Restart Tailscale service

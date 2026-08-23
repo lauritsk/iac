@@ -21,21 +21,21 @@
     image: dhi.io/uptime-kuma:2
     label:
       io.containers.autoupdate: registry
+    network:
+      - proxy.network
+    volume:
+      - /mnt/fast/uptime-kuma/data:/app/data
+    read_only: true
+    user: 1000:1000
+    userns: keep-id:uid=1000,gid=1000
+    security_opt:
+      - no-new-privileges
     memory: 1G
     pids_limit: '256'
     cpus: '1'
-    userns: keep-id:uid=1000,gid=1000
-    read_only: true
-    security_opt:
-      - no-new-privileges
-    volume:
-      - /mnt/fast/uptime-kuma/data:/app/data
-    network:
-      - proxy.network
+    restart_policy: always
     quadlet_options:
       - |
         [Install]
         WantedBy=default.target
-    user: 1000:1000
-    restart_policy: always
   notify: Restart Uptime Kuma service

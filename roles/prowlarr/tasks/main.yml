@@ -19,30 +19,30 @@
     name: prowlarr
     state: quadlet
     image: lscr.io/linuxserver/prowlarr:latest
-    label:
-      io.containers.autoupdate: registry
-    memory: 1G
-    pids_limit: '256'
-    cpus: '1'
     env:
       TZ: Europe/Tallinn
-    userns: keep-id:uid=1000,gid=1000
-    read_only: true
-    security_opt:
-      - no-new-privileges
+    label:
+      io.containers.autoupdate: registry
+    network:
+      - proxy.network
     mount:
       - type=tmpfs,destination=/run,U=true,exec
       - type=tmpfs,destination=/tmp,U=true,exec
       - type=tmpfs,destination=/var/tmp,U=true,exec
     volume:
       - /mnt/fast/prowlarr/config:/config
-    network:
-      - proxy.network
+    read_only: true
+    user: 1000:1000
+    userns: keep-id:uid=1000,gid=1000
+    security_opt:
+      - no-new-privileges
+    memory: 1G
+    pids_limit: '256'
+    cpus: '1'
     healthcheck: curl -fsS http://127.0.0.1:9696/ >/dev/null || exit 1
+    restart_policy: always
     quadlet_options:
       - |
         [Install]
         WantedBy=default.target
-    user: 1000:1000
-    restart_policy: always
   notify: Restart Prowlarr service
