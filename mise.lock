@@ -29,6 +29,40 @@ checksum = "sha256:b4966a4c4dbe4dd66de3ab593f557c8030c8a0b945285d83ae7930e72b05a
 url = "https://github.com/coreos/butane/releases/download/v0.29.0/butane-x86_64-pc-windows-gnu.exe"
 url_api = "https://api.github.com/repos/coreos/butane/releases/assets/469428893"
 
+[[tools."aqua:lxc/incus"]]
+version = "7.3.0"
+backend = "aqua:lxc/incus"
+
+[tools."aqua:lxc/incus"."platforms.linux-arm64"]
+checksum = "sha256:b0e9eff3d7b69836dc74e5a9f19ceb133371361441e8aacc6743eebea9f07918"
+url = "https://github.com/lxc/incus/releases/download/v7.3.0/bin.linux.incus.aarch64"
+url_api = "https://api.github.com/repos/lxc/incus/releases/assets/496096333"
+provenance = "github-attestations"
+
+[tools."aqua:lxc/incus"."platforms.linux-x64"]
+checksum = "sha256:6f2edfef32b4df4bc8191f350b197862ab600307273cf5c3ce67dbf97308bbcd"
+url = "https://github.com/lxc/incus/releases/download/v7.3.0/bin.linux.incus.x86_64"
+url_api = "https://api.github.com/repos/lxc/incus/releases/assets/496096388"
+provenance = "github-attestations"
+
+[tools."aqua:lxc/incus"."platforms.macos-arm64"]
+checksum = "sha256:673f70c5fdbb0bb23bee9a4d6212aec5ab391fc5ba227f68b1da6006ccb23a2b"
+url = "https://github.com/lxc/incus/releases/download/v7.3.0/bin.macos.incus.aarch64"
+url_api = "https://api.github.com/repos/lxc/incus/releases/assets/496096344"
+provenance = "github-attestations"
+
+[tools."aqua:lxc/incus"."platforms.macos-x64"]
+checksum = "sha256:2f26b350cc9eceeca37a0323faabe2d12ea2608cd80e2ef56e1afef8bf928201"
+url = "https://github.com/lxc/incus/releases/download/v7.3.0/bin.macos.incus.x86_64"
+url_api = "https://api.github.com/repos/lxc/incus/releases/assets/496096395"
+provenance = "github-attestations"
+
+[tools."aqua:lxc/incus"."platforms.windows-x64"]
+checksum = "sha256:8c0446cb2d2376beecebf256c50542fe835e24f3855d5e5f56b98d14094a1813"
+url = "https://github.com/lxc/incus/releases/download/v7.3.0/bin.windows.incus.x86_64.exe"
+url_api = "https://api.github.com/repos/lxc/incus/releases/assets/496096383"
+provenance = "github-attestations"
+
 [[tools."pipx:ansible-core"]]
 version = "2.21.3"
 backend = "pipx:ansible-core"
