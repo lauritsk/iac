@@ -1,11 +1,15 @@
 ---
-- name: Ensure Beszel Agent directory exists
+- name: Ensure Beszel Agent directories exist
   ansible.builtin.file:
-    path: /mnt/fast/beszel-agent/data
+    path: '{{ item }}'
     state: directory
     owner: core
     group: core
     mode: '0700'
+  loop:
+    - /mnt/fast/beszel-agent/data
+    - /mnt/fast/.beszel
+    - /mnt/slow/.beszel
 
 - name: Ensure Beszel Agent secrets are present
   containers.podman.podman_secret:
@@ -79,6 +83,8 @@
       - host
     volume:
       - /mnt/fast/beszel-agent/data:/var/lib/beszel-agent
+      - /mnt/fast/.beszel:/extra-filesystems/incus_fast__Fast:ro
+      - /mnt/slow/.beszel:/extra-filesystems/incus_slow__Slow:ro
       - '%t/podman/podman.sock:/var/run/docker.sock:ro'
     user: 1000:1000
     userns: keep-id:uid=1000,gid=1000
