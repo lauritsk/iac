@@ -1,0 +1,46 @@
+description: Flatcar application host hl01
+
+config:
+  boot.autostart: "true"
+  security.protection.delete: "true"
+  security.secureboot: "true"
+
+  limits.cpu: "4"
+  limits.memory: 8GiB
+
+profiles: []
+
+devices:
+  root:
+    type: disk
+    pool: local
+    path: /
+    size: 128GiB
+
+  eth0:
+    type: nic
+    network: incusbr0
+
+  fast:
+    type: disk
+    pool: fast
+    source: fast
+    path: /mnt/fast
+    io.bus: virtiofs
+    io.cache: unsafe
+
+  slow:
+    type: disk
+    pool: slow
+    source: slow
+    path: /mnt/slow
+    io.bus: virtiofs
+    io.cache: unsafe
+
+  gpu:
+    type: gpu
+    gputype: physical
+    pci: "0000:00:02.0"
+
+  tpm:
+    type: tpm
