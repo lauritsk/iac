@@ -87,7 +87,7 @@
       - '%t/podman/podman.sock:/var/run/docker.sock:ro'
     network:
       - host
-    healthcheck: /agent health
+    healthcheck: CMD /agent health
     quadlet_options:
       - |
         [Install]
