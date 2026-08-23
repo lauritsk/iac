@@ -41,8 +41,8 @@
     pids_limit: '256'
     cpus: '1'
     env:
-      LISTEN: /beszel_socket/beszel.sock
-      HUB_URL: http://localhost:8090
+      LISTEN: 45876
+      HUB_URL: https://beszel.cormo-tegu.ts.net
     secrets:
       - beszel_agent_token,type=env,target=TOKEN
       - beszel_agent_key,type=env,target=KEY
@@ -52,7 +52,6 @@
       - label=disable
     volume:
       - /mnt/fast/beszel-agent/data:/var/lib/beszel-agent
-      - /mnt/fast/beszel/socket:/beszel_socket
       - '%t/podman/podman.sock:/var/run/docker.sock:ro'
     network:
       - host
