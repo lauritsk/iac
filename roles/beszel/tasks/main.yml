@@ -72,7 +72,7 @@
       - /mnt/fast/beszel/data:/beszel_data
     network:
       - proxy.network
-    healthcheck: /beszel health --url http://localhost:8090
+    healthcheck: CMD /beszel health --url http://localhost:8090
     quadlet_options:
       - |
         [Install]
