@@ -43,14 +43,14 @@
       # ALL_PROXY: ''
       # DATA_DIR: ''
       DISABLE_SSH: true
-      # DISK_USAGE_CACHE: 5m
+      DISK_USAGE_CACHE: 5m
       # DOCKER_HOST: ''
       # DOCKER_TIMEOUT: 2100ms
       # EXCLUDE_CONTAINERS: ''
       # EXCLUDE_SMART: ''
       # EXIT_ON_DNS_ERROR: false
       # EXTRA_FILESYSTEMS: ''
-      # FILESYSTEM: ''
+      FILESYSTEM: sda9
       # GPU_COLLECTOR: ''
       HUB_URL: https://beszel.cormo-tegu.ts.net
       # INTEL_GPU_DEVICE: ''
@@ -60,7 +60,7 @@
       # LOG_LEVEL: info
       # MEM_CALC: ''
       # NETWORK: ''
-      # NICS: ''
+      NICS: eth0
       # NVML: ''
       # PRIMARY_SENSOR: ''
       # SENSORS: ''
