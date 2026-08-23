@@ -16,3 +16,4 @@
 - review icloud app passwords
 - upgrade immich db password
 - move bichon, immich library to /mnt/slow
+- setup tsidp again and configure services to use it starting with incusos
