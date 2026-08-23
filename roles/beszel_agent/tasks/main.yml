@@ -41,11 +41,43 @@
     pids_limit: '256'
     cpus: '1'
     env:
-      LISTEN: 45876
+      # ALL_PROXY: ''
+      # DATA_DIR: ''
+      DISABLE_SSH: true
+      # DISK_USAGE_CACHE: 5m
+      # DOCKER_HOST: ''
+      # DOCKER_TIMEOUT: 2100ms
+      # EXCLUDE_CONTAINERS: ''
+      # EXCLUDE_SMART: ''
+      # EXIT_ON_DNS_ERROR: false
+      # EXTRA_FILESYSTEMS: ''
+      # FILESYSTEM: ''
+      # GPU_COLLECTOR: ''
       HUB_URL: https://beszel.cormo-tegu.ts.net
+      # INTEL_GPU_DEVICE: ''
+      KEY_FILE: /run/secrets/beszel_agent_key
+      # LHM: false
+      LISTEN: 45876
+      # LOG_LEVEL: info
+      # MEM_CALC: ''
+      # NETWORK: ''
+      # NICS: ''
+      # NVML: ''
+      # PRIMARY_SENSOR: ''
+      # SENSORS: ''
+      # SENSORS_TIMEOUT: 2s
+      # SERVICE_PATTERNS: ''
+      # SKIP_GPU: false
+      # SKIP_SYSTEMD: false
+      # SMART_DEVICES: ''
+      # SMART_DEVICES_SEPARATOR: ','
+      # SMART_INTERVAL: 1h
+      # SYS_SENSORS: ''
+      # SYSTEM_NAME: 'hl01'
+      TOKEN_FILE: /run/secrets/beszel_agent_token
     secrets:
-      - beszel_agent_token,type=env,target=TOKEN
-      - beszel_agent_key,type=env,target=KEY
+      - beszel_agent_token,type=mount,target=/run/secrets/beszel_agent_token,uid=1000,gid=1000,mode=0400
+      - beszel_agent_key,type=mount,target=/run/secrets/beszel_agent_key,uid=1000,gid=1000,mode=0400
     userns: keep-id:uid=1000,gid=1000
     security_opt:
       - no-new-privileges

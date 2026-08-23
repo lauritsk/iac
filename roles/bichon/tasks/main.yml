@@ -1,11 +1,15 @@
 ---
-- name: Ensure Bichon directory exists
+- name: Ensure Bichon directories exist
   ansible.builtin.file:
-    path: /mnt/fast/bichon/data
+    path: '{{ item }}'
     state: directory
     owner: core
     group: core
     mode: '0700'
+  loop:
+    - /mnt/fast/bichon/data
+    - /mnt/fast/bichon/data/bichon-indices
+    - /mnt/slow/bichon/data/bichon-storage
 
 - name: Ensure Bichon encryption secret is present
   containers.podman.podman_secret:
@@ -35,15 +39,42 @@
     cpus: '1'
     env:
       BICHON_ROOT_DIR: /data
-      BICHON_LOG_LEVEL: info
+      BICHON_ENCRYPT_PASSWORD_FILE: /run/secrets/bichon_encrypt_password
+      # BICHON_HTTP_PORT: 15630
+      # BICHON_BIND_IP: 0.0.0.0
+      BICHON_PUBLIC_URL: https://bichon.cormo-tegu.ts.net
+      # BICHON_BASE_URL: /
+      # BICHON_WEBUI_TOKEN_EXPIRATION_HOURS: 168
+      # BICHON_HTTP_COMPRESSION_ENABLED: true
+      # BICHON_LOG_LEVEL: info
+      # BICHON_ANSI_LOGS: true
+      # BICHON_JSON_LOGS: false
+      # BICHON_LOG_TO_FILE: false
+      # BICHON_MAX_SERVER_LOG_FILES: 5
+      BICHON_CORS_ORIGINS: https://bichon.cormo-tegu.ts.net
+      # BICHON_CORS_MAX_AGE: 86400
+      # BICHON_ENABLE_REST_HTTPS: false
+      # BICHON_ENABLE_SMTP: false
+      # BICHON_SMTP_PORT: 2525
+      # BICHON_SMTP_ENCRYPTION: starttls
+      # BICHON_SMTP_AUTH_REQUIRED: true
+      # BICHON_SMTP_TLS_KEY_PATH: ''
+      # BICHON_SMTP_TLS_CERT_PATH: ''
+      # BICHON_INDEX_DIR: '{root}/bichon-indices'
+      # BICHON_DATA_DIR: '{root}/bichon-storage'
+      # BICHON_SYNC_CONCURRENCY: num_cpus × 2
+      # BICHON_METADATA_CACHE_SIZE: 134217728
+      # BICHON_ENVELOPE_CACHE_SIZE: 134217728
     secrets:
-      - bichon_encrypt_password,type=env,target=BICHON_ENCRYPT_PASSWORD
+      - bichon_encrypt_password,type=mount,target=/run/secrets/bichon_encrypt_password
     userns: keep-id:uid=1000,gid=1000
     read_only: true
     security_opt:
       - no-new-privileges
     volume:
       - /mnt/fast/bichon/data:/data
+      - /mnt/fast/bichon/data/bichon-indices:/data/bichon-indices
+      - /mnt/slow/bichon/data/bichon-storage:/data/bichon-storage
     network:
       - proxy.network
     healthcheck: curl -fsS http://127.0.0.1:15630/api/status >/dev/null || exit 1

@@ -30,6 +30,22 @@
     cpus: '1'
     env:
       APP_URL: https://beszel.cormo-tegu.ts.net
+      CHECK_UPDATES: true
+      # CONTAINER_DETAILS: true
+      # CSP: ''
+      # DISABLE_PASSWORD_AUTH: false
+      # HEARTBEAT_INTERVAL: 60
+      # HEARTBEAT_METHOD: POST
+      # MFA_OTP: true
+      # OAUTH_DISABLE_POPUP: false
+      # SHARE_ALL_SYSTEMS: false
+      # TRUSTED_AUTH_HEADER: ''
+      USER_CREATION: true
+    secrets:
+      - beszel_auto_login,type=env,target=AUTO_LOGIN
+      - beszel_user_email,type=env,target=USER_EMAIL
+      - beszel_user_password,type=env,target=USER_PASSWORD
+      - beszel_heartbeat_url,type=env,target=HEARTBEAT_URL
     userns: keep-id:uid=1000,gid=1000
     read_only: true
     security_opt:
