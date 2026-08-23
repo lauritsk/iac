@@ -16,6 +16,16 @@ storage:
       contents:
         inline: |
           hl01
+    - path: /etc/subuid
+      overwrite: true
+      contents:
+        inline: |
+          core:100000:65536
+    - path: /etc/subgid
+      overwrite: true
+      contents:
+        inline: |
+          core:100000:65536
     - path: /etc/flatcar/enabled-sysext.conf
       contents:
         inline: |
