@@ -15,6 +15,7 @@
     name: tailscale_oauth_secret
     data: '{{ tailscale_oauth_secret }}'
     state: present
+    force: true
   no_log: true
   notify: Restart Tailscale service
 
@@ -32,7 +33,6 @@
     name: dhi.io/tailscale:1
     state: present
     pull: true
-    auth_file: /home/core/.config/containers/auth.json
   notify: Restart Tailscale service
 
 - name: Ensure Tailscale Quadlet is defined

@@ -12,6 +12,7 @@
     name: zerobyte_app_secret
     data: '{{ zerobyte_app_secret }}'
     state: present
+    force: true
   no_log: true
   notify: Restart Zerobyte service
 
@@ -20,7 +21,6 @@
     name: ghcr.io/nicotsx/zerobyte:latest
     state: present
     pull: true
-    auth_file: /home/core/.config/containers/auth.json
   notify: Restart Zerobyte service
 
 - name: Ensure Zerobyte Quadlet is defined

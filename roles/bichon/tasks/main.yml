@@ -9,6 +9,7 @@
   loop:
     - /mnt/fast/bichon/data
     - /mnt/fast/bichon/data/bichon-indices
+    - /mnt/fast/bichon/data/bichon-storage
     - /mnt/slow/bichon/data/bichon-storage
 
 - name: Ensure Bichon encryption secret is present
@@ -16,6 +17,7 @@
     name: bichon_encrypt_password
     data: '{{ bichon_encrypt_password }}'
     state: present
+    force: true
   no_log: true
   notify: Restart Bichon service
 
@@ -24,7 +26,6 @@
     name: docker.io/rustmailer/bichon:latest
     state: present
     pull: true
-    auth_file: /home/core/.config/containers/auth.json
   notify: Restart Bichon service
 
 - name: Ensure Bichon Quadlet is defined

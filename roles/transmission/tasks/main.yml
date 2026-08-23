@@ -12,6 +12,7 @@
     name: transmission_password
     data: '{{ transmission_password }}'
     state: present
+    force: true
   no_log: true
   notify: Restart Transmission service
 
@@ -20,7 +21,6 @@
     name: lscr.io/linuxserver/transmission:latest
     state: present
     pull: true
-    auth_file: /home/core/.config/containers/auth.json
   notify: Restart Transmission service
 
 - name: Ensure Transmission Quadlet is defined

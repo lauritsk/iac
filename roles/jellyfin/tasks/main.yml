@@ -7,15 +7,17 @@
     group: core
     mode: '0700'
   loop:
+    # - /mnt/fast/jellyfin/data
     - /mnt/fast/jellyfin/config
     - /mnt/fast/jellyfin/cache
+    # - /mnt/fast/jellyfin/web
+    # - /mnt/fast/jellyfin/logs
 
 - name: Ensure Jellyfin image is present
   containers.podman.podman_image:
     name: ghcr.io/jellyfin/jellyfin:latest
     state: present
     pull: true
-    auth_file: /home/core/.config/containers/auth.json
   notify: Restart Jellyfin service
 
 - name: Ensure Jellyfin Quadlet is defined
@@ -30,6 +32,14 @@
     cpus: '4'
     env:
       TZ: Europe/Tallinn
+      # JELLYFIN_DATA_DIR: /data
+      # JELLYFIN_CONFIG_DIR: /config
+      # JELLYFIN_CACHE_DIR: /cache
+      # JELLYFIN_WEB_DIR: /web
+      # JELLYFIN_LOG_DIR: /logs
+      # JELLYFIN_hostwebclient: True
+      # JELLYFIN_FFmpeg__probesize: "1G"
+      # JELLYFIN_FFmpeg__analyzeduration: "200M"
       JELLYFIN_PublishedServerUrl: https://jellyfin.cormo-tegu.ts.net
     userns: keep-id:uid=1000,gid=1000
     group_add:
@@ -42,8 +52,11 @@
       - type=tmpfs,destination=/tmp,U=true,exec
       - type=tmpfs,destination=/var/tmp,U=true,exec
     volume:
+      # - /mnt/fast/jellyfin/data:/data
       - /mnt/fast/jellyfin/config:/config
       - /mnt/fast/jellyfin/cache:/cache
+      # - /mnt/fast/jellyfin/web:/web
+      # - /mnt/fast/jellyfin/logs:/logs
       - /mnt/slow:/media
     network:
       - proxy.network

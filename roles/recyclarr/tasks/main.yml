@@ -12,6 +12,7 @@
     name: recyclarr_api_keys
     data: '{{ recyclarr_api_keys }}'
     state: present
+    force: true
   no_log: true
   notify: Restart Recyclarr service
 
@@ -29,7 +30,6 @@
     name: ghcr.io/recyclarr/recyclarr:8
     state: present
     pull: true
-    auth_file: /home/core/.config/containers/auth.json
   notify: Restart Recyclarr service
 
 - name: Ensure Recyclarr Quadlet is defined

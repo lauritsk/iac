@@ -12,6 +12,7 @@
     name: '{{ item.name }}'
     data: '{{ item.data }}'
     state: present
+    force: true
   loop:
     - name: beszel_agent_token
       data: '{{ beszel_agent_token }}'
@@ -27,7 +28,6 @@
     name: docker.io/henrygd/beszel-agent:latest
     state: present
     pull: true
-    auth_file: /home/core/.config/containers/auth.json
   notify: Restart Beszel Agent service
 
 - name: Ensure Beszel Agent Quadlet is defined
