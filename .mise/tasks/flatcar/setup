@@ -1,0 +1,107 @@
+#!/usr/bin/env bash
+#MISE description="Create and start the Flatcar VM"
+#MISE depends=["ignition:generate"]
+#MISE env={INCUS_REMOTE="hv01", FLATCAR_VM="hl01", GPU_PCI="0000:00:02.0"}
+set -euo pipefail
+
+TARGET="${INCUS_REMOTE}:${FLATCAR_VM}"
+IMAGE="flatcar_production_qemu_uefi_secure_image.img"
+CHANNEL_URL="https://stable.release.flatcar-linux.net/amd64-usr"
+VERSION=$(curl -fsSL --retry 3 "$CHANNEL_URL/current/version.txt" | awk -F= '$1 == "FLATCAR_VERSION" {print $2}')
+[[ -n "$VERSION" ]] || { printf 'Could not determine the current Flatcar version\n' >&2; exit 1; }
+RELEASE_URL="$CHANNEL_URL/$VERSION"
+WORKDIR="${XDG_CACHE_HOME:-$HOME/.cache}/homelab-iac/flatcar/${VERSION}"
+
+incus storage show "${INCUS_REMOTE}:local" >/dev/null
+incus storage volume show "${INCUS_REMOTE}:fast" fast >/dev/null
+incus storage volume show "${INCUS_REMOTE}:slow" slow >/dev/null
+incus network show "${INCUS_REMOTE}:incusbr0" >/dev/null
+
+if incus info "$TARGET" >/dev/null 2>&1; then
+  printf '%s already exists\n' "$TARGET" >&2
+  exit 1
+fi
+
+mkdir -p "$WORKDIR"
+python3 -m json.tool config.ign >/dev/null
+
+if ! incus image info "${INCUS_REMOTE}:flatcar-${VERSION}" >/dev/null 2>&1; then
+  curl -fsSL --retry 3 -o "$WORKDIR/$IMAGE" "$RELEASE_URL/$IMAGE"
+  curl -fsSL --retry 3 -o "$WORKDIR/$IMAGE.DIGESTS" "$RELEASE_URL/$IMAGE.DIGESTS"
+  IMAGE_SHA512=$(awk '/^# SHA512 HASH/{getline; print $1}' "$WORKDIR/$IMAGE.DIGESTS")
+  printf '%s  %s\n' "$IMAGE_SHA512" "$WORKDIR/$IMAGE" | shasum -a 512 -c
+
+  cat > "$WORKDIR/metadata.yaml" <<EOF
+architecture: x86_64
+creation_date: $(date +%s)
+properties:
+  description: Flatcar Container Linux $VERSION
+  os: Flatcar
+  release: $VERSION
+  requirements.secureboot: "true"
+EOF
+  COPYFILE_DISABLE=1 tar --format=ustar -cf "$WORKDIR/metadata.tar" -C "$WORKDIR" metadata.yaml
+  incus image import "$WORKDIR/metadata.tar" "$WORKDIR/$IMAGE" "${INCUS_REMOTE}:" --alias "flatcar-${VERSION}"
+fi
+
+SCRIPTS_URL="https://raw.githubusercontent.com/flatcar/scripts/stable-${VERSION}/build_library"
+curl -fsSL --retry 3 -o "$WORKDIR/vm_image_util.sh" "$SCRIPTS_URL/vm_image_util.sh"
+CERT=$(awk 'match($0, /flatcar-sb[^" ]+\.(pem|cert)/) { print substr($0, RSTART, RLENGTH); exit }' "$WORKDIR/vm_image_util.sh")
+[[ -n "$CERT" ]] || { printf 'Could not find the Flatcar Secure Boot certificate\n' >&2; exit 1; }
+curl -fsSL --retry 3 -o "$WORKDIR/$CERT" "$SCRIPTS_URL/$CERT"
+
+RAW_QEMU=$(python3 -c 'import json, shlex; i=json.dumps(json.load(open("config.ign")), separators=(",", ":")); print("-fw_cfg " + shlex.quote("name=opt/org.flatcar-linux/config,string=" + i.replace(",", ",,")))')
+incus create "${INCUS_REMOTE}:flatcar-${VERSION}" "$TARGET" \
+  --vm \
+  --no-profiles \
+  --storage local \
+  --network incusbr0 \
+  --device root,size=50GiB \
+  --config boot.autostart=true \
+  --config limits.cpu=4 \
+  --config limits.memory=8GiB \
+  --config security.secureboot=true \
+  --config "raw.qemu=$RAW_QEMU"
+
+cleanup() {
+  printf 'Deleting incomplete instance %s\n' "$TARGET" >&2
+  incus delete --force "$TARGET" >/dev/null 2>&1 || true
+}
+trap cleanup ERR
+
+incus config device add "$TARGET" fast disk io.bus=virtiofs path=/mnt/fast pool=fast source=fast
+incus config device add "$TARGET" slow disk io.bus=virtiofs path=/mnt/slow pool=slow source=slow
+incus config device add "$TARGET" gpu gpu gputype=native-context pci="$GPU_PCI"
+incus config device add "$TARGET" tpm tpm
+
+DB_JSON="$WORKDIR/secure-boot-db.json"
+incus low-level nvram get "$TARGET" EFI_IMAGE_SECURITY_DATABASE_GUID:db --format=json > "$DB_JSON"
+CERT_PATH="$WORKDIR/$CERT" DB_PATH="$DB_JSON" python3 <<'PY'
+import base64
+import json
+import os
+
+with open(os.environ["CERT_PATH"]) as source:
+    pem = "".join(line.strip() for line in source if not line.startswith("-----"))
+
+with open(os.environ["DB_PATH"]) as source:
+    db = json.load(source)
+
+data = base64.b64encode(base64.b64decode(pem)).decode()
+entries = [entry for node in db["data"] for entry in node["entries"]]
+if not any(entry["data"] == data for entry in entries):
+    db["data"].append({
+        "type": "x509",
+        "entries": [{"owner": "a0baa8a3-041d-48a8-bc87-c36d121b5e3d", "data": data}],
+    })
+
+db.pop("binary", None)
+with open(os.environ["DB_PATH"], "w") as destination:
+    json.dump(db, destination)
+PY
+incus low-level nvram set "$TARGET" EFI_IMAGE_SECURITY_DATABASE_GUID:db=- --format=json < "$DB_JSON"
+
+incus start "$TARGET"
+trap - ERR
+incus wait "$TARGET" ipv4 --timeout=180
+incus list "$TARGET"

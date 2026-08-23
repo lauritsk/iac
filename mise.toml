@@ -1,5 +1,6 @@
 [tools]
 "aqua:coreos/butane" = "latest"
+"aqua:lxc/incus" = "latest"
 "pipx:ansible-core" = "latest"
 "pipx:ansible-lint" = "latest"
 
