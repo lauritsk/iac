@@ -9,7 +9,7 @@
   loop:
     - /mnt/fast/immich/postgres
     - /mnt/fast/immich/model-cache
-    - /mnt/fast/immich/library
+    - /mnt/slow/immich/library
 
 - name: Ensure Immich database password secret is present
   containers.podman.podman_secret:
@@ -105,6 +105,37 @@
     memory: 4G
     pids_limit: '512'
     cpus: '4'
+    env:
+      # IMMICH_ENV: production
+      # IMMICH_LOG_LEVEL: log
+      # NO_COLOR: false
+      # IMMICH_HOST: 0.0.0.0
+      # IMMICH_PORT: 3003
+      # MACHINE_LEARNING_MODEL_TTL: 300
+      # MACHINE_LEARNING_MODEL_TTL_POLL_S: 10
+      # MACHINE_LEARNING_CACHE_FOLDER: /cache
+      # MACHINE_LEARNING_REQUEST_THREADS: 4
+      # MACHINE_LEARNING_MODEL_INTER_OP_THREADS: 1
+      # MACHINE_LEARNING_MODEL_INTRA_OP_THREADS: 2
+      # MACHINE_LEARNING_WORKERS: 1
+      # MACHINE_LEARNING_HTTP_KEEPALIVE_TIMEOUT_S: 2
+      # MACHINE_LEARNING_WORKER_TIMEOUT: 300
+      # MACHINE_LEARNING_PRELOAD__CLIP__TEXTUAL: ''
+      # MACHINE_LEARNING_PRELOAD__CLIP__VISUAL: ''
+      # MACHINE_LEARNING_PRELOAD__FACIAL_RECOGNITION__RECOGNITION: ''
+      # MACHINE_LEARNING_PRELOAD__FACIAL_RECOGNITION__DETECTION: ''
+      # MACHINE_LEARNING_PRELOAD__OCR__RECOGNITION: ''
+      # MACHINE_LEARNING_PRELOAD__OCR__DETECTION: ''
+      # MACHINE_LEARNING_ANN: True
+      # MACHINE_LEARNING_ANN_FP16_TURBO: False
+      # MACHINE_LEARNING_ANN_TUNING_LEVEL: 2
+      # MACHINE_LEARNING_DEVICE_IDS: 0
+      # MACHINE_LEARNING_MAX_BATCH_SIZE__FACIAL_RECOGNITION: 1
+      # MACHINE_LEARNING_MAX_BATCH_SIZE__OCR: 6
+      # MACHINE_LEARNING_RKNN: True
+      # MACHINE_LEARNING_RKNN_THREADS: 1
+      # MACHINE_LEARNING_MODEL_ARENA: true
+      # MACHINE_LEARNING_OPENVINO_PRECISION: FP32
     group_add:
       - keep-groups
     security_opt:
@@ -132,16 +163,53 @@
     pids_limit: '512'
     cpus: '4'
     env:
-      DB_HOSTNAME: 127.0.0.1
-      DB_PORT: '5432'
-      DB_USERNAME: immich
-      DB_DATABASE_NAME: immich
+      # IMMICH_VERSION: v3
+      # UPLOAD_LOCATION: ''
+      # DB_DATA_LOCATION: ''
+      TZ: Europe/Tallinn
+      # IMMICH_ENV: production
+      # IMMICH_LOG_LEVEL: log
+      # IMMICH_LOG_FORMAT: console
+      # IMMICH_MEDIA_LOCATION: /data
+      # IMMICH_CONFIG_FILE: ''
+      # IMMICH_HELMET_FILE: false
+      # NO_COLOR: false
+      # CPU_CORES: 4
+      # IMMICH_API_METRICS_PORT: 8081
+      # IMMICH_MICROSERVICES_METRICS_PORT: 8082
+      # IMMICH_PROCESS_INVALID_IMAGES: false
+      # IMMICH_TRUSTED_PROXIES: ''
+      # IMMICH_IGNORE_MOUNT_CHECK_ERRORS: false
+      IMMICH_ALLOW_SETUP: false
+      # IMMICH_WORKERS_INCLUDE: ''
+      # IMMICH_WORKERS_EXCLUDE: ''
+      # IMMICH_HOST: 0.0.0.0
+      # IMMICH_PORT: 2283
+      # DB_URL_FILE: ''
+      DB_HOSTNAME_FILE: /run/secrets/immich_db_hostname
+      DB_PORT: 5432
+      DB_USERNAME_FILE: /run/secrets/immich_db_username
+      DB_PASSWORD_FILE: /run/secrets/immich_db_password
+      DB_DATABASE_NAME_FILE: /run/secrets/immich_db_name
+      # DB_SSL_MODE: ''
+      # DB_VECTOR_EXTENSION:
+      # DB_SKIP_MIGRATIONS: false
+      # DB_STORAGE_TYPE: SSD
+      # REDIS_URL: ''
+      # REDIS_SOCKET: ''
       REDIS_HOSTNAME: 127.0.0.1
-      REDIS_PORT: '6379'
+      REDIS_PORT: 6379
+      # REDIS_USERNAME: ''
+      # REDIS_PASSWORD_FILE: ''
+      # REDIS_DBINDEX: 0
+      # IMMICH_TELEMETRY_INCLUDE: ''
+      # IMMICH_TELEMETRY_EXCLUDE: ''
       IMMICH_MACHINE_LEARNING_URL: http://127.0.0.1:3003
     secrets:
-      - immich_db_password,type=env,target=DB_PASSWORD
-    timezone: Europe/Tallinn
+      - immich_db_hostname,type=mount,target=/run/secrets/immich_db_hostname
+      - immich_db_name,type=mount,target=/run/secrets/immich_db_name
+      - immich_db_username,type=mount,target=/run/secrets/immich_db_username
+      - immich_db_password,type=mount,target=/run/secrets/immich_db_password
     group_add:
       - keep-groups
     security_opt:
@@ -149,7 +217,7 @@
     cap_drop:
       - CAP_NET_RAW
     volume:
-      - /mnt/fast/immich/library:/data
+      - /mnt/slow/immich/library:/data
     device:
       - /dev/dri:/dev/dri
     healthcheck: curl -fsS http://127.0.0.1:2283/api/server/ping >/dev/null || exit 1
