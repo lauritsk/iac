@@ -22,8 +22,6 @@
       data: '{{ beszel_user_email }}'
     - name: beszel_user_password
       data: '{{ beszel_user_password }}'
-    - name: beszel_heartbeat_url
-      data: '{{ beszel_heartbeat_url }}'
   loop_control:
     label: '{{ item.name }}'
   no_log: true
@@ -54,6 +52,7 @@
       # DISABLE_PASSWORD_AUTH: false
       # HEARTBEAT_INTERVAL: 60
       # HEARTBEAT_METHOD: POST
+      # HEARTBEAT_URL: ''
       # MFA_OTP: true
       # OAUTH_DISABLE_POPUP: false
       # SHARE_ALL_SYSTEMS: false
@@ -63,7 +62,6 @@
       - beszel_auto_login,type=env,target=AUTO_LOGIN
       - beszel_user_email,type=env,target=USER_EMAIL
       - beszel_user_password,type=env,target=USER_PASSWORD
-      - beszel_heartbeat_url,type=env,target=HEARTBEAT_URL
     userns: keep-id:uid=1000,gid=1000
     read_only: true
     security_opt:
