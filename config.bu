@@ -17,16 +17,6 @@ storage:
       contents:
         inline: |
           hl01
-    - path: /etc/subuid
-      mode: 0644
-      contents:
-        inline: |
-          core:100000:65536
-    - path: /etc/subgid
-      mode: 0644
-      contents:
-        inline: |
-          core:100000:65536
     - path: /etc/flatcar/enabled-sysext.conf
       mode: 0644
       contents:
