@@ -33,11 +33,6 @@
     name: bichon
     state: quadlet
     image: docker.io/rustmailer/bichon:latest
-    label:
-      io.containers.autoupdate: registry
-    memory: 512M
-    pids_limit: '256'
-    cpus: '1'
     env:
       BICHON_ROOT_DIR: /data
       BICHON_ENCRYPT_PASSWORD_FILE: /run/secrets/bichon_encrypt_password
@@ -68,21 +63,26 @@
       # BICHON_ENVELOPE_CACHE_SIZE: 134217728
     secrets:
       - bichon_encrypt_password,type=mount,target=/run/secrets/bichon_encrypt_password
-    userns: keep-id:uid=1000,gid=1000
-    read_only: true
-    security_opt:
-      - no-new-privileges
+    label:
+      io.containers.autoupdate: registry
+    network:
+      - proxy.network
     volume:
       - /mnt/fast/bichon/data:/data
       - /mnt/fast/bichon/data/bichon-indices:/data/bichon-indices
       - /mnt/slow/bichon/data/bichon-storage:/data/bichon-storage
-    network:
-      - proxy.network
+    read_only: true
+    user: 1000:1000
+    userns: keep-id:uid=1000,gid=1000
+    security_opt:
+      - no-new-privileges
+    memory: 512M
+    pids_limit: '256'
+    cpus: '1'
     healthcheck: curl -fsS http://127.0.0.1:15630/api/status >/dev/null || exit 1
+    restart_policy: always
     quadlet_options:
       - |
         [Install]
         WantedBy=default.target
-    user: 1000:1000
-    restart_policy: always
   notify: Restart Bichon service

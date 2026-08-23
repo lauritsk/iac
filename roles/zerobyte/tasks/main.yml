@@ -27,35 +27,35 @@
   containers.podman.podman_container:
     name: zerobyte
     state: quadlet
-    image: ghcr.io/nicotsx/zerobyte:latest
-    label:
-      io.containers.autoupdate: registry
     hostname: homelab
-    memory: 2G
-    pids_limit: '512'
-    cpus: '2'
+    image: ghcr.io/nicotsx/zerobyte:latest
     env:
       TZ: Europe/Tallinn
       BASE_URL: https://zerobyte.cormo-tegu.ts.net
       APP_SECRET_FILE: /run/secrets/zerobyte_app_secret
     secrets:
       - zerobyte_app_secret,type=mount,target=/run/secrets/zerobyte_app_secret,uid=1000,gid=1000,mode=0400
-    userns: keep-id:uid=1000,gid=1000
-    read_only: true
-    security_opt:
-      - no-new-privileges
-      - label=disable
+    label:
+      io.containers.autoupdate: registry
+    network:
+      - proxy.network
     volume:
       - /mnt/fast/zerobyte/data:/var/lib/zerobyte
       - /mnt/slow:/mnt/slow:ro
       - /mnt/fast:/mnt/fast:ro
-    network:
-      - proxy.network
+    read_only: true
+    user: 1000:1000
+    userns: keep-id:uid=1000,gid=1000
+    security_opt:
+      - no-new-privileges
+      - label=disable
+    memory: 2G
+    pids_limit: '512'
+    cpus: '2'
     healthcheck: wget -qO- http://127.0.0.1:4096/api/healthcheck >/dev/null || exit 1
+    restart_policy: always
     quadlet_options:
       - |
         [Install]
         WantedBy=default.target
-    user: 1000:1000
-    restart_policy: always
   notify: Restart Zerobyte service

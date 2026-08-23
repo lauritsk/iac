@@ -19,17 +19,12 @@
     name: radarr
     state: quadlet
     image: lscr.io/linuxserver/radarr:latest
-    label:
-      io.containers.autoupdate: registry
-    memory: 1G
-    pids_limit: '256'
-    cpus: '2'
     env:
       TZ: Europe/Tallinn
-    userns: keep-id:uid=1000,gid=1000
-    read_only: true
-    security_opt:
-      - no-new-privileges
+    label:
+      io.containers.autoupdate: registry
+    network:
+      - proxy.network
     mount:
       - type=tmpfs,destination=/run,U=true,exec
       - type=tmpfs,destination=/tmp,U=true,exec
@@ -37,13 +32,18 @@
     volume:
       - /mnt/fast/radarr/config:/config
       - /mnt/slow:/data
-    network:
-      - proxy.network
+    read_only: true
+    user: 1000:1000
+    userns: keep-id:uid=1000,gid=1000
+    security_opt:
+      - no-new-privileges
+    memory: 1G
+    pids_limit: '256'
+    cpus: '2'
     healthcheck: curl -fsS http://127.0.0.1:7878/ >/dev/null || exit 1
+    restart_policy: always
     quadlet_options:
       - |
         [Install]
         WantedBy=default.target
-    user: 1000:1000
-    restart_policy: always
   notify: Restart Radarr service

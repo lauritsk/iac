@@ -39,11 +39,6 @@
     name: beszel
     state: quadlet
     image: docker.io/henrygd/beszel:latest
-    label:
-      io.containers.autoupdate: registry
-    memory: 1G
-    pids_limit: '256'
-    cpus: '1'
     env:
       APP_URL: https://beszel.cormo-tegu.ts.net
       CHECK_UPDATES: true
@@ -62,19 +57,24 @@
       - beszel_auto_login,type=env,target=AUTO_LOGIN
       - beszel_user_email,type=env,target=USER_EMAIL
       - beszel_user_password,type=env,target=USER_PASSWORD
-    userns: keep-id:uid=1000,gid=1000
-    read_only: true
-    security_opt:
-      - no-new-privileges
-    volume:
-      - /mnt/fast/beszel/data:/beszel_data
+    label:
+      io.containers.autoupdate: registry
     network:
       - proxy.network
+    volume:
+      - /mnt/fast/beszel/data:/beszel_data
+    read_only: true
+    user: 1000:1000
+    userns: keep-id:uid=1000,gid=1000
+    security_opt:
+      - no-new-privileges
+    memory: 1G
+    pids_limit: '256'
+    cpus: '1'
     healthcheck: CMD /beszel health --url http://localhost:8090
+    restart_policy: always
     quadlet_options:
       - |
         [Install]
         WantedBy=default.target
-    user: 1000:1000
-    restart_policy: always
   notify: Restart Beszel service

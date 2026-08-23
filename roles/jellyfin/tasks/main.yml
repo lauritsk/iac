@@ -25,11 +25,6 @@
     name: jellyfin
     state: quadlet
     image: ghcr.io/jellyfin/jellyfin:latest
-    label:
-      io.containers.autoupdate: registry
-    memory: 4G
-    pids_limit: '512'
-    cpus: '4'
     env:
       TZ: Europe/Tallinn
       # JELLYFIN_DATA_DIR: /data
@@ -41,12 +36,10 @@
       # JELLYFIN_FFmpeg__probesize: "1G"
       # JELLYFIN_FFmpeg__analyzeduration: "200M"
       JELLYFIN_PublishedServerUrl: https://jellyfin.cormo-tegu.ts.net
-    userns: keep-id:uid=1000,gid=1000
-    group_add:
-      - keep-groups
-    read_only: true
-    security_opt:
-      - no-new-privileges
+    label:
+      io.containers.autoupdate: registry
+    network:
+      - proxy.network
     mount:
       - type=tmpfs,destination=/run,U=true,exec
       - type=tmpfs,destination=/tmp,U=true,exec
@@ -58,15 +51,22 @@
       # - /mnt/fast/jellyfin/web:/web
       # - /mnt/fast/jellyfin/logs:/logs
       - /mnt/slow:/media
-    network:
-      - proxy.network
+    read_only: true
+    user: 1000:1000
+    userns: keep-id:uid=1000,gid=1000
+    group_add:
+      - keep-groups
+    security_opt:
+      - no-new-privileges
+    memory: 4G
+    pids_limit: '512'
+    cpus: '4'
     device:
       - /dev/dri/:/dev/dri/
     healthcheck: curl --noproxy localhost -Lk -fsS http://127.0.0.1:8096/health || exit 1
+    restart_policy: always
     quadlet_options:
       - |
         [Install]
         WantedBy=default.target
-    user: 1000:1000
-    restart_policy: always
   notify: Restart Jellyfin service
