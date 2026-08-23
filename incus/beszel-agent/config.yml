@@ -35,6 +35,12 @@ devices:
     source: beszel-agent-data
     path: /var/lib/beszel-agent
 
+  systemd-dbus:
+    type: disk
+    source: /run/dbus/system_bus_socket
+    path: /run/dbus/system_bus_socket
+    readonly: "true"
+
   nvme0:
     type: unix-char
     source: /dev/nvme0

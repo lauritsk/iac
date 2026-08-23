@@ -85,6 +85,7 @@
       - /mnt/fast/beszel-agent/data:/var/lib/beszel-agent
       - /mnt/fast/.beszel:/extra-filesystems/incus_fast__Fast:ro
       - /mnt/slow/.beszel:/extra-filesystems/incus_slow__Slow:ro
+      - /run/dbus/system_bus_socket:/var/run/dbus/system_bus_socket:ro
       - '%t/podman/podman.sock:/var/run/docker.sock:ro'
     user: 1000:1000
     userns: keep-id:uid=1000,gid=1000
