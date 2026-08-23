@@ -27,11 +27,11 @@
     image: ghcr.io/jellyfin/jellyfin:latest
     env:
       TZ: Europe/Tallinn
-      # JELLYFIN_DATA_DIR: /data
-      # JELLYFIN_CONFIG_DIR: /config
-      # JELLYFIN_CACHE_DIR: /cache
-      # JELLYFIN_WEB_DIR: /web
-      # JELLYFIN_LOG_DIR: /logs
+      JELLYFIN_DATA_DIR: /config
+      JELLYFIN_CONFIG_DIR: /config/config
+      JELLYFIN_CACHE_DIR: /cache
+      JELLYFIN_WEB_DIR: /jellyfin/jellyfin-web
+      JELLYFIN_LOG_DIR: /config/log
       # JELLYFIN_hostwebclient: True
       # JELLYFIN_FFmpeg__probesize: "1G"
       # JELLYFIN_FFmpeg__analyzeduration: "200M"

@@ -40,6 +40,10 @@ storage:
     - path: /etc/sysupdate.d/noop.conf
       contents:
         source: https://extensions.flatcar.org/extensions/noop.conf
+    - path: /etc/sysctl.d/90-valkey.conf
+      contents:
+        inline: |
+          vm.overcommit_memory = 1
     - path: /etc/sysctl.d/99-tailscale.conf
       contents:
         inline: |

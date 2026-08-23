@@ -127,6 +127,7 @@
     pod: immich.pod
     image: ghcr.io/immich-app/immich-machine-learning:release-openvino
     env:
+      MPLCONFIGDIR: /tmp/matplotlib
       # IMMICH_ENV: production
       # IMMICH_LOG_LEVEL: log
       # NO_COLOR: false

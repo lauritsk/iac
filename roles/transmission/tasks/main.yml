@@ -1,11 +1,14 @@
 ---
-- name: Ensure Transmission directory exists
+- name: Ensure Transmission directories exist
   ansible.builtin.file:
-    path: /mnt/fast/transmission/config
+    path: '{{ item }}'
     state: directory
     owner: core
     group: core
     mode: '0700'
+  loop:
+    - /mnt/fast/transmission/config
+    - /mnt/fast/transmission/watch
 
 - name: Ensure Transmission password secret is present
   containers.podman.podman_secret:
@@ -44,6 +47,7 @@
       - type=tmpfs,destination=/var/tmp,U=true,exec
     volume:
       - /mnt/fast/transmission/config:/config
+      - /mnt/fast/transmission/watch:/watch
       - /mnt/slow:/data
     read_only: true
     user: 1000:1000
