@@ -50,7 +50,7 @@
     pull: true
   loop:
     - ghcr.io/immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0
-    - dhi.io/valkey:9
+    - docker.io/valkey/valkey:9
     - ghcr.io/immich-app/immich-machine-learning:release-openvino
     - ghcr.io/immich-app/immich-server:release
   notify: Restart Immich pod service
@@ -101,7 +101,7 @@
   containers.podman.podman_container:
     name: immich-valkey
     state: quadlet
-    image: dhi.io/valkey:9
+    image: docker.io/valkey/valkey:9
     label:
       io.containers.autoupdate: registry
     pod: immich.pod
@@ -115,7 +115,7 @@
       - CAP_NET_RAW
     volume:
       - /mnt/fast/immich/valkey/valkey.conf:/etc/valkey/valkey.conf:ro
-    # healthcheck: valkey-cli ping || exit 1
+    healthcheck: valkey-cli -a $(cat /run/secrets/valkey_password) ping || exit 1
     user: 1000:1000
     restart_policy: always
   notify: Restart Immich pod service
