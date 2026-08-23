@@ -39,8 +39,7 @@
       - /mnt/fast/beszel/socket:/beszel_socket
     network:
       - proxy.network
-    publish:
-      - 127.0.0.1:8090:8090
+    healthcheck: /beszel health --url http://localhost:8090
     quadlet_options:
       - |
         [Install]
