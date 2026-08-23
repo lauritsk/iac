@@ -11,3 +11,8 @@
 - manually import failed radarr/sonarr downloads
 - increase cpu/memory/disk for hl01
 - run beszel-agent on hv01 directly as well as a container?
+- reconfigure bichon
+- add shows sass and mia wanted
+- review icloud app passwords
+- upgrade immich db password
+- move bichon, immich library to /mnt/slow
