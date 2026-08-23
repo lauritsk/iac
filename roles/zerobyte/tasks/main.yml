@@ -46,7 +46,7 @@
       - no-new-privileges
       - label=disable
     volume:
-      - /mnt/fast/zerobyte/data:/var/lib/zerobyte:Z
+      - /mnt/fast/zerobyte/data:/var/lib/zerobyte
       - /mnt/slow:/mnt/slow:ro
       - /mnt/fast:/mnt/fast:ro
     network:

@@ -63,8 +63,8 @@
       /tmp: rw,nosuid,nodev,mode=1777
       /run: rw,nosuid,nodev,mode=755
     volume:
-      - /mnt/fast/tailscale/data:/var/lib/tailscale:Z
-      - /mnt/fast/tailscale/config/serve.json:/config/serve.json:Z,ro
+      - /mnt/fast/tailscale/data:/var/lib/tailscale
+      - /mnt/fast/tailscale/config/serve.json:/config/serve.json:ro
     network:
       - proxy.network
     quadlet_options:

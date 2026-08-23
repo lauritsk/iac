@@ -46,8 +46,8 @@
     mount:
       - type=tmpfs,destination=/run,U=true,exec
     volume:
-      - /mnt/fast/transmission/config:/config:Z
-      - /mnt/slow:/data:z
+      - /mnt/fast/transmission/config:/config
+      - /mnt/slow:/data
     network:
       - proxy.network
     healthcheck: curl -fsS -u "$USER:$(cat /run/secrets/transmission_password)" http://127.0.0.1:9091/transmission/web/ >/dev/null || exit 1

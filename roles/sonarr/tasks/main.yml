@@ -34,8 +34,8 @@
     mount:
       - type=tmpfs,destination=/run,U=true,exec
     volume:
-      - /mnt/fast/sonarr/config:/config:Z
-      - /mnt/slow:/data:z
+      - /mnt/fast/sonarr/config:/config
+      - /mnt/slow:/data
     network:
       - proxy.network
     healthcheck: curl -fsS http://127.0.0.1:8989/ >/dev/null || exit 1

@@ -32,7 +32,7 @@
       - label=disable
     volume:
       - '%t/podman/podman.sock:/var/run/docker.sock:ro'
-      - /mnt/fast/uptime-kuma/data:/app/data:Z
+      - /mnt/fast/uptime-kuma/data:/app/data
     network:
       - proxy.network
     quadlet_options:
