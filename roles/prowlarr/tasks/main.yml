@@ -34,7 +34,7 @@
     mount:
       - type=tmpfs,destination=/run,U=true,exec
     volume:
-      - /mnt/fast/prowlarr/config:/config:Z
+      - /mnt/fast/prowlarr/config:/config
     network:
       - proxy.network
     healthcheck: curl -fsS http://127.0.0.1:9696/ >/dev/null || exit 1

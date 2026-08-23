@@ -67,7 +67,7 @@
     cap_drop:
       - CAP_NET_RAW
     volume:
-      - /mnt/fast/immich/postgres:/var/lib/postgresql/data:Z
+      - /mnt/fast/immich/postgres:/var/lib/postgresql/data
     shm_size: 128m
     healthcheck: pg_isready -U immich -d immich
     user: 1000:1000
@@ -112,7 +112,7 @@
     cap_drop:
       - CAP_NET_RAW
     volume:
-      - /mnt/fast/immich/model-cache:/cache:Z
+      - /mnt/fast/immich/model-cache:/cache
     device:
       - /dev/dri:/dev/dri
     healthcheck: python3 -m urllib.request http://127.0.0.1:3003/
@@ -149,7 +149,7 @@
     cap_drop:
       - CAP_NET_RAW
     volume:
-      - /mnt/fast/immich/library:/data:Z
+      - /mnt/fast/immich/library:/data
     device:
       - /dev/dri:/dev/dri
     healthcheck: curl -fsS http://127.0.0.1:2283/api/server/ping >/dev/null || exit 1

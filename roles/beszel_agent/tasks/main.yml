@@ -51,8 +51,8 @@
       - no-new-privileges
       - label=disable
     volume:
-      - /mnt/fast/beszel-agent/data:/var/lib/beszel-agent:Z
-      - /mnt/fast/beszel/socket:/beszel_socket:z
+      - /mnt/fast/beszel-agent/data:/var/lib/beszel-agent
+      - /mnt/fast/beszel/socket:/beszel_socket
       - '%t/podman/podman.sock:/var/run/docker.sock:ro'
     network:
       - host

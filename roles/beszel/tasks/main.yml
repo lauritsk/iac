@@ -35,8 +35,8 @@
     security_opt:
       - no-new-privileges
     volume:
-      - /mnt/fast/beszel/data:/beszel_data:Z
-      - /mnt/fast/beszel/socket:/beszel_socket:z
+      - /mnt/fast/beszel/data:/beszel_data
+      - /mnt/fast/beszel/socket:/beszel_socket
     network:
       - proxy.network
     publish:

@@ -54,7 +54,7 @@
     mount:
       - type=tmpfs,destination=/tmp,U=true
     volume:
-      - /mnt/fast/recyclarr/config:/config:Z
+      - /mnt/fast/recyclarr/config:/config
     network:
       - proxy.network
     healthcheck: pidof supercronic >/dev/null && recyclarr --version >/dev/null || exit 1

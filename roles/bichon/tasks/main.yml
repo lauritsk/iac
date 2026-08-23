@@ -43,7 +43,7 @@
     security_opt:
       - no-new-privileges
     volume:
-      - /mnt/fast/bichon/data:/data:Z
+      - /mnt/fast/bichon/data:/data
     network:
       - proxy.network
     healthcheck: curl -fsS http://127.0.0.1:15630/api/status >/dev/null || exit 1

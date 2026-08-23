@@ -40,9 +40,9 @@
     mount:
       - type=tmpfs,destination=/run,U=true,exec
     volume:
-      - /mnt/fast/jellyfin/config:/config:Z
-      - /mnt/fast/jellyfin/cache:/cache:Z
-      - /mnt/slow:/media:z
+      - /mnt/fast/jellyfin/config:/config
+      - /mnt/fast/jellyfin/cache:/cache
+      - /mnt/slow:/media
     network:
       - proxy.network
     device:
