@@ -71,7 +71,7 @@ trap cleanup ERR
 
 incus config device add "$TARGET" fast disk io.bus=virtiofs path=/mnt/fast pool=fast source=fast
 incus config device add "$TARGET" slow disk io.bus=virtiofs path=/mnt/slow pool=slow source=slow
-incus config device add "$TARGET" gpu gpu gputype=native-context pci="$GPU_PCI"
+incus config device add "$TARGET" gpu gpu gputype=physical pci="$GPU_PCI"
 incus config device add "$TARGET" tpm tpm
 
 DB_JSON="$WORKDIR/secure-boot-db.json"
