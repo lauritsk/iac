@@ -12,7 +12,7 @@
 
 - name: Ensure Jellyfin image is present
   containers.podman.podman_image:
-    name: lscr.io/linuxserver/jellyfin:latest
+    name: ghcr.io/jellyfin/jellyfin:latest
     state: present
     pull: true
     auth_file: /home/core/.config/containers/auth.json
@@ -22,7 +22,7 @@
   containers.podman.podman_container:
     name: jellyfin
     state: quadlet
-    image: lscr.io/linuxserver/jellyfin:latest
+    image: ghcr.io/jellyfin/jellyfin:latest
     label:
       io.containers.autoupdate: registry
     memory: 4G
