@@ -13,18 +13,15 @@ passwd:
 storage:
   files:
     - path: /etc/hostname
-      mode: 0644
       contents:
         inline: |
           hl01
     - path: /etc/flatcar/enabled-sysext.conf
-      mode: 0644
       contents:
         inline: |
           podman
           python
     - path: /opt/extensions/tailscale/tailscale-v1.102.2-x86-64.raw
-      mode: 0644
       contents:
         source: https://extensions.flatcar.org/extensions/tailscale-v1.102.2-x86-64.raw
     - path: /etc/sysupdate.tailscale.d/tailscale.conf
@@ -34,13 +31,11 @@ storage:
       contents:
         source: https://extensions.flatcar.org/extensions/noop.conf
     - path: /etc/sysctl.d/99-tailscale.conf
-      mode: 0644
       contents:
         inline: |
           net.ipv4.ip_forward = 1
           net.ipv6.conf.all.forwarding = 1
     - path: /var/lib/systemd/linger/core
-      mode: 0644
   links:
     - path: /etc/extensions/docker-flatcar.raw
       target: /dev/null
@@ -48,21 +43,18 @@ storage:
     - path: /etc/extensions/containerd-flatcar.raw
       target: /dev/null
       overwrite: true
-    - path: /etc/systemd/system/multi-user.target.wants/tailscaled.service
-      target: /usr/local/lib/systemd/system/tailscaled.service
-      overwrite: true
     - target: /opt/extensions/tailscale/tailscale-v1.102.2-x86-64.raw
       path: /etc/extensions/tailscale.raw
       hard: false
     - path: /etc/systemd/user/sockets.target.wants/podman.socket
       target: /usr/lib/systemd/user/podman.socket
-      hard: false
     - path: /etc/systemd/user/timers.target.wants/podman-auto-update.timer
       target: /usr/lib/systemd/user/podman-auto-update.timer
-      hard: false
 
 systemd:
   units:
+    - name: tailscaled.service
+      enabled: true
     - name: mnt-slow.mount
       enabled: true
       contents: |
