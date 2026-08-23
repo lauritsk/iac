@@ -7,11 +7,8 @@
     group: core
     mode: '0700'
   loop:
-    # - /mnt/fast/jellyfin/data
     - /mnt/fast/jellyfin/config
     - /mnt/fast/jellyfin/cache
-    # - /mnt/fast/jellyfin/web
-    # - /mnt/fast/jellyfin/logs
 
 - name: Ensure Jellyfin image is present
   containers.podman.podman_image:
