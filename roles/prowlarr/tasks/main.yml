@@ -33,6 +33,8 @@
       - no-new-privileges
     mount:
       - type=tmpfs,destination=/run,U=true,exec
+      - type=tmpfs,destination=/tmp,U=true,exec
+      - type=tmpfs,destination=/var/tmp,U=true,exec
     volume:
       - /mnt/fast/prowlarr/config:/config
     network:
