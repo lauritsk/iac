@@ -2,4 +2,20 @@
 
 - finish configuring beszel security
 - manually import failed radarr/sonarr downloads
-- setup tsidp again and configure services to use it starting with incusos
+- deploy with config for
+  - immich
+  - beszel
+  - transmission
+  - radarr
+  - sonarr
+  - prowlarr???
+- specify api key via env in radarr, sonarr
+- specify all config possible in ansible for
+  - tailscale
+  - transmission
+  - prowlarr
+  - sonarr
+  - radarr
+  - recyclarr
+  - zerobyte
+- add gpu monitoring to hl01 beszel agent
