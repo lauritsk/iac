@@ -18,7 +18,7 @@
     force: true
   loop:
     - name: transmission_username
-      data: '{{ transmission_rpc_username }}'
+      data: '{{ transmission_username }}'
     - name: transmission_password
       data: '{{ transmission_password }}'
   loop_control:
