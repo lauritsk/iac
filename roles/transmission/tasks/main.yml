@@ -10,12 +10,29 @@
     - /mnt/fast/transmission/config
     - /mnt/fast/transmission/watch
 
-- name: Ensure Transmission password secret is present
+- name: Ensure Transmission secrets are present
   containers.podman.podman_secret:
-    name: transmission_password
-    data: '{{ transmission_password }}'
+    name: '{{ item.name }}'
+    data: '{{ item.data }}'
     state: present
     force: true
+  loop:
+    - name: transmission_username
+      data: '{{ transmission_rpc_username }}'
+    - name: transmission_password
+      data: '{{ transmission_password }}'
+  loop_control:
+    label: '{{ item.name }}'
+  no_log: true
+  notify: Restart Transmission service
+
+- name: Ensure Transmission configuration is deployed
+  ansible.builtin.copy:
+    src: settings.json
+    dest: /mnt/fast/transmission/config/settings.json
+    owner: core
+    group: core
+    mode: '0600'
   no_log: true
   notify: Restart Transmission service
 
@@ -32,10 +49,18 @@
     state: quadlet
     image: lscr.io/linuxserver/transmission:latest
     env:
+      # PUID: 1000
+      # PGID: 1000
       TZ: Europe/Tallinn
-      USER: karl
+      # TRANSMISSION_WEB_HOME: ''
+      FILE__USER: /run/secrets/transmission_username
       FILE__PASS: /run/secrets/transmission_password
+      # WHITELIST: ''
+      # PEERPORT: 51413
+      # HOST_WHITELIST: ''
+      # UMASK: '022'
     secrets:
+      - transmission_username,type=mount,target=/run/secrets/transmission_username,uid=1000,gid=1000,mode=0400
       - transmission_password,type=mount,target=/run/secrets/transmission_password,uid=1000,gid=1000,mode=0400
     label:
       io.containers.autoupdate: registry
@@ -57,7 +82,7 @@
     memory: 1G
     pids_limit: '256'
     cpus: '2'
-    healthcheck: curl -fsS -u "$USER:$(cat /run/secrets/transmission_password)" http://127.0.0.1:9091/transmission/web/ >/dev/null || exit 1
+    healthcheck: curl -fsS -u "$(cat /run/secrets/transmission_username):$(cat /run/secrets/transmission_password)" http://127.0.0.1:9091/transmission/web/ >/dev/null || exit 1
     restart_policy: always
     quadlet_options:
       - |
