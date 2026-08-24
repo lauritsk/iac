@@ -7,6 +7,15 @@
     group: core
     mode: '0700'
 
+- name: Ensure Sonarr API key secret is present
+  containers.podman.podman_secret:
+    name: sonarr_api_key
+    data: '{{ sonarr_api_key }}'
+    state: present
+    force: true
+  no_log: true
+  notify: Restart Sonarr service
+
 - name: Ensure Sonarr image is present
   containers.podman.podman_image:
     name: lscr.io/linuxserver/sonarr:latest
@@ -20,7 +29,49 @@
     state: quadlet
     image: lscr.io/linuxserver/sonarr:latest
     env:
+      # PUID: 1000
+      # PGID: 1000
       TZ: Europe/Tallinn
+      # SONARR__APP__INSTANCENAME: ''
+      # SONARR__APP__THEME: ''
+      # SONARR__APP__LAUNCHBROWSER: ''
+      FILE__SONARR__AUTH__APIKEY: /run/secrets/sonarr_api_key
+      # SONARR__AUTH__ENABLED: ''
+      # SONARR__AUTH__METHOD: ''
+      # SONARR__AUTH__REQUIRED: ''
+      # SONARR__AUTH__TRUSTCGNATIPADDRESSES: ''
+      # SONARR__LOG__LEVEL: ''
+      # SONARR__LOG__FILTERSENTRYEVENTS: ''
+      # SONARR__LOG__ROTATE: ''
+      # SONARR__LOG__SIZELIMIT: ''
+      # SONARR__LOG__SQL: ''
+      # SONARR__LOG__CONSOLELEVEL: ''
+      # SONARR__LOG__CONSOLEFORMAT: ''
+      # SONARR__LOG__ANALYTICSENABLED: ''
+      # SONARR__LOG__SYSLOGSERVER: ''
+      # SONARR__LOG__SYSLOGPORT: ''
+      # SONARR__LOG__SYSLOGLEVEL: ''
+      # SONARR__LOG__DBENABLED: ''
+      # SONARR__POSTGRES__HOST: ''
+      # SONARR__POSTGRES__PORT: ''
+      # SONARR__POSTGRES__USER: ''
+      # SONARR__POSTGRES__PASSWORD: ''
+      # SONARR__POSTGRES__MAINDB: ''
+      # SONARR__POSTGRES__LOGDB: ''
+      # SONARR__SERVER__URLBASE: ''
+      # SONARR__SERVER__BINDADDRESS: ''
+      # SONARR__SERVER__PORT: ''
+      # SONARR__SERVER__ENABLESSL: ''
+      # SONARR__SERVER__SSLPORT: ''
+      # SONARR__SERVER__SSLCERTPATH: ''
+      # SONARR__SERVER__SSLCERTPASSWORD: ''
+      # SONARR__UPDATE__MECHANISM: ''
+      # SONARR__UPDATE__AUTOMATICALLY: ''
+      # SONARR__UPDATE__SCRIPTPATH: ''
+      # SONARR__UPDATE__BRANCH: ''
+      # UMASK: '022'
+    secrets:
+      - sonarr_api_key,type=mount,target=/run/secrets/sonarr_api_key,uid=1000,gid=1000,mode=0400
     label:
       io.containers.autoupdate: registry
     network:

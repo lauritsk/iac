@@ -7,6 +7,15 @@
     group: core
     mode: '0700'
 
+- name: Ensure Prowlarr API key secret is present
+  containers.podman.podman_secret:
+    name: prowlarr_api_key
+    data: '{{ prowlarr_api_key }}'
+    state: present
+    force: true
+  no_log: true
+  notify: Restart Prowlarr service
+
 - name: Ensure Prowlarr image is present
   containers.podman.podman_image:
     name: lscr.io/linuxserver/prowlarr:latest
@@ -20,7 +29,51 @@
     state: quadlet
     image: lscr.io/linuxserver/prowlarr:latest
     env:
+      # PUID: 1000
+      # PGID: 1000
       TZ: Europe/Tallinn
+      # PROWLARR__APP__INSTANCENAME: ''
+      # PROWLARR__APP__THEME: ''
+      # PROWLARR__APP__LAUNCHBROWSER: ''
+      FILE__PROWLARR__AUTH__APIKEY: /run/secrets/prowlarr_api_key
+      # PROWLARR__AUTH__ENABLED: ''
+      # PROWLARR__AUTH__METHOD: ''
+      # PROWLARR__AUTH__REQUIRED: ''
+      # PROWLARR__AUTH__TRUSTCGNATIPADDRESSES: ''
+      # PROWLARR__LOG__LEVEL: ''
+      # PROWLARR__LOG__FILTERSENTRYEVENTS: ''
+      # PROWLARR__LOG__ROTATE: ''
+      # PROWLARR__LOG__SIZELIMIT: ''
+      # PROWLARR__LOG__SQL: ''
+      # PROWLARR__LOG__CONSOLELEVEL: ''
+      # PROWLARR__LOG__CONSOLEFORMAT: ''
+      # PROWLARR__LOG__ANALYTICSENABLED: ''
+      # PROWLARR__LOG__SYSLOGSERVER: ''
+      # PROWLARR__LOG__SYSLOGPORT: ''
+      # PROWLARR__LOG__SYSLOGLEVEL: ''
+      # PROWLARR__LOG__DBENABLED: ''
+      # PROWLARR__POSTGRES__HOST: ''
+      # PROWLARR__POSTGRES__PORT: ''
+      # PROWLARR__POSTGRES__USER: ''
+      # PROWLARR__POSTGRES__PASSWORD: ''
+      # PROWLARR__POSTGRES__MAINDB: ''
+      # PROWLARR__POSTGRES__LOGDB: ''
+      # PROWLARR__POSTGRES__MAINDBCONNECTIONSTRING: ''
+      # PROWLARR__POSTGRES__LOGDBCONNECTIONSTRING: ''
+      # PROWLARR__SERVER__URLBASE: ''
+      # PROWLARR__SERVER__BINDADDRESS: ''
+      # PROWLARR__SERVER__PORT: ''
+      # PROWLARR__SERVER__ENABLESSL: ''
+      # PROWLARR__SERVER__SSLPORT: ''
+      # PROWLARR__SERVER__SSLCERTPATH: ''
+      # PROWLARR__SERVER__SSLCERTPASSWORD: ''
+      # PROWLARR__UPDATE__MECHANISM: ''
+      # PROWLARR__UPDATE__AUTOMATICALLY: ''
+      # PROWLARR__UPDATE__SCRIPTPATH: ''
+      # PROWLARR__UPDATE__BRANCH: ''
+      # UMASK: '022'
+    secrets:
+      - prowlarr_api_key,type=mount,target=/run/secrets/prowlarr_api_key,uid=1000,gid=1000,mode=0400
     label:
       io.containers.autoupdate: registry
     network:
