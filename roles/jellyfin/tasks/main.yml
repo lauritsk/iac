@@ -8,6 +8,8 @@
     mode: '0700'
   loop:
     - /mnt/fast/jellyfin/config
+    - /mnt/fast/jellyfin/config/config
+    - /mnt/fast/jellyfin/config/plugins/configurations
     - /mnt/fast/jellyfin/cache
 
 - name: Ensure Jellyfin image is present
@@ -29,7 +31,8 @@
       JELLYFIN_CACHE_DIR: /cache
       JELLYFIN_WEB_DIR: /jellyfin/jellyfin-web
       JELLYFIN_LOG_DIR: /config/log
-      # JELLYFIN_hostwebclient: True
+      # JELLYFIN_FFMPEG: /usr/lib/jellyfin-ffmpeg/ffmpeg
+      # JELLYFIN_hostwebclient: true
       # JELLYFIN_FFmpeg__probesize: "1G"
       # JELLYFIN_FFmpeg__analyzeduration: "200M"
       JELLYFIN_PublishedServerUrl: https://jellyfin.cormo-tegu.ts.net
