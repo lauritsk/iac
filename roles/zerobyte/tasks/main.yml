@@ -1,11 +1,24 @@
 ---
-- name: Ensure Zerobyte directory exists
+- name: Ensure Zerobyte directories exist
   ansible.builtin.file:
-    path: /mnt/fast/zerobyte/data
+    path: '{{ item }}'
     state: directory
     owner: core
     group: core
     mode: '0700'
+  loop:
+    - /mnt/fast/zerobyte/config
+    - /mnt/fast/zerobyte/data
+
+- name: Ensure Zerobyte provisioning configuration is deployed
+  ansible.builtin.template:
+    src: provisioning.json.j2
+    dest: /mnt/fast/zerobyte/config/provisioning.json
+    owner: core
+    group: core
+    mode: '0600'
+  no_log: true
+  notify: Restart Zerobyte service
 
 - name: Ensure Zerobyte application secret is present
   containers.podman.podman_secret:
@@ -30,9 +43,21 @@
     hostname: homelab
     image: ghcr.io/nicotsx/zerobyte:latest
     env:
-      TZ: Europe/Tallinn
       BASE_URL: https://zerobyte.cormo-tegu.ts.net
+      # APP_SECRET: ''
       APP_SECRET_FILE: /run/secrets/zerobyte_app_secret
+      # PORT: 4096
+      # RESTIC_HOSTNAME: zerobyte
+      # GOMAXPROCS: ''
+      TZ: Europe/Tallinn
+      # TRUST_PROXY: false
+      # TRUSTED_ORIGINS: ''
+      # WEBHOOK_ALLOWED_ORIGINS: ''
+      # WEBHOOK_TIMEOUT: 60
+      # LOG_LEVEL: info
+      # SERVER_IDLE_TIMEOUT: 60
+      # RCLONE_CONFIG_DIR: /root/.config/rclone
+      PROVISIONING_PATH: /config/provisioning.json
     secrets:
       - zerobyte_app_secret,type=mount,target=/run/secrets/zerobyte_app_secret,uid=1000,gid=1000,mode=0400
     label:
@@ -40,6 +65,7 @@
     network:
       - proxy.network
     volume:
+      - /mnt/fast/zerobyte/config/provisioning.json:/config/provisioning.json:ro
       - /mnt/fast/zerobyte/data:/var/lib/zerobyte
       - /mnt/slow:/mnt/slow:ro
       - /mnt/fast:/mnt/fast:ro
