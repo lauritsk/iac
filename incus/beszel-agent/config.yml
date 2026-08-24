@@ -7,6 +7,11 @@ config:
   security.privileged: "true"
   raw.lxc: "lxc.cap.drop="
 
+  snapshots.schedule: "@daily"
+  snapshots.expiry: "7d"
+  snapshots.schedule.stopped: "false"
+  snapshots.pattern: "auto-%Y%m%d-%H%M"
+
   limits.processes: "256"
 
   environment.DISABLE_SSH: "true"

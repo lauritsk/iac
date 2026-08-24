@@ -5,6 +5,11 @@ config:
   security.protection.delete: "true"
   security.secureboot: "true"
 
+  snapshots.schedule: "@daily"
+  snapshots.expiry: "7d"
+  snapshots.schedule.stopped: "false"
+  snapshots.pattern: "auto-%Y%m%d-%H%M"
+
   limits.cpu: "4"
   limits.memory: 8GiB
 
