@@ -34,33 +34,46 @@
     state: quadlet
     image: docker.io/rustmailer/bichon:latest
     env:
-      BICHON_ROOT_DIR: /data
-      BICHON_ENCRYPT_PASSWORD_FILE: /run/secrets/bichon_encrypt_password
+      # BICHON_LOG_LEVEL: info
       # BICHON_HTTP_PORT: 15630
       # BICHON_BIND_IP: 0.0.0.0
       BICHON_PUBLIC_URL: https://bichon.cormo-tegu.ts.net
       # BICHON_BASE_URL: /
-      # BICHON_WEBUI_TOKEN_EXPIRATION_HOURS: 168
-      # BICHON_HTTP_COMPRESSION_ENABLED: true
-      # BICHON_LOG_LEVEL: info
-      # BICHON_ANSI_LOGS: true
-      # BICHON_JSON_LOGS: false
-      # BICHON_LOG_TO_FILE: false
-      # BICHON_MAX_SERVER_LOG_FILES: 5
       BICHON_CORS_ORIGINS: https://bichon.cormo-tegu.ts.net
       # BICHON_CORS_MAX_AGE: 86400
+      # BICHON_ANSI_LOGS: true
+      # BICHON_LOG_TO_FILE: false
+      # BICHON_JSON_LOGS: false
+      # BICHON_MAX_SERVER_LOG_FILES: 5
+      # BICHON_ENCRYPT_PASSWORD: ''
+      BICHON_ENCRYPT_PASSWORD_FILE: /run/secrets/bichon_encrypt_password
+      # BICHON_WEBUI_TOKEN_EXPIRATION_HOURS: 168
+      BICHON_ROOT_DIR: /data
+      # BICHON_INDEX_DIR: ''
+      # BICHON_DATA_DIR: ''
       # BICHON_ENABLE_REST_HTTPS: false
+      # BICHON_HTTP_COMPRESSION_ENABLED: true
+      # BICHON_SYNC_CONCURRENCY: ''
+      # BICHON_IMAP_TIMEOUT_SECONDS: 90
       # BICHON_ENABLE_SMTP: false
+      # BICHON_TLS_KEY_PATH: ''
+      # BICHON_TLS_CERT_PATH: ''
       # BICHON_SMTP_PORT: 2525
       # BICHON_SMTP_ENCRYPTION: starttls
       # BICHON_SMTP_AUTH_REQUIRED: true
-      # BICHON_SMTP_TLS_KEY_PATH: ''
-      # BICHON_SMTP_TLS_CERT_PATH: ''
-      # BICHON_INDEX_DIR: '{root}/bichon-indices'
-      # BICHON_DATA_DIR: '{root}/bichon-storage'
-      # BICHON_SYNC_CONCURRENCY: num_cpus × 2
-      # BICHON_METADATA_CACHE_SIZE: 134217728
-      # BICHON_ENVELOPE_CACHE_SIZE: 134217728
+      # BICHON_ENABLE_IMAP: false
+      # BICHON_IMAP_PORT: 10143
+      # BICHON_IMAPS_PORT: 10993
+      # BICHON_IMAP_ENCRYPTION: none
+      # BICHON_OIDC_ENABLED: false
+      # BICHON_OIDC_ISSUER_URL: ''
+      # BICHON_OIDC_CLIENT_ID: ''
+      # BICHON_OIDC_CLIENT_SECRET: ''
+      # BICHON_OIDC_REDIRECT_URI: ''
+      # BICHON_UPLOAD_BODY_LIMIT_MB: 1100
+      # BICHON_WEB_MBOX_UPLOAD_LIMIT_MB: 1024
+      # BICHON_WEB_PST_UPLOAD_LIMIT_MB: 2048
+      # BICHON_AUDIT_RETENTION_DAYS: 90
     secrets:
       - bichon_encrypt_password,type=mount,target=/run/secrets/bichon_encrypt_password
     label:
