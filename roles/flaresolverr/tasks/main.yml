@@ -46,7 +46,6 @@
       - type=tmpfs,destination=/var/tmp,U=true,exec
     volume:
       - /mnt/fast/flaresolverr/config:/config
-    read_only: true
     user: 1000:1000
     userns: keep-id:uid=1000,gid=1000
     security_opt:
