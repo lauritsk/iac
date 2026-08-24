@@ -10,8 +10,8 @@
     - /mnt/fast/beszel/data
 
 - name: Ensure Beszel configuration is deployed
-  ansible.builtin.copy:
-    src: config.yml
+  ansible.builtin.template:
+    src: config.yml.j2
     dest: /mnt/fast/beszel/data/config.yml
     owner: core
     group: core
