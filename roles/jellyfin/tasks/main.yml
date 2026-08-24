@@ -8,8 +8,6 @@
     mode: '0700'
   loop:
     - /mnt/fast/jellyfin/config
-    - /mnt/fast/jellyfin/config/config
-    - /mnt/fast/jellyfin/config/plugins/configurations
     - /mnt/fast/jellyfin/cache
 
 - name: Ensure Jellyfin image is present
@@ -45,11 +43,8 @@
       - type=tmpfs,destination=/tmp,U=true,exec
       - type=tmpfs,destination=/var/tmp,U=true,exec
     volume:
-      # - /mnt/fast/jellyfin/data:/data
       - /mnt/fast/jellyfin/config:/config
       - /mnt/fast/jellyfin/cache:/cache
-      # - /mnt/fast/jellyfin/web:/web
-      # - /mnt/fast/jellyfin/logs:/logs
       - /mnt/slow:/media
     read_only: true
     user: 1000:1000
