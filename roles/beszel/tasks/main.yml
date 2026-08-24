@@ -9,6 +9,16 @@
   loop:
     - /mnt/fast/beszel/data
 
+- name: Ensure Beszel configuration is deployed
+  ansible.builtin.copy:
+    src: config.yml
+    dest: /mnt/fast/beszel/data/config.yml
+    owner: core
+    group: core
+    mode: '0400'
+  no_log: true
+  notify: Restart Beszel service
+
 - name: Ensure Beszel secrets are present
   containers.podman.podman_secret:
     name: '{{ item.name }}'

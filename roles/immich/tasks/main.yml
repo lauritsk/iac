@@ -7,10 +7,21 @@
     group: core
     mode: '0700'
   loop:
+    - /mnt/fast/immich/config
     - /mnt/fast/immich/postgres
     - /mnt/fast/immich/model-cache
     - /mnt/fast/immich/valkey
     - /mnt/slow/immich/library
+
+- name: Ensure Immich configuration is deployed
+  ansible.builtin.copy:
+    src: config.json
+    dest: /mnt/fast/immich/config/config.json
+    owner: core
+    group: core
+    mode: '0400'
+  no_log: true
+  notify: Restart Immich pod service
 
 - name: Ensure Immich Valkey config is present
   ansible.builtin.template:
@@ -193,7 +204,7 @@
       # IMMICH_LOG_LEVEL: log
       # IMMICH_LOG_FORMAT: console
       # IMMICH_MEDIA_LOCATION: /data
-      # IMMICH_CONFIG_FILE: ''
+      IMMICH_CONFIG_FILE: /config.json
       # IMMICH_HELMET_FILE: false
       # NO_COLOR: false
       # CPU_CORES: 4
@@ -236,6 +247,7 @@
     label:
       io.containers.autoupdate: registry
     volume:
+      - /mnt/fast/immich/config/config.json:/config.json:ro
       - /mnt/slow/immich/library:/data
     user: 1000:1000
     group_add:
