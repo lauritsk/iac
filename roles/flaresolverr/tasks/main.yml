@@ -1,0 +1,63 @@
+---
+- name: Ensure FlareSolverr directory exists
+  ansible.builtin.file:
+    path: /mnt/fast/flaresolverr/config
+    state: directory
+    owner: core
+    group: core
+    mode: '0700'
+
+- name: Ensure FlareSolverr image is present
+  containers.podman.podman_image:
+    name: ghcr.io/flaresolverr/flaresolverr:latest
+    state: present
+    pull: true
+  notify: Restart FlareSolverr service
+
+- name: Ensure FlareSolverr Quadlet is defined
+  containers.podman.podman_container:
+    name: flaresolverr
+    state: quadlet
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    env:
+      # LOG_LEVEL: info
+      # LOG_FILE: none
+      # LOG_HTML: false
+      # PROXY_URL: ''
+      # PROXY_USERNAME: ''
+      # PROXY_PASSWORD: ''
+      # CAPTCHA_SOLVER: none
+      TZ: Europe/Tallinn
+      # LANG: ''
+      # HEADLESS: true
+      # DISABLE_MEDIA: false
+      # TEST_URL: https://www.google.com
+      # PORT: 8191
+      # HOST: 0.0.0.0
+      # PROMETHEUS_ENABLED: false
+      # PROMETHEUS_PORT: 8192
+    label:
+      io.containers.autoupdate: registry
+    network:
+      - proxy.network
+    mount:
+      - type=tmpfs,destination=/run,U=true,exec
+      - type=tmpfs,destination=/tmp,U=true,exec
+      - type=tmpfs,destination=/var/tmp,U=true,exec
+    volume:
+      - /mnt/fast/flaresolverr/config:/config
+    read_only: true
+    user: 1000:1000
+    userns: keep-id:uid=1000,gid=1000
+    security_opt:
+      - no-new-privileges
+    memory: 2G
+    pids_limit: '512'
+    cpus: '2'
+    healthcheck: curl -fsS http://127.0.0.1:8191/health >/dev/null || exit 1
+    restart_policy: always
+    quadlet_options:
+      - |
+        [Install]
+        WantedBy=default.target
+  notify: Restart FlareSolverr service
