@@ -7,15 +7,6 @@
     group: core
     mode: '0700'
 
-- name: Ensure Recyclarr API key secret is present
-  containers.podman.podman_secret:
-    name: recyclarr_api_keys
-    data: '{{ recyclarr_api_keys }}'
-    state: present
-    force: true
-  no_log: true
-  notify: Restart Recyclarr service
-
 - name: Ensure Recyclarr configuration is deployed
   ansible.builtin.copy:
     src: recyclarr.yml
@@ -38,10 +29,15 @@
     state: quadlet
     image: ghcr.io/recyclarr/recyclarr:8
     env:
-      TZ: Europe/Tallinn
       CRON_SCHEDULE: 0 4 * * *
+      TZ: Europe/Tallinn
+      # RECYCLARR_CREATE_CONFIG: false
+      # RECYCLARR_CONFIG_DIR: /config
+      # RECYCLARR_DATA_DIR: /config
+      # NO_COLOR: ''
     secrets:
-      - recyclarr_api_keys,type=mount,target=/config/secrets.yml,uid=1000,gid=1000,mode=0400
+      - radarr_api_key,type=mount,target=/run/secrets/radarr_api_key,uid=1000,gid=1000,mode=0400
+      - sonarr_api_key,type=mount,target=/run/secrets/sonarr_api_key,uid=1000,gid=1000,mode=0400
     label:
       io.containers.autoupdate: registry
     network:

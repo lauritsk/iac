@@ -1,7 +1,7 @@
 radarr:
   movies:
     base_url: http://radarr:7878
-    api_key: !secret radarr_api_key
+    api_key: !file /run/secrets/radarr_api_key
     quality_definition:
       type: movie
     delete_old_custom_formats: true
@@ -52,7 +52,7 @@ radarr:
 sonarr:
   series:
     base_url: http://sonarr:8989
-    api_key: !secret sonarr_api_key
+    api_key: !file /run/secrets/sonarr_api_key
     quality_definition:
       type: series
     delete_old_custom_formats: true
