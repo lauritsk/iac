@@ -12,6 +12,8 @@
       tags: immich
     - role: jellyfin
       tags: jellyfin
+    - role: flaresolverr
+      tags: flaresolverr
     - role: prowlarr
       tags: prowlarr
     - role: radarr
