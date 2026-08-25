@@ -26,8 +26,6 @@
     state: present
     force: true
   loop:
-    - name: beszel_auto_login
-      data: '{{ beszel_auto_login }}'
     - name: beszel_user_email
       data: '{{ beszel_user_email }}'
     - name: beszel_user_password
@@ -51,6 +49,7 @@
     image: docker.io/henrygd/beszel:latest
     env:
       APP_URL: https://beszel.cormo-tegu.ts.net
+      # AUTO_LOGIN: ''
       CHECK_UPDATES: true
       # CONTAINER_DETAILS: true
       # CSP: ''
@@ -64,7 +63,6 @@
       # TRUSTED_AUTH_HEADER: ''
       USER_CREATION: true
     secrets:
-      - beszel_auto_login,type=env,target=AUTO_LOGIN
       - beszel_user_email,type=env,target=USER_EMAIL
       - beszel_user_password,type=env,target=USER_PASSWORD
     label:
