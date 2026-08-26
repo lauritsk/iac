@@ -1,0 +1,46 @@
+description: HomeLab container host (hl01)
+config:
+  boot.autostart: "true"
+  boot.autorestart: "true"
+  security.protection.delete: "true"
+  security.nesting: "true"
+  security.idmap.isolated: "true"
+  security.idmap.size: "200000"
+  user.user-data: |
+    #cloud-config
+    hostname: hl01
+    users:
+      - name: core
+        groups: [video, render, sudo]
+        shell: /bin/bash
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        ssh_authorized_keys:
+          - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIZnJ+xjVH8DBYOg6HQEa2VN0Np/e7Db13y0pCU/Qqlh karl@laurits.dev
+    packages:
+      - python3
+      - sudo
+    runcmd:
+      - ['sh', '-c', 'curl -fsSL https://tailscale.com/install.sh | sh']
+      - ['tailscale', 'up', '--auth-key=TS_AUTH_KEY']
+      - ['tailscale', 'set', '--ssh']
+devices:
+  root:
+    type: disk
+    pool: local
+    path: /
+    size: 32GiB
+  eth0:
+    type: nic
+    network: incusbr0
+  fast:
+    type: disk
+    pool: fast
+    source: fast
+    path: /mnt/fast
+  slow:
+    type: disk
+    pool: slow
+    source: slow
+    path: /mnt/slow
+  gpu:
+    type: gpu

@@ -1,24 +1,15 @@
 [tools]
-"aqua:coreos/butane" = "latest"
 "aqua:lxc/incus" = "latest"
 "pipx:ansible-core" = "latest"
 "pipx:ansible-lint" = "latest"
 
 [tasks.install]
 description = "Install Ansible collections"
-run = "ansible-galaxy collection install containers.podman"
-
-[tasks."ignition:generate"]
-description = "Generate the Ignition configuration"
-run = "butane --strict --pretty --files-dir . --output config.ign config.bu"
+run = "ansible-galaxy collection install ansible.posix containers.podman"
 
 [tasks."validate:json"]
 description = "Validate JSON files"
 run = "python3 -m json.tool roles/tailscale/files/serve.json >/dev/null"
-
-[tasks."validate:ignition"]
-description = "Validate the Butane configuration"
-run = "butane --strict --check --files-dir . config.bu"
 
 [tasks."validate:ansible"]
 description = "Validate the Ansible playbook"
@@ -33,7 +24,7 @@ run = "ANSIBLE_ASK_VAULT_PASS=true ansible-lint site.yml"
 
 [tasks.validate]
 description = "Run all local validation"
-depends = ["validate:json", "validate:ignition", "validate:ansible", "lint"]
+depends = ["validate:json", "validate:ansible", "lint"]
 
 [tasks."deploy:check"]
 description = "Preview the deployment"

@@ -1,4 +1,72 @@
 ---
+- name: Ensure base packages are installed
+  become: true
+  ansible.builtin.package:
+    name:
+      - python3
+      - sudo
+      - dbus
+      - unattended-upgrades
+      - podman
+    state: present
+
+- name: Ensure automatic updates are enabled in APT
+  become: true
+  ansible.builtin.copy:
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
+      APT::Periodic::AutocleanInterval "7";
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Ensure core user group memberships are enforced
+  become: true
+  ansible.builtin.user:
+    name: core
+    groups: [video, render, sudo]
+    append: true
+    shell: /bin/bash
+
+- name: Ensure SSH authorized keys are present
+  become: true
+  ansible.posix.authorized_key:
+    user: core
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIZnJ+xjVH8DBYOg6HQEa2VN0Np/e7Db13y0pCU/Qqlh karl@laurits.dev"
+    state: present
+
+- name: Ensure passwordless sudo is configured for core
+  become: true
+  ansible.builtin.copy:
+    content: "core ALL=(ALL) NOPASSWD:ALL\n"
+    dest: /etc/sudoers.d/core
+    owner: root
+    group: root
+    mode: '0440'
+    validate: /usr/sbin/visudo -cf %s
+
+- name: Ensure user lingering is enabled for core user
+  become: true
+  ansible.builtin.command:
+    cmd: loginctl enable-linger core
+    creates: /var/lib/systemd/linger/core
+
+- name: Ensure system Podman socket is running
+  become: true
+  ansible.builtin.systemd_service:
+    name: podman.socket
+    enabled: true
+    state: started
+
+- name: Ensure rootless Podman auto-update timer is running
+  ansible.builtin.systemd_service:
+    name: podman-auto-update.timer
+    scope: user
+    enabled: true
+    state: started
+
 - name: Ensure proxy network Quadlet is defined
   containers.podman.podman_network:
     name: proxy
