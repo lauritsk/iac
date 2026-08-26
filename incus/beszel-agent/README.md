@@ -25,7 +25,7 @@ Create the OCI application container without starting it:
 
 ```bash
 incus init \
-  oci-docker:henrygd/beszel-agent:alpine \
+  oci-docker:henrygd/beszel-agent-intel:alpine \
   beszel-agent \
   < incus/beszel-agent/config.yml
 ```
