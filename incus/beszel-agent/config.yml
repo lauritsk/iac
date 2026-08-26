@@ -1,19 +1,15 @@
 description: Beszel agent for hv01
-
 config:
   boot.autostart: "true"
   boot.autorestart: "true"
   security.protection.delete: "true"
   security.privileged: "true"
   raw.lxc: "lxc.cap.drop="
-
   snapshots.schedule: "@daily"
   snapshots.expiry: "7d"
   snapshots.schedule.stopped: "false"
   snapshots.pattern: "auto-%Y%m%d-%H%M"
-
   limits.processes: "256"
-
   environment.DISABLE_SSH: "true"
   environment.HUB_URL: "https://beszel.cormo-tegu.ts.net"
   environment.LISTEN: "45876"
@@ -22,44 +18,40 @@ config:
   environment.TOKEN_FILE: "/var/lib/beszel-agent/token"
   environment.SMART_DEVICES: "/dev/nvme0,/dev/sda:sntasmedia,/dev/sdb:sat"
   environment.SMART_INTERVAL: "1h"
-
 devices:
   root:
     type: disk
     pool: local
     path: /
     size: 1GiB
-
   eth0:
     type: nic
     network: incusbr0
-
   data:
     type: disk
     pool: local
     source: beszel-agent-data
     path: /var/lib/beszel-agent
-
   systemd-dbus:
     type: disk
     source: /run/dbus/system_bus_socket
     path: /run/dbus/system_bus_socket
     readonly: "true"
-
   nvme0:
     type: unix-char
     source: /dev/nvme0
     path: /dev/nvme0
     required: "true"
-
   sda:
     type: unix-block
     source: /dev/sda
     path: /dev/sda
     required: "true"
-
   sdb:
     type: unix-block
     source: /dev/sdb
     path: /dev/sdb
     required: "true"
+  gpu:
+    type: gpu
+    mode: "0666"
