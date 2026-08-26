@@ -53,19 +53,15 @@
     cmd: loginctl enable-linger core
     creates: /var/lib/systemd/linger/core
 
-- name: Ensure system Podman socket is running
-  become: true
+- name: Ensure system Podman services are running for core user
   ansible.builtin.systemd_service:
-    name: podman.socket
-    enabled: true
-    state: started
-
-- name: Ensure rootless Podman auto-update timer is running
-  ansible.builtin.systemd_service:
-    name: podman-auto-update.timer
+    name: "{{ item }}"
     scope: user
     enabled: true
     state: started
+  loop:
+    - podman.socket
+    - podman-auto-update.timer
 
 - name: Ensure proxy network Quadlet is defined
   containers.podman.podman_network:
