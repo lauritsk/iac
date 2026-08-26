@@ -189,7 +189,8 @@
     pids_limit: '512'
     cpus: '4'
     device:
-      - /dev/dri:/dev/dri
+      - /dev/dri/card0:/dev/dri/card0
+      - /dev/dri/renderD128:/dev/dri/renderD128
     healthcheck: python3 -m urllib.request http://127.0.0.1:3003/
     restart_policy: always
   notify: Restart Immich pod service
@@ -266,8 +267,6 @@
     memory: 4G
     pids_limit: '512'
     cpus: '4'
-    device:
-      - /dev/dri:/dev/dri
     healthcheck: curl -fsS http://127.0.0.1:2283/api/server/ping >/dev/null || exit 1
     restart_policy: always
   notify: Restart Immich pod service
