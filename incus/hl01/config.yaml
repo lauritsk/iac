@@ -44,3 +44,4 @@ devices:
     path: /mnt/slow
   gpu:
     type: gpu
+    mode: "0666"
