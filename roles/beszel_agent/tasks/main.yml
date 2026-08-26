@@ -51,7 +51,7 @@
       # EXCLUDE_SMART: ''
       # EXIT_ON_DNS_ERROR: false
       # EXTRA_FILESYSTEMS: ''
-      FILESYSTEM: sda9
+      # FILESYSTEM: '/'
       # GPU_COLLECTOR: ''
       HUB_URL: https://beszel.cormo-tegu.ts.net
       # INTEL_GPU_DEVICE: ''
