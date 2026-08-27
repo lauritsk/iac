@@ -4,10 +4,10 @@
   roles:
     - role: common
       tags: common
-    - role: docktail
-      tags: docktail
     - role: tailscale
       tags: tailscale
+    - role: docktail
+      tags: docktail
     - role: bichon
       tags: bichon
     - role: immich
