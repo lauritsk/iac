@@ -4,6 +4,8 @@
   roles:
     - role: common
       tags: common
+    - role: docktail
+      tags: docktail
     - role: tailscale
       tags: tailscale
     - role: bichon

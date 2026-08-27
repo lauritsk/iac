@@ -1,0 +1,65 @@
+---
+- name: Ensure Docktail directory exists
+  ansible.builtin.file:
+    path: /mnt/fast/docktail/data
+    state: directory
+    owner: core
+    group: core
+    mode: '0700'
+
+- name: Ensure Docktail secrets are present
+  containers.podman.podman_secret:
+    name: '{{ item.name }}'
+    data: '{{ item.data }}'
+    state: present
+    force: true
+  loop:
+    - name: docktail_cloud_key
+      data: '{{ docktail_cloud_key }}'
+    - name: docktail_ts_oauth_id
+      data: '{{ docktail_ts_oauth_id }}'
+    - name: docktail_ts_oauth_secret
+      data: '{{ docktail_ts_oauth_secret }}'
+  loop_control:
+    label: '{{ item.name }}'
+  no_log: true
+  notify: Restart Docktail service
+
+- name: Ensure Docktail image is present
+  containers.podman.podman_image:
+    name: ghcr.io/marvinvr/docktail:latest
+    state: present
+    pull: true
+  notify: Restart Docktail service
+
+- name: Ensure Docktail Quadlet is defined
+  containers.podman.podman_container:
+    name: docktail
+    state: quadlet
+    image: ghcr.io/marvinvr/docktail:latest
+    env:
+      DOCKTAIL_LOG_LEVEL: info
+    secrets:
+      - docktail_cloud_key,type=env,target=DOCKTAIL_CLOUD_KEY
+      - docktail_ts_oauth_id,type=env,target=TAILSCALE_OAUTH_CLIENT_ID
+      - docktail_ts_oauth_secret,type=env,target=TAILSCALE_OAUTH_CLIENT_SECRET
+    label:
+      io.containers.autoupdate: registry
+    network:
+      - proxy.network
+    volume:
+      - /mnt/fast/tailscale/data:/var/run/tailscale
+      - '%t/podman/podman.sock:/var/run/docker.sock:ro'
+    user: 1000:1000
+    userns: keep-id:uid=1000,gid=1000
+    security_opt:
+      - no-new-privileges
+    memory: 512M
+    pids_limit: '256'
+    cpus: '1'
+    restart_policy: always
+    quadlet_options:
+      - |
+        [Install]
+        WantedBy=default.target
+  notify: Restart Docktail service

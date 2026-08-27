@@ -22,7 +22,7 @@ config:
     runcmd:
       - ['sh', '-c', 'curl -fsSL https://tailscale.com/install.sh | sh']
       - ['tailscale', 'up', '--auth-key=TS_AUTH_KEY']
-      - ['tailscale', 'set', '--ssh']
+      - ['tailscale', 'set', '--ssh', '--operator=core']
 devices:
   root:
     type: disk
