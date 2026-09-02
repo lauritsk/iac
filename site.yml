@@ -6,8 +6,6 @@
       tags: common
     - role: tailscale
       tags: tailscale
-    - role: docktail
-      tags: docktail
     - role: bichon
       tags: bichon
     - role: immich
