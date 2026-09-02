@@ -1,8 +1,0 @@
----
-- name: Restart Docktail service
-  ansible.builtin.systemd_service:
-    name: docktail.service
-    scope: user
-    daemon_reload: true
-    state: restarted
-  when: not ansible_check_mode
