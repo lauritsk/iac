@@ -8,9 +8,6 @@
     mode: '0700'
   loop:
     - /mnt/fast/bichon/data
-    - /mnt/fast/bichon/data/bichon-indices
-    - /mnt/fast/bichon/data/bichon-storage
-    - /mnt/slow/bichon/data/bichon-storage
 
 - name: Ensure Bichon encryption secret is present
   containers.podman.podman_secret:
@@ -82,8 +79,6 @@
       - proxy.network
     volume:
       - /mnt/fast/bichon/data:/data
-      - /mnt/fast/bichon/data/bichon-indices:/data/bichon-indices
-      - /mnt/slow/bichon/data/bichon-storage:/data/bichon-storage
     read_only: true
     user: 1000:1000
     userns: keep-id:uid=1000,gid=1000
