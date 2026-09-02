@@ -7,11 +7,11 @@
     group: core
     mode: '0700'
   loop:
-    - /mnt/fast/immich/config
     - /mnt/fast/immich/postgres
-    - /mnt/fast/immich/model-cache
     - /mnt/fast/immich/valkey
-    - /mnt/slow/immich/library
+    - /mnt/fast/immich/model-cache
+    - /mnt/fast/immich/config
+    - /mnt/fast/immich/library
 
 - name: Ensure Immich configuration files are deployed
   ansible.builtin.template:
@@ -21,10 +21,10 @@
     group: core
     mode: '0400'
   loop:
-    - src: config.json.j2
-      dest: /mnt/fast/immich/config/config.json
     - src: valkey.conf.j2
       dest: /mnt/fast/immich/valkey/valkey.conf
+    - src: config.json.j2
+      dest: /mnt/fast/immich/config/config.json
   loop_control:
     label: '{{ item.dest }}'
   no_log: true
@@ -256,7 +256,7 @@
       io.containers.autoupdate: registry
     volume:
       - /mnt/fast/immich/config/config.json:/config.json:ro
-      - /mnt/slow/immich/library:/data
+      - /mnt/fast/immich/library:/data
     user: 1000:1000
     group_add:
       - keep-groups
