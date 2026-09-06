@@ -58,7 +58,8 @@ resource "incus_instance" "recyclarr" {
   running     = true
 
   config = {
-    "environment.CRON_SCHEDULE" = "0 4 * * *"
+    "environment.TINI_SUBREAPER" = "true"
+    "environment.CRON_SCHEDULE"  = "0 4 * * *"
   }
 
   device {

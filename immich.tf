@@ -37,6 +37,14 @@ resource "incus_storage_volume" "immich_postgres_data" {
   project = "default"
   name    = "immich-postgres-data"
   pool    = "fast"
+
+  file {
+    content     = ""
+    target_path = "/postgresql.override.conf"
+    uid         = 999
+    gid         = 999
+    mode        = "0644"
+  }
 }
 
 
@@ -50,8 +58,6 @@ resource "incus_instance" "immich_postgres" {
   running     = true
 
   config = {
-    "oci.uid"                            = "1000"
-    "oci.gid"                            = "1000"
     "environment.POSTGRES_DB_FILE"       = "/run/secrets/immich_db_name"
     "environment.POSTGRES_USER_FILE"     = "/run/secrets/immich_db_username"
     "environment.POSTGRES_PASSWORD_FILE" = "/run/secrets/immich_db_password"
@@ -93,6 +99,10 @@ resource "incus_instance" "immich_valkey" {
   description = "Immich Valkey"
   profiles    = [incus_profile.oci.name]
   running     = true
+
+  config = {
+    "environment.TINI_SUBREAPER" = "true"
+  }
 }
 
 
@@ -103,6 +113,16 @@ resource "incus_storage_volume" "immich_machine_learning_cache" {
   project = "default"
   name    = "immich-machine-learning-cache"
   pool    = "fast"
+
+  file {
+    content            = ""
+    target_path        = "/matplotlib/.keep"
+    create_directories = true
+    directory_mode     = "0700"
+    uid                = 1000
+    gid                = 1000
+    mode               = "0600"
+  }
 }
 
 
@@ -116,8 +136,10 @@ resource "incus_instance" "immich_machine_learning" {
   running     = true
 
   config = {
-    "oci.uid" = "1000"
-    "oci.gid" = "1000"
+    "oci.uid"                    = "1000"
+    "oci.gid"                    = "1000"
+    "environment.TINI_SUBREAPER" = "true"
+    "environment.MPLCONFIGDIR"   = "/cache/matplotlib"
   }
 
   device {
@@ -165,6 +187,7 @@ resource "incus_instance" "immich_server" {
   config = {
     "oci.uid"                           = "1000"
     "oci.gid"                           = "1000"
+    "environment.TINI_SUBREAPER"        = "true"
     "environment.IMMICH_HOST"           = "0.0.0.0"
     "environment.DB_HOSTNAME"           = "immich-postgres"
     "environment.DB_USERNAME_FILE"      = "/run/secrets/immich_db_username"
