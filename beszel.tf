@@ -85,6 +85,7 @@ resource "incus_instance" "beszel_agent" {
     "environment.DISABLE_SSH"   = "true"
     "environment.HUB_URL"       = "https://beszel.cormo-tegu.ts.net"
     "environment.SYSTEM_NAME"   = "hv01"
+    "environment.FILESYSTEM"    = "/extra-filesystems/local"
     "environment.KEY_FILE"      = "/var/lib/beszel-agent/key"
     "environment.TOKEN_FILE"    = "/var/lib/beszel-agent/token"
     "environment.SMART_DEVICES" = "/dev/nvme0,/dev/sda:sntasmedia,/dev/sdb:sat"
