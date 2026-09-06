@@ -80,12 +80,13 @@ resource "incus_instance" "beszel_agent" {
   running     = true
 
   config = {
-    "security.privileged"       = "true"
-    "raw.lxc"                   = "lxc.cap.drop="
+    "security.privileged" = "true"
+    # USB SMART needs SYS_RAWIO; retain the other privileged-container capability drops.
+    "raw.lxc"                   = "lxc.cap.drop=\nlxc.cap.drop=sys_time sys_module mac_admin mac_override"
     "environment.DISABLE_SSH"   = "true"
     "environment.HUB_URL"       = "https://beszel.cormo-tegu.ts.net"
     "environment.SYSTEM_NAME"   = "hv01"
-    "environment.FILESYSTEM"    = "/extra-filesystems/local"
+    "environment.FILESYSTEM"    = "/extra-filesystems/host-root__host-root"
     "environment.KEY_FILE"      = "/var/lib/beszel-agent/key"
     "environment.TOKEN_FILE"    = "/var/lib/beszel-agent/token"
     "environment.SMART_DEVICES" = "/dev/nvme0,/dev/sda:sntasmedia,/dev/sdb:sat"
@@ -114,13 +115,16 @@ resource "incus_instance" "beszel_agent" {
   }
 
   device {
-    name = "disk-local"
+    name = "disk-host-root"
     type = "disk"
 
     properties = {
-      "source"   = "/var/lib/incus/storage-pools/local"
-      "path"     = "/extra-filesystems/local"
-      "readonly" = "true"
+      # Measure the host root without exposing mounted container filesystems.
+      "source"      = "/var/lib/incus/storage-pools/local"
+      "path"        = "/extra-filesystems/host-root__host-root"
+      "readonly"    = "true"
+      "recursive"   = "false"
+      "propagation" = "rprivate"
     }
   }
 
