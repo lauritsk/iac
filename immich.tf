@@ -31,10 +31,6 @@ resource "incus_storage_volume" "immich_db_secret" {
   }
 }
 
-import {
-  to = incus_storage_volume.immich_db_secret
-  id = "${var.incus_remote}:default/fast/immich-db-secret"
-}
 
 resource "incus_storage_volume" "immich_postgres_data" {
   remote  = var.incus_remote
@@ -43,10 +39,6 @@ resource "incus_storage_volume" "immich_postgres_data" {
   pool    = "fast"
 }
 
-import {
-  to = incus_storage_volume.immich_postgres_data
-  id = "${var.incus_remote}:default/fast/immich-postgres-data"
-}
 
 resource "incus_instance" "immich_postgres" {
   remote      = var.incus_remote
@@ -71,7 +63,7 @@ resource "incus_instance" "immich_postgres" {
 
     properties = {
       "pool"   = "fast"
-      "source" = "immich-postgres-data"
+      "source" = incus_storage_volume.immich_postgres_data.name
       "path"   = "/var/lib/postgresql/data"
     }
   }
@@ -82,22 +74,14 @@ resource "incus_instance" "immich_postgres" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "immich-db-secret"
+      "source"   = incus_storage_volume.immich_db_secret.name
       "path"     = "/run/secrets"
       "readonly" = "true"
     }
   }
 
-  depends_on = [
-    incus_storage_volume.immich_postgres_data,
-    incus_storage_volume.immich_db_secret,
-  ]
 }
 
-import {
-  to = incus_instance.immich_postgres
-  id = "${var.incus_remote}:default/immich-postgres,image=oci-ghcr:immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0"
-}
 
 # Immich Valkey
 
@@ -111,10 +95,6 @@ resource "incus_instance" "immich_valkey" {
   running     = true
 }
 
-import {
-  to = incus_instance.immich_valkey
-  id = "${var.incus_remote}:default/immich-valkey,image=oci-docker:valkey/valkey:9"
-}
 
 # Immich machine learning
 
@@ -125,10 +105,6 @@ resource "incus_storage_volume" "immich_machine_learning_cache" {
   pool    = "fast"
 }
 
-import {
-  to = incus_storage_volume.immich_machine_learning_cache
-  id = "${var.incus_remote}:default/fast/immich-machine-learning-cache"
-}
 
 resource "incus_instance" "immich_machine_learning" {
   remote      = var.incus_remote
@@ -150,7 +126,7 @@ resource "incus_instance" "immich_machine_learning" {
 
     properties = {
       "pool"   = "fast"
-      "source" = "immich-machine-learning-cache"
+      "source" = incus_storage_volume.immich_machine_learning_cache.name
       "path"   = "/cache"
     }
   }
@@ -164,15 +140,8 @@ resource "incus_instance" "immich_machine_learning" {
     }
   }
 
-  depends_on = [
-    incus_storage_volume.immich_machine_learning_cache,
-  ]
 }
 
-import {
-  to = incus_instance.immich_machine_learning
-  id = "${var.incus_remote}:default/immich-machine-learning,image=oci-ghcr:immich-app/immich-machine-learning:release-openvino"
-}
 
 # Immich server
 
@@ -183,10 +152,6 @@ resource "incus_storage_volume" "immich_library" {
   pool    = "fast"
 }
 
-import {
-  to = incus_storage_volume.immich_library
-  id = "${var.incus_remote}:default/fast/immich-library"
-}
 
 resource "incus_instance" "immich_server" {
   remote      = var.incus_remote
@@ -214,7 +179,7 @@ resource "incus_instance" "immich_server" {
 
     properties = {
       "pool"   = "fast"
-      "source" = "immich-library"
+      "source" = incus_storage_volume.immich_library.name
       "path"   = "/data"
     }
   }
@@ -225,7 +190,7 @@ resource "incus_instance" "immich_server" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "immich-db-secret"
+      "source"   = incus_storage_volume.immich_db_secret.name
       "path"     = "/run/secrets"
       "readonly" = "true"
     }
@@ -240,13 +205,4 @@ resource "incus_instance" "immich_server" {
     }
   }
 
-  depends_on = [
-    incus_storage_volume.immich_library,
-    incus_storage_volume.immich_db_secret,
-  ]
-}
-
-import {
-  to = incus_instance.immich_server
-  id = "${var.incus_remote}:default/immich-server,image=oci-ghcr:immich-app/immich-server:release"
 }

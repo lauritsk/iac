@@ -23,10 +23,6 @@ resource "incus_storage_volume" "tailscale_config" {
   }
 }
 
-import {
-  to = incus_storage_volume.tailscale_config
-  id = "${var.incus_remote}:default/fast/tailscale-config"
-}
 
 resource "incus_storage_volume" "tailscale_data" {
   remote  = var.incus_remote
@@ -35,10 +31,6 @@ resource "incus_storage_volume" "tailscale_data" {
   pool    = "fast"
 }
 
-import {
-  to = incus_storage_volume.tailscale_data
-  id = "${var.incus_remote}:default/fast/tailscale-data"
-}
 
 resource "incus_instance" "tailscale" {
   remote      = var.incus_remote
@@ -64,7 +56,7 @@ resource "incus_instance" "tailscale" {
 
     properties = {
       "pool"   = "fast"
-      "source" = "tailscale-data"
+      "source" = incus_storage_volume.tailscale_data.name
       "path"   = "/var/lib/tailscale"
     }
   }
@@ -75,19 +67,10 @@ resource "incus_instance" "tailscale" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "tailscale-config"
+      "source"   = incus_storage_volume.tailscale_config.name
       "path"     = "/config"
       "readonly" = "true"
     }
   }
 
-  depends_on = [
-    incus_storage_volume.tailscale_data,
-    incus_storage_volume.tailscale_config,
-  ]
-}
-
-import {
-  to = incus_instance.tailscale
-  id = "${var.incus_remote}:default/tailscale,image=oci-docker:tailscale/tailscale:latest"
 }

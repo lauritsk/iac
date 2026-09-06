@@ -13,10 +13,6 @@ resource "incus_storage_volume" "tsidp_data" {
   }
 }
 
-import {
-  to = incus_storage_volume.tsidp_data
-  id = "${var.incus_remote}:default/local/tsidp-data"
-}
 
 resource "incus_instance" "tsidp" {
   remote      = var.incus_remote
@@ -40,17 +36,9 @@ resource "incus_instance" "tsidp" {
 
     properties = {
       "pool"   = "local"
-      "source" = "tsidp-data"
+      "source" = incus_storage_volume.tsidp_data.name
       "path"   = "/data"
     }
   }
 
-  depends_on = [
-    incus_storage_volume.tsidp_data,
-  ]
-}
-
-import {
-  to = incus_instance.tsidp
-  id = "${var.incus_remote}:default/tsidp,image=oci-ghcr:tailscale/tsidp:latest"
 }

@@ -7,10 +7,6 @@ resource "incus_storage_volume" "bichon_data" {
   pool    = "fast"
 }
 
-import {
-  to = incus_storage_volume.bichon_data
-  id = "${var.incus_remote}:default/fast/bichon-data"
-}
 
 resource "incus_storage_volume" "bichon_secret" {
   remote  = var.incus_remote
@@ -27,10 +23,6 @@ resource "incus_storage_volume" "bichon_secret" {
   }
 }
 
-import {
-  to = incus_storage_volume.bichon_secret
-  id = "${var.incus_remote}:default/fast/bichon-secret"
-}
 
 resource "incus_instance" "bichon" {
   remote      = var.incus_remote
@@ -54,7 +46,7 @@ resource "incus_instance" "bichon" {
 
     properties = {
       "pool"   = "fast"
-      "source" = "bichon-data"
+      "source" = incus_storage_volume.bichon_data.name
       "path"   = "/data"
     }
   }
@@ -65,19 +57,10 @@ resource "incus_instance" "bichon" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "bichon-secret"
+      "source"   = incus_storage_volume.bichon_secret.name
       "path"     = "/run/secrets"
       "readonly" = "true"
     }
   }
 
-  depends_on = [
-    incus_storage_volume.bichon_data,
-    incus_storage_volume.bichon_secret,
-  ]
-}
-
-import {
-  to = incus_instance.bichon
-  id = "${var.incus_remote}:default/bichon,image=oci-ghcr:rustmailer/bichon:latest"
 }

@@ -7,10 +7,6 @@ resource "incus_storage_volume" "radarr_data" {
   pool    = "fast"
 }
 
-import {
-  to = incus_storage_volume.radarr_data
-  id = "${var.incus_remote}:default/fast/radarr-data"
-}
 
 resource "incus_instance" "radarr" {
   remote      = var.incus_remote
@@ -31,7 +27,7 @@ resource "incus_instance" "radarr" {
 
     properties = {
       "pool"   = "fast"
-      "source" = "radarr-data"
+      "source" = incus_storage_volume.radarr_data.name
       "path"   = "/config"
     }
   }
@@ -42,7 +38,7 @@ resource "incus_instance" "radarr" {
 
     properties = {
       "pool"   = "slow"
-      "source" = "media"
+      "source" = incus_storage_volume.media.name
       "path"   = "/data"
     }
   }
@@ -53,20 +49,10 @@ resource "incus_instance" "radarr" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "recyclarr-secret"
+      "source"   = incus_storage_volume.recyclarr_secret.name
       "path"     = "/run/secrets"
       "readonly" = "true"
     }
   }
 
-  depends_on = [
-    incus_storage_volume.radarr_data,
-    incus_storage_volume.media,
-    incus_storage_volume.recyclarr_secret,
-  ]
-}
-
-import {
-  to = incus_instance.radarr
-  id = "${var.incus_remote}:default/radarr,image=oci-lscr:linuxserver/radarr:latest"
 }

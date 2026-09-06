@@ -15,10 +15,6 @@ resource "incus_storage_volume" "recyclarr_data" {
   }
 }
 
-import {
-  to = incus_storage_volume.recyclarr_data
-  id = "${var.incus_remote}:default/fast/recyclarr-data"
-}
 
 resource "incus_storage_volume" "recyclarr_secret" {
   remote  = var.incus_remote
@@ -51,10 +47,6 @@ resource "incus_storage_volume" "recyclarr_secret" {
   }
 }
 
-import {
-  to = incus_storage_volume.recyclarr_secret
-  id = "${var.incus_remote}:default/fast/recyclarr-secret"
-}
 
 resource "incus_instance" "recyclarr" {
   remote      = var.incus_remote
@@ -75,7 +67,7 @@ resource "incus_instance" "recyclarr" {
 
     properties = {
       "pool"   = "fast"
-      "source" = "recyclarr-data"
+      "source" = incus_storage_volume.recyclarr_data.name
       "path"   = "/config"
     }
   }
@@ -86,19 +78,10 @@ resource "incus_instance" "recyclarr" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "recyclarr-secret"
+      "source"   = incus_storage_volume.recyclarr_secret.name
       "path"     = "/run/secrets"
       "readonly" = "true"
     }
   }
 
-  depends_on = [
-    incus_storage_volume.recyclarr_data,
-    incus_storage_volume.recyclarr_secret,
-  ]
-}
-
-import {
-  to = incus_instance.recyclarr
-  id = "${var.incus_remote}:default/recyclarr,image=oci-ghcr:recyclarr/recyclarr:latest"
 }

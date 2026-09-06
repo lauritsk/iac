@@ -12,10 +12,6 @@ resource "incus_storage_volume" "zerobyte_data" {
   }
 }
 
-import {
-  to = incus_storage_volume.zerobyte_data
-  id = "${var.incus_remote}:default/fast/zerobyte-data"
-}
 
 resource "incus_storage_volume" "zerobyte_secret" {
   remote  = var.incus_remote
@@ -32,10 +28,6 @@ resource "incus_storage_volume" "zerobyte_secret" {
   }
 }
 
-import {
-  to = incus_storage_volume.zerobyte_secret
-  id = "${var.incus_remote}:default/fast/zerobyte-secret"
-}
 
 resource "incus_instance" "zerobyte" {
   remote      = var.incus_remote
@@ -58,7 +50,7 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"   = "fast"
-      "source" = "zerobyte-data"
+      "source" = incus_storage_volume.zerobyte_data.name
       "path"   = "/var/lib/zerobyte"
     }
   }
@@ -69,7 +61,7 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "zerobyte-secret"
+      "source"   = incus_storage_volume.zerobyte_secret.name
       "path"     = "/run/secrets"
       "readonly" = "true"
     }
@@ -81,7 +73,7 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"     = "slow"
-      "source"   = "media"
+      "source"   = incus_storage_volume.media.name
       "path"     = "/mnt/src/media"
       "readonly" = "true"
     }
@@ -93,7 +85,7 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "beszel-data"
+      "source"   = incus_storage_volume.beszel_data.name
       "path"     = "/mnt/src/beszel"
       "readonly" = "true"
     }
@@ -105,7 +97,7 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "bichon-data"
+      "source"   = incus_storage_volume.bichon_data.name
       "path"     = "/mnt/src/bichon"
       "readonly" = "true"
     }
@@ -117,7 +109,7 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "uptime-kuma-data"
+      "source"   = incus_storage_volume.uptime_kuma_data.name
       "path"     = "/mnt/src/uptime-kuma"
       "readonly" = "true"
     }
@@ -129,7 +121,7 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "tailscale-data"
+      "source"   = incus_storage_volume.tailscale_data.name
       "path"     = "/mnt/src/tailscale"
       "readonly" = "true"
     }
@@ -141,7 +133,7 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"     = "local"
-      "source"   = "beszel-agent-data"
+      "source"   = incus_storage_volume.beszel_agent_data.name
       "path"     = "/mnt/src/beszel-agent"
       "readonly" = "true"
     }
@@ -153,7 +145,7 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"     = "local"
-      "source"   = "tsidp-data"
+      "source"   = incus_storage_volume.tsidp_data.name
       "path"     = "/mnt/src/tsidp"
       "readonly" = "true"
     }
@@ -165,7 +157,7 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "bichon-secret"
+      "source"   = incus_storage_volume.bichon_secret.name
       "path"     = "/mnt/src/bichon-secret"
       "readonly" = "true"
     }
@@ -177,7 +169,7 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "jellyfin-config"
+      "source"   = incus_storage_volume.jellyfin_config.name
       "path"     = "/mnt/src/jellyfin"
       "readonly" = "true"
     }
@@ -189,7 +181,7 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "prowlarr-data"
+      "source"   = incus_storage_volume.prowlarr_data.name
       "path"     = "/mnt/src/prowlarr"
       "readonly" = "true"
     }
@@ -201,7 +193,7 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "radarr-data"
+      "source"   = incus_storage_volume.radarr_data.name
       "path"     = "/mnt/src/radarr"
       "readonly" = "true"
     }
@@ -213,7 +205,7 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "recyclarr-secret"
+      "source"   = incus_storage_volume.recyclarr_secret.name
       "path"     = "/mnt/src/recyclarr-secret"
       "readonly" = "true"
     }
@@ -225,7 +217,7 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "sonarr-data"
+      "source"   = incus_storage_volume.sonarr_data.name
       "path"     = "/mnt/src/sonarr"
       "readonly" = "true"
     }
@@ -237,7 +229,7 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "transmission-data"
+      "source"   = incus_storage_volume.transmission_data.name
       "path"     = "/mnt/src/transmission"
       "readonly" = "true"
     }
@@ -249,7 +241,7 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "transmission-secret"
+      "source"   = incus_storage_volume.transmission_secret.name
       "path"     = "/mnt/src/transmission-secret"
       "readonly" = "true"
     }
@@ -261,7 +253,7 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "immich-db-secret"
+      "source"   = incus_storage_volume.immich_db_secret.name
       "path"     = "/mnt/src/immich-db-secret"
       "readonly" = "true"
     }
@@ -273,36 +265,10 @@ resource "incus_instance" "zerobyte" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "immich-library"
+      "source"   = incus_storage_volume.immich_library.name
       "path"     = "/mnt/src/immich-library"
       "readonly" = "true"
     }
   }
 
-  depends_on = [
-    incus_storage_volume.zerobyte_data,
-    incus_storage_volume.zerobyte_secret,
-    incus_storage_volume.media,
-    incus_storage_volume.beszel_data,
-    incus_storage_volume.bichon_data,
-    incus_storage_volume.uptime_kuma_data,
-    incus_storage_volume.tailscale_data,
-    incus_storage_volume.beszel_agent_data,
-    incus_storage_volume.tsidp_data,
-    incus_storage_volume.bichon_secret,
-    incus_storage_volume.jellyfin_config,
-    incus_storage_volume.prowlarr_data,
-    incus_storage_volume.radarr_data,
-    incus_storage_volume.recyclarr_secret,
-    incus_storage_volume.sonarr_data,
-    incus_storage_volume.transmission_data,
-    incus_storage_volume.transmission_secret,
-    incus_storage_volume.immich_db_secret,
-    incus_storage_volume.immich_library,
-  ]
-}
-
-import {
-  to = incus_instance.zerobyte
-  id = "${var.incus_remote}:default/zerobyte,image=oci-ghcr:nicotsx/zerobyte:latest"
 }
