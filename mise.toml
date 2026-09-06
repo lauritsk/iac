@@ -1,36 +1,25 @@
 [tools]
 "aqua:lxc/incus" = "latest"
-"pipx:ansible-core" = "latest"
-"pipx:ansible-lint" = "latest"
+opentofu = "latest"
 
-[tasks.install]
-description = "Install Ansible collections"
-run = "ansible-galaxy collection install ansible.posix containers.podman"
+[tasks.init]
+description = "Install providers and initialize OpenTofu"
+run = "tofu init"
 
-[tasks."validate:json"]
-description = "Validate JSON files"
-run = "python3 -m json.tool roles/tailscale/files/serve.json >/dev/null"
-
-[tasks."validate:ansible"]
-description = "Validate the Ansible playbook"
-run = [
-  "ansible-playbook --ask-vault-pass --syntax-check site.yml",
-  "ansible-playbook --ask-vault-pass --list-tasks site.yml >/dev/null",
-]
-
-[tasks.lint]
-description = "Lint Ansible files"
-run = "ANSIBLE_ASK_VAULT_PASS=true ansible-lint site.yml"
+[tasks.fmt]
+description = "Format OpenTofu files"
+run = "tofu fmt -check -recursive"
 
 [tasks.validate]
-description = "Run all local validation"
-depends = ["validate:json", "validate:ansible", "lint"]
+description = "Validate the OpenTofu configuration"
+depends = ["fmt"]
+run = "tofu validate"
 
-[tasks."deploy:check"]
-description = "Preview the deployment"
-run = "ansible-playbook --ask-vault-pass --check --diff site.yml"
+[tasks.plan]
+description = "Preview infrastructure changes"
+run = "tofu plan -out=homelab.tfplan"
 
-[tasks.deploy]
-description = "Deploy the Ansible playbook"
-confirm = "Deploy to the homelab?"
-run = "ansible-playbook --ask-vault-pass site.yml"
+[tasks.apply]
+description = "Apply the saved infrastructure plan"
+confirm = "Apply homelab.tfplan?"
+run = "tofu apply homelab.tfplan"

@@ -1,8 +1,0 @@
----
-- name: Restart Immich pod service
-  ansible.builtin.systemd_service:
-    name: immich-pod.service
-    scope: user
-    daemon_reload: true
-    state: restarted
-  when: not ansible_check_mode
