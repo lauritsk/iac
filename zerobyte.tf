@@ -71,6 +71,18 @@ resource "incus_instance" "zerobyte" {
   }
 
   device {
+    name = "incus-backups"
+    type = "disk"
+
+    properties = {
+      "pool"     = "local"
+      "source"   = "backups"
+      "path"     = "/mnt/src/incus-backups"
+      "readonly" = "true"
+    }
+  }
+
+  device {
     name = "media"
     type = "disk"
 
