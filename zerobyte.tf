@@ -39,9 +39,12 @@ resource "incus_instance" "zerobyte" {
   running     = true
 
   config = {
-    "environment.BASE_URL"        = "https://zerobyte.cormo-tegu.ts.net"
-    "environment.TRUSTED_ORIGINS" = "https://idp.cormo-tegu.ts.net"
-    "environment.APP_SECRET_FILE" = "/run/secrets/zerobyte_app_secret"
+    "environment.BASE_URL"                = "https://zerobyte.cormo-tegu.ts.net"
+    "environment.TRUSTED_ORIGINS"         = "https://idp.cormo-tegu.ts.net"
+    "environment.APP_SECRET_FILE"         = "/run/secrets/zerobyte_app_secret"
+    "environment.GOMAXPROCS"              = "2"
+    "environment.WEBHOOK_TIMEOUT"         = "600"
+    "environment.WEBHOOK_ALLOWED_ORIGINS" = "http://jellyfin:8096"
   }
 
   device {
