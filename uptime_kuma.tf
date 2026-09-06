@@ -7,10 +7,6 @@ resource "incus_storage_volume" "uptime_kuma_data" {
   pool    = "fast"
 }
 
-import {
-  to = incus_storage_volume.uptime_kuma_data
-  id = "${var.incus_remote}:default/fast/uptime-kuma-data"
-}
 
 resource "incus_instance" "uptime_kuma" {
   remote      = var.incus_remote
@@ -27,17 +23,9 @@ resource "incus_instance" "uptime_kuma" {
 
     properties = {
       "pool"   = "fast"
-      "source" = "uptime-kuma-data"
+      "source" = incus_storage_volume.uptime_kuma_data.name
       "path"   = "/app/data"
     }
   }
 
-  depends_on = [
-    incus_storage_volume.uptime_kuma_data,
-  ]
-}
-
-import {
-  to = incus_instance.uptime_kuma
-  id = "${var.incus_remote}:default/uptime-kuma,image=oci-docker:louislam/uptime-kuma:latest"
 }

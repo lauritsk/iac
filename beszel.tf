@@ -7,10 +7,6 @@ resource "incus_storage_volume" "beszel_data" {
   pool    = "fast"
 }
 
-import {
-  to = incus_storage_volume.beszel_data
-  id = "${var.incus_remote}:default/fast/beszel-data"
-}
 
 resource "incus_instance" "beszel" {
   remote      = var.incus_remote
@@ -33,20 +29,13 @@ resource "incus_instance" "beszel" {
 
     properties = {
       "pool"   = "fast"
-      "source" = "beszel-data"
+      "source" = incus_storage_volume.beszel_data.name
       "path"   = "/beszel_data"
     }
   }
 
-  depends_on = [
-    incus_storage_volume.beszel_data,
-  ]
 }
 
-import {
-  to = incus_instance.beszel
-  id = "${var.incus_remote}:default/beszel,image=oci-docker:henrygd/beszel:latest"
-}
 
 # Beszel agent for hv01
 
@@ -80,10 +69,6 @@ resource "incus_storage_volume" "beszel_agent_data" {
   }
 }
 
-import {
-  to = incus_storage_volume.beszel_agent_data
-  id = "${var.incus_remote}:default/local/beszel-agent-data"
-}
 
 resource "incus_instance" "beszel_agent" {
   remote      = var.incus_remote
@@ -111,7 +96,7 @@ resource "incus_instance" "beszel_agent" {
 
     properties = {
       "pool"   = "local"
-      "source" = "beszel-agent-data"
+      "source" = incus_storage_volume.beszel_agent_data.name
       "path"   = "/var/lib/beszel-agent"
     }
   }
@@ -186,12 +171,4 @@ resource "incus_instance" "beszel_agent" {
     }
   }
 
-  depends_on = [
-    incus_storage_volume.beszel_agent_data,
-  ]
-}
-
-import {
-  to = incus_instance.beszel_agent
-  id = "${var.incus_remote}:default/beszel-agent,image=oci-docker:henrygd/beszel-agent-intel:latest"
 }

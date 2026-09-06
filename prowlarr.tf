@@ -7,10 +7,6 @@ resource "incus_storage_volume" "prowlarr_data" {
   pool    = "fast"
 }
 
-import {
-  to = incus_storage_volume.prowlarr_data
-  id = "${var.incus_remote}:default/fast/prowlarr-data"
-}
 
 resource "incus_instance" "prowlarr" {
   remote      = var.incus_remote
@@ -31,7 +27,7 @@ resource "incus_instance" "prowlarr" {
 
     properties = {
       "pool"   = "fast"
-      "source" = "prowlarr-data"
+      "source" = incus_storage_volume.prowlarr_data.name
       "path"   = "/config"
     }
   }
@@ -42,19 +38,10 @@ resource "incus_instance" "prowlarr" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "recyclarr-secret"
+      "source"   = incus_storage_volume.recyclarr_secret.name
       "path"     = "/run/secrets"
       "readonly" = "true"
     }
   }
 
-  depends_on = [
-    incus_storage_volume.prowlarr_data,
-    incus_storage_volume.recyclarr_secret,
-  ]
-}
-
-import {
-  to = incus_instance.prowlarr
-  id = "${var.incus_remote}:default/prowlarr,image=oci-lscr:linuxserver/prowlarr:latest"
 }

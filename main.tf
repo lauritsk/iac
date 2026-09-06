@@ -10,8 +10,15 @@ terraform {
 }
 
 provider "incus" {
-  config_dir     = pathexpand(var.incus_config_dir)
+  config_dir     = "${path.module}/.incus"
   default_remote = var.incus_remote
+
+  remote {
+    name                = var.incus_remote
+    address             = "https://hv01.cormo-tegu.ts.net:8443"
+    protocol            = "incus"
+    authentication_type = "tls"
+  }
 
   remote {
     name     = "oci-docker"
@@ -69,19 +76,10 @@ resource "incus_profile" "oci" {
   }
 }
 
-import {
-  to = incus_profile.oci
-  id = "${var.incus_remote}:default/oci"
-}
 
 resource "incus_storage_volume" "media" {
   remote  = var.incus_remote
   project = "default"
   name    = "media"
   pool    = "slow"
-}
-
-import {
-  to = incus_storage_volume.media
-  id = "${var.incus_remote}:default/slow/media"
 }

@@ -9,8 +9,3 @@ resource "incus_instance" "flaresolverr" {
   profiles    = [incus_profile.oci.name]
   running     = true
 }
-
-import {
-  to = incus_instance.flaresolverr
-  id = "${var.incus_remote}:default/flaresolverr,image=oci-docker:flaresolverr/flaresolverr:latest"
-}

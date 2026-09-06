@@ -7,10 +7,6 @@ resource "incus_storage_volume" "transmission_data" {
   pool    = "fast"
 }
 
-import {
-  to = incus_storage_volume.transmission_data
-  id = "${var.incus_remote}:default/fast/transmission-data"
-}
 
 resource "incus_storage_volume" "transmission_secret" {
   remote  = var.incus_remote
@@ -35,10 +31,6 @@ resource "incus_storage_volume" "transmission_secret" {
   }
 }
 
-import {
-  to = incus_storage_volume.transmission_secret
-  id = "${var.incus_remote}:default/fast/transmission-secret"
-}
 
 resource "incus_storage_volume" "transmission_watch" {
   remote  = var.incus_remote
@@ -47,10 +39,6 @@ resource "incus_storage_volume" "transmission_watch" {
   pool    = "fast"
 }
 
-import {
-  to = incus_storage_volume.transmission_watch
-  id = "${var.incus_remote}:default/fast/transmission-watch"
-}
 
 resource "incus_instance" "transmission" {
   remote      = var.incus_remote
@@ -72,7 +60,7 @@ resource "incus_instance" "transmission" {
 
     properties = {
       "pool"   = "fast"
-      "source" = "transmission-data"
+      "source" = incus_storage_volume.transmission_data.name
       "path"   = "/config"
     }
   }
@@ -83,7 +71,7 @@ resource "incus_instance" "transmission" {
 
     properties = {
       "pool"   = "fast"
-      "source" = "transmission-watch"
+      "source" = incus_storage_volume.transmission_watch.name
       "path"   = "/watch"
     }
   }
@@ -94,7 +82,7 @@ resource "incus_instance" "transmission" {
 
     properties = {
       "pool"   = "slow"
-      "source" = "media"
+      "source" = incus_storage_volume.media.name
       "path"   = "/data"
     }
   }
@@ -105,21 +93,10 @@ resource "incus_instance" "transmission" {
 
     properties = {
       "pool"     = "fast"
-      "source"   = "transmission-secret"
+      "source"   = incus_storage_volume.transmission_secret.name
       "path"     = "/run/secrets"
       "readonly" = "true"
     }
   }
 
-  depends_on = [
-    incus_storage_volume.transmission_data,
-    incus_storage_volume.transmission_watch,
-    incus_storage_volume.media,
-    incus_storage_volume.transmission_secret,
-  ]
-}
-
-import {
-  to = incus_instance.transmission
-  id = "${var.incus_remote}:default/transmission,image=oci-lscr:linuxserver/transmission:latest"
 }

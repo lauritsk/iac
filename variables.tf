@@ -1,9 +1,3 @@
-variable "incus_config_dir" {
-  description = "Directory containing the Incus client configuration"
-  type        = string
-  default     = "~/Library/Application Support/incus"
-}
-
 variable "incus_remote" {
   description = "Incus client remote that points at the homelab server"
   type        = string

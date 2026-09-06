@@ -7,10 +7,6 @@ resource "incus_storage_volume" "jellyfin_cache" {
   pool    = "fast"
 }
 
-import {
-  to = incus_storage_volume.jellyfin_cache
-  id = "${var.incus_remote}:default/fast/jellyfin-cache"
-}
 
 resource "incus_storage_volume" "jellyfin_config" {
   remote  = var.incus_remote
@@ -19,10 +15,6 @@ resource "incus_storage_volume" "jellyfin_config" {
   pool    = "fast"
 }
 
-import {
-  to = incus_storage_volume.jellyfin_config
-  id = "${var.incus_remote}:default/fast/jellyfin-config"
-}
 
 resource "incus_instance" "jellyfin" {
   remote      = var.incus_remote
@@ -43,7 +35,7 @@ resource "incus_instance" "jellyfin" {
 
     properties = {
       "pool"   = "fast"
-      "source" = "jellyfin-config"
+      "source" = incus_storage_volume.jellyfin_config.name
       "path"   = "/config"
     }
   }
@@ -54,7 +46,7 @@ resource "incus_instance" "jellyfin" {
 
     properties = {
       "pool"   = "fast"
-      "source" = "jellyfin-cache"
+      "source" = incus_storage_volume.jellyfin_cache.name
       "path"   = "/cache"
     }
   }
@@ -65,7 +57,7 @@ resource "incus_instance" "jellyfin" {
 
     properties = {
       "pool"   = "slow"
-      "source" = "media"
+      "source" = incus_storage_volume.media.name
       "path"   = "/media"
     }
   }
@@ -79,14 +71,4 @@ resource "incus_instance" "jellyfin" {
     }
   }
 
-  depends_on = [
-    incus_storage_volume.jellyfin_config,
-    incus_storage_volume.jellyfin_cache,
-    incus_storage_volume.media,
-  ]
-}
-
-import {
-  to = incus_instance.jellyfin
-  id = "${var.incus_remote}:default/jellyfin,image=oci-ghcr:jellyfin/jellyfin:latest"
 }

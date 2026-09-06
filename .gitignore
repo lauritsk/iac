@@ -3,7 +3,6 @@
 !/.gitignore
 !/.terraform.lock.hcl
 !/*.tf
-!/*.tfvars.example
 !/*.md
 !/*.json
 !/*.yml
