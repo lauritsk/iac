@@ -42,12 +42,24 @@ resource "incus_instance" "tailscale" {
   running     = true
 
   config = {
+    "environment.TS_USERSPACE"                               = "false"
+    "environment.TS_TAILSCALED_EXTRA_ARGS"                   = "--encrypt-state=true"
     "environment.TS_AUTH_ONCE"                               = "true"
     "environment.TS_AUTHKEY"                                 = "file:/config/tailscale_oauth_secret"
     "environment.TS_STATE_DIR"                               = "/var/lib/tailscale"
     "environment.TS_SERVE_CONFIG"                            = "/config/serve.json"
     "environment.TS_EXTRA_ARGS"                              = "--advertise-tags=tag:container"
     "environment.TS_EXPERIMENTAL_SERVICE_AUTO_ADVERTISEMENT" = "true"
+  }
+
+  device {
+    name = "tpm"
+    type = "tpm"
+
+    properties = {
+      "path"   = "/dev/tpm0"
+      "pathrm" = "/dev/tpmrm0"
+    }
   }
 
   device {
