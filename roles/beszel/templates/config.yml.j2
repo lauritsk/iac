@@ -1,9 +1,0 @@
-systems:
-{% for system in beszel_systems %}
-  - name: "{{ system.name }}"
-    host: "{{ system.host }}"
-    port: {{ beszel_port }}
-    token: "{{ beszel_universal_token }}"
-    users:
-      - "{{ beszel_user_email }}"
-{% endfor %}

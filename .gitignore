@@ -1,1 +1,11 @@
-.ansible/
+/*
+
+!/.gitignore
+!/.terraform.lock.hcl
+!/*.tf
+!/*.tfvars.example
+!/*.md
+!/*.json
+!/*.yml
+!/*.toml
+!/mise.lock

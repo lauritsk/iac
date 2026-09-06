@@ -1,5 +1,0 @@
----
-all:
-  hosts:
-    hl01:
-      ansible_user: core
