@@ -12,30 +12,6 @@ variable "timezone" {
   default     = "Europe/Tallinn"
 }
 
-variable "beszel_user_email" {
-  type      = string
-  sensitive = true
-  nullable  = false
-}
-
-variable "beszel_user_password" {
-  type      = string
-  sensitive = true
-  nullable  = false
-}
-
-variable "beszel_agent_token" {
-  type      = string
-  sensitive = true
-  nullable  = false
-}
-
-variable "beszel_agent_key" {
-  type      = string
-  sensitive = true
-  nullable  = false
-}
-
 variable "immich_db_name" {
   type      = string
   sensitive = true

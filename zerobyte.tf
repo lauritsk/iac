@@ -106,18 +106,6 @@ resource "incus_instance" "zerobyte" {
   }
 
   device {
-    name = "beszel-backup"
-    type = "disk"
-
-    properties = {
-      "pool"     = incus_storage_pool.fast.name
-      "source"   = incus_storage_volume.beszel_data.name
-      "path"     = "/mnt/src/beszel"
-      "readonly" = "true"
-    }
-  }
-
-  device {
     name = "uptime-kuma-backup"
     type = "disk"
 
@@ -137,18 +125,6 @@ resource "incus_instance" "zerobyte" {
       "pool"     = incus_storage_pool.fast.name
       "source"   = incus_storage_volume.tailscale_data.name
       "path"     = "/mnt/src/tailscale"
-      "readonly" = "true"
-    }
-  }
-
-  device {
-    name = "beszel-agent-backup"
-    type = "disk"
-
-    properties = {
-      "pool"     = "local"
-      "source"   = incus_storage_volume.beszel_agent_data.name
-      "path"     = "/mnt/src/beszel-agent"
       "readonly" = "true"
     }
   }
