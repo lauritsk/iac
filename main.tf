@@ -10,7 +10,7 @@ terraform {
 }
 
 provider "incus" {
-  config_dir     = "${path.module}/.incus"
+  config_dir     = pathexpand("~/.config/incus")
   default_remote = var.incus_remote
 
   remote {
