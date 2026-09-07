@@ -26,6 +26,7 @@ resource "incus_instance" "jellyfin" {
   running     = true
 
   config = {
+    "environment.TZ"                          = var.timezone
     "environment.JELLYFIN_PublishedServerUrl" = "https://jellyfin.cormo-tegu.ts.net"
   }
 

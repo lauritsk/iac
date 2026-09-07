@@ -18,6 +18,7 @@ resource "incus_instance" "beszel" {
   running     = true
 
   config = {
+    "environment.TZ"            = var.timezone
     "environment.APP_URL"       = "https://beszel.cormo-tegu.ts.net"
     "environment.USER_EMAIL"    = var.beszel_user_email
     "environment.USER_PASSWORD" = var.beszel_user_password
@@ -83,6 +84,7 @@ resource "incus_instance" "beszel_agent" {
     "security.privileged" = "true"
     # USB SMART needs SYS_RAWIO; retain the other privileged-container capability drops.
     "raw.lxc"                   = "lxc.cap.drop=\nlxc.cap.drop=sys_time sys_module mac_admin mac_override"
+    "environment.TZ"            = var.timezone
     "environment.DISABLE_SSH"   = "true"
     "environment.HUB_URL"       = "https://beszel.cormo-tegu.ts.net"
     "environment.SYSTEM_NAME"   = "hv01"

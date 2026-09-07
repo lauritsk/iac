@@ -22,8 +22,8 @@ resource "incus_storage_volume" "zerobyte_secret" {
   file {
     content     = var.zerobyte_app_secret
     target_path = "/zerobyte_app_secret"
-    uid         = 0
-    gid         = 0
+    uid         = 1000
+    gid         = 1000
     mode        = "0400"
   }
 }
@@ -39,7 +39,7 @@ resource "incus_instance" "zerobyte" {
   running     = true
 
   config = {
-    "environment.TZ"                      = "Europe/Tallinn"
+    "environment.TZ"                      = var.timezone
     "environment.BASE_URL"                = "https://zerobyte.cormo-tegu.ts.net"
     "environment.TRUSTED_ORIGINS"         = "https://idp.cormo-tegu.ts.net"
     "environment.APP_SECRET_FILE"         = "/run/secrets/zerobyte_app_secret"

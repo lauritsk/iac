@@ -18,6 +18,9 @@ resource "incus_instance" "prowlarr" {
   running     = true
 
   config = {
+    "environment.PUID"                         = "1000"
+    "environment.PGID"                         = "1000"
+    "environment.TZ"                           = var.timezone
     "environment.FILE__PROWLARR__AUTH__APIKEY" = "/run/secrets/prowlarr_api_key"
   }
 

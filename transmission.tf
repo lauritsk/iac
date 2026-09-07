@@ -17,16 +17,16 @@ resource "incus_storage_volume" "transmission_secret" {
   file {
     content     = var.transmission_username
     target_path = "/transmission_username"
-    uid         = 0
-    gid         = 0
+    uid         = 1000
+    gid         = 1000
     mode        = "0400"
   }
 
   file {
     content     = var.transmission_password
     target_path = "/transmission_password"
-    uid         = 0
-    gid         = 0
+    uid         = 1000
+    gid         = 1000
     mode        = "0400"
   }
 }
@@ -50,6 +50,9 @@ resource "incus_instance" "transmission" {
   running     = true
 
   config = {
+    "environment.PUID"       = "1000"
+    "environment.PGID"       = "1000"
+    "environment.TZ"         = var.timezone
     "environment.FILE__USER" = "/run/secrets/transmission_username"
     "environment.FILE__PASS" = "/run/secrets/transmission_password"
   }

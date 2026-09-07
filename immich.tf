@@ -58,6 +58,7 @@ resource "incus_instance" "immich_postgres" {
   running     = true
 
   config = {
+    "environment.TZ"                     = var.timezone
     "environment.POSTGRES_DB_FILE"       = "/run/secrets/immich_db_name"
     "environment.POSTGRES_USER_FILE"     = "/run/secrets/immich_db_username"
     "environment.POSTGRES_PASSWORD_FILE" = "/run/secrets/immich_db_password"
@@ -101,6 +102,7 @@ resource "incus_instance" "immich_valkey" {
   running     = true
 
   config = {
+    "environment.TZ"             = var.timezone
     "environment.TINI_SUBREAPER" = "true"
   }
 }
@@ -138,6 +140,7 @@ resource "incus_instance" "immich_machine_learning" {
   config = {
     "oci.uid"                    = "1000"
     "oci.gid"                    = "1000"
+    "environment.TZ"             = var.timezone
     "environment.TINI_SUBREAPER" = "true"
     "environment.MPLCONFIGDIR"   = "/cache/matplotlib"
   }
@@ -185,15 +188,18 @@ resource "incus_instance" "immich_server" {
   running     = true
 
   config = {
-    "oci.uid"                           = "1000"
-    "oci.gid"                           = "1000"
-    "environment.TINI_SUBREAPER"        = "true"
-    "environment.IMMICH_HOST"           = "0.0.0.0"
-    "environment.DB_HOSTNAME"           = "immich-postgres"
-    "environment.DB_USERNAME_FILE"      = "/run/secrets/immich_db_username"
-    "environment.DB_PASSWORD_FILE"      = "/run/secrets/immich_db_password"
-    "environment.DB_DATABASE_NAME_FILE" = "/run/secrets/immich_db_name"
-    "environment.REDIS_HOSTNAME"        = "immich-valkey"
+    "oci.uid"                                 = "1000"
+    "oci.gid"                                 = "1000"
+    "environment.TINI_SUBREAPER"              = "true"
+    "environment.TZ"                          = var.timezone
+    "environment.IMMICH_HOST"                 = "0.0.0.0"
+    "environment.DB_HOSTNAME"                 = "immich-postgres"
+    "environment.DB_USERNAME_FILE"            = "/run/secrets/immich_db_username"
+    "environment.DB_PASSWORD_FILE"            = "/run/secrets/immich_db_password"
+    "environment.DB_DATABASE_NAME_FILE"       = "/run/secrets/immich_db_name"
+    "environment.REDIS_HOSTNAME"              = "immich-valkey"
+    "environment.MACHINE_LEARNING_URL"        = "http://immich-machine-learning:3003"
+    "environment.IMMICH_MACHINE_LEARNING_URL" = "http://immich-machine-learning:3003"
   }
 
   device {
