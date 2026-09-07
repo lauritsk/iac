@@ -2,12 +2,12 @@
 
 resource "incus_instance" "dev" {
   remote      = var.incus_remote
-  project     = "default"
+  project     = local.project
   name        = "dev"
   image       = "images:archlinux/current/cloud"
   description = "Personal dev server"
   type        = "container"
-  profiles    = ["default"]
+  profiles    = [incus_profile.default.name]
   running     = true
 
   config = {

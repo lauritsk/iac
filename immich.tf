@@ -1,10 +1,13 @@
-# Immich PostgreSQL
+# Immich
+
+# PostgreSQL
 
 resource "incus_storage_volume" "immich_db_secret" {
-  remote  = var.incus_remote
-  project = "default"
-  name    = "immich-db-secret"
-  pool    = "fast"
+  remote      = var.incus_remote
+  project     = local.project
+  name        = "immich-db-secret"
+  description = "Immich database secrets"
+  pool        = incus_storage_pool.fast.name
 
   file {
     content     = var.immich_db_name
@@ -29,14 +32,19 @@ resource "incus_storage_volume" "immich_db_secret" {
     gid         = 1000
     mode        = "0400"
   }
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 
 resource "incus_storage_volume" "immich_postgres_data" {
-  remote  = var.incus_remote
-  project = "default"
-  name    = "immich-postgres-data"
-  pool    = "fast"
+  remote      = var.incus_remote
+  project     = local.project
+  name        = "immich-postgres-data"
+  description = "Immich PostgreSQL data"
+  pool        = incus_storage_pool.fast.name
 
   file {
     content     = ""
@@ -45,12 +53,16 @@ resource "incus_storage_volume" "immich_postgres_data" {
     gid         = 999
     mode        = "0644"
   }
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 
 resource "incus_instance" "immich_postgres" {
   remote      = var.incus_remote
-  project     = "default"
+  project     = local.project
   name        = "immich-postgres"
   image       = "oci-ghcr:immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0"
   description = "Immich PostgreSQL"
@@ -69,7 +81,7 @@ resource "incus_instance" "immich_postgres" {
     type = "disk"
 
     properties = {
-      "pool"   = "fast"
+      "pool"   = incus_storage_pool.fast.name
       "source" = incus_storage_volume.immich_postgres_data.name
       "path"   = "/var/lib/postgresql/data"
     }
@@ -80,21 +92,20 @@ resource "incus_instance" "immich_postgres" {
     type = "disk"
 
     properties = {
-      "pool"     = "fast"
+      "pool"     = incus_storage_pool.fast.name
       "source"   = incus_storage_volume.immich_db_secret.name
       "path"     = "/run/secrets"
       "readonly" = "true"
     }
   }
-
 }
 
 
-# Immich Valkey
+# Valkey
 
 resource "incus_instance" "immich_valkey" {
   remote      = var.incus_remote
-  project     = "default"
+  project     = local.project
   name        = "immich-valkey"
   image       = "oci-docker:valkey/valkey:9"
   description = "Immich Valkey"
@@ -108,13 +119,14 @@ resource "incus_instance" "immich_valkey" {
 }
 
 
-# Immich machine learning
+# Machine learning
 
 resource "incus_storage_volume" "immich_machine_learning_cache" {
-  remote  = var.incus_remote
-  project = "default"
-  name    = "immich-machine-learning-cache"
-  pool    = "fast"
+  remote      = var.incus_remote
+  project     = local.project
+  name        = "immich-machine-learning-cache"
+  description = "Immich machine learning cache"
+  pool        = incus_storage_pool.fast.name
 
   file {
     content            = ""
@@ -125,12 +137,16 @@ resource "incus_storage_volume" "immich_machine_learning_cache" {
     gid                = 1000
     mode               = "0600"
   }
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 
 resource "incus_instance" "immich_machine_learning" {
   remote      = var.incus_remote
-  project     = "default"
+  project     = local.project
   name        = "immich-machine-learning"
   image       = "oci-ghcr:immich-app/immich-machine-learning:release-openvino"
   description = "Immich machine learning"
@@ -138,8 +154,8 @@ resource "incus_instance" "immich_machine_learning" {
   running     = true
 
   config = {
-    "oci.uid"                    = "1000"
-    "oci.gid"                    = "1000"
+    "oci.uid"                    = local.app_uid
+    "oci.gid"                    = local.app_gid
     "environment.TZ"             = var.timezone
     "environment.TINI_SUBREAPER" = "true"
     "environment.MPLCONFIGDIR"   = "/cache/matplotlib"
@@ -150,7 +166,7 @@ resource "incus_instance" "immich_machine_learning" {
     type = "disk"
 
     properties = {
-      "pool"   = "fast"
+      "pool"   = incus_storage_pool.fast.name
       "source" = incus_storage_volume.immich_machine_learning_cache.name
       "path"   = "/cache"
     }
@@ -164,23 +180,27 @@ resource "incus_instance" "immich_machine_learning" {
       "mode" = "0666"
     }
   }
-
 }
 
 
-# Immich server
+# Server
 
 resource "incus_storage_volume" "immich_library" {
-  remote  = var.incus_remote
-  project = "default"
-  name    = "immich-library"
-  pool    = "fast"
+  remote      = var.incus_remote
+  project     = local.project
+  name        = "immich-library"
+  description = "Immich photo library"
+  pool        = incus_storage_pool.fast.name
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 
 resource "incus_instance" "immich_server" {
   remote      = var.incus_remote
-  project     = "default"
+  project     = local.project
   name        = "immich-server"
   image       = "oci-ghcr:immich-app/immich-server:release"
   description = "Immich server"
@@ -188,8 +208,8 @@ resource "incus_instance" "immich_server" {
   running     = true
 
   config = {
-    "oci.uid"                                 = "1000"
-    "oci.gid"                                 = "1000"
+    "oci.uid"                                 = local.app_uid
+    "oci.gid"                                 = local.app_gid
     "environment.TINI_SUBREAPER"              = "true"
     "environment.TZ"                          = var.timezone
     "environment.IMMICH_HOST"                 = "0.0.0.0"
@@ -207,7 +227,7 @@ resource "incus_instance" "immich_server" {
     type = "disk"
 
     properties = {
-      "pool"   = "fast"
+      "pool"   = incus_storage_pool.fast.name
       "source" = incus_storage_volume.immich_library.name
       "path"   = "/data"
     }
@@ -218,7 +238,7 @@ resource "incus_instance" "immich_server" {
     type = "disk"
 
     properties = {
-      "pool"     = "fast"
+      "pool"     = incus_storage_pool.fast.name
       "source"   = incus_storage_volume.immich_db_secret.name
       "path"     = "/run/secrets"
       "readonly" = "true"
@@ -233,5 +253,4 @@ resource "incus_instance" "immich_server" {
       "mode" = "0666"
     }
   }
-
 }

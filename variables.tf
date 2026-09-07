@@ -1,3 +1,5 @@
+# Input variables
+
 variable "incus_remote" {
   description = "Incus client remote that points at the homelab server"
   type        = string

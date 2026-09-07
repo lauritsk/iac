@@ -1,33 +1,43 @@
 # Jellyfin
 
 resource "incus_storage_volume" "jellyfin_cache" {
-  remote  = var.incus_remote
-  project = "default"
-  name    = "jellyfin-cache"
-  pool    = "fast"
+  remote      = var.incus_remote
+  project     = local.project
+  name        = "jellyfin-cache"
+  description = "Jellyfin cache"
+  pool        = incus_storage_pool.fast.name
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 
 resource "incus_storage_volume" "jellyfin_config" {
-  remote  = var.incus_remote
-  project = "default"
-  name    = "jellyfin-config"
-  pool    = "fast"
+  remote      = var.incus_remote
+  project     = local.project
+  name        = "jellyfin-config"
+  description = "Jellyfin configuration"
+  pool        = incus_storage_pool.fast.name
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 
 resource "incus_instance" "jellyfin" {
   remote      = var.incus_remote
-  project     = "default"
+  project     = local.project
   name        = "jellyfin"
-  image       = "oci-ghcr:jellyfin/jellyfin:latest"
+  image       = "oci-ghcr:jellyfin/jellyfin@sha256:45f648c382a0c8b552582fcea40e95cb17c5d475473a891cba0eb7523fb92112"
   description = "Jellyfin"
   profiles    = [incus_profile.oci.name]
   running     = true
 
   config = {
     "environment.TZ"                          = var.timezone
-    "environment.JELLYFIN_PublishedServerUrl" = "https://jellyfin.cormo-tegu.ts.net"
+    "environment.JELLYFIN_PublishedServerUrl" = "https://jellyfin.${local.tailnet_domain}"
   }
 
   device {
@@ -35,7 +45,7 @@ resource "incus_instance" "jellyfin" {
     type = "disk"
 
     properties = {
-      "pool"   = "fast"
+      "pool"   = incus_storage_pool.fast.name
       "source" = incus_storage_volume.jellyfin_config.name
       "path"   = "/config"
     }
@@ -46,7 +56,7 @@ resource "incus_instance" "jellyfin" {
     type = "disk"
 
     properties = {
-      "pool"   = "fast"
+      "pool"   = incus_storage_pool.fast.name
       "source" = incus_storage_volume.jellyfin_cache.name
       "path"   = "/cache"
     }
@@ -57,7 +67,7 @@ resource "incus_instance" "jellyfin" {
     type = "disk"
 
     properties = {
-      "pool"   = "slow"
+      "pool"   = incus_storage_pool.slow.name
       "source" = incus_storage_volume.media.name
       "path"   = "/media"
     }
@@ -71,5 +81,4 @@ resource "incus_instance" "jellyfin" {
       "mode" = "0666"
     }
   }
-
 }
