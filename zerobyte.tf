@@ -106,18 +106,6 @@ resource "incus_instance" "zerobyte" {
   }
 
   device {
-    name = "uptime-kuma-backup"
-    type = "disk"
-
-    properties = {
-      "pool"     = incus_storage_pool.fast.name
-      "source"   = incus_storage_volume.uptime_kuma_data.name
-      "path"     = "/mnt/src/uptime-kuma"
-      "readonly" = "true"
-    }
-  }
-
-  device {
     name = "tailscale-backup"
     type = "disk"
 
