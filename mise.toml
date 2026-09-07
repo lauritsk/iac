@@ -2,8 +2,8 @@
 experimental = true
 
 [tools]
-"aqua:lxc/incus" = "latest"
 opentofu = "latest"
+"aqua:lxc/incus" = "latest"
 
 [env]
 TF_VAR_beszel_agent_key = { age = "YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBoUTJMdXM4cTI4aEVEYW9wb200THFYVmxLNGo2ald1M0FBMklRUkNrRUJJCjBMSjJtck1XRFFwWkxybWpneG5LSmJmRnJ4L24ydFIwUzVENXRVMmJjdkkKLT4gSVN0Z3tuZC1ncmVhc2UgKG9JI3RLClAzd0l0WENwazhqOC94UDh4cSt0YS9YdGZlNUFCQQotLS0gYXAvV0dJYWxBeWxCSkJ1bytxeG9rUXVMTlN2OVpBOXZYQTRPckU2WUk0MAom6rf1epl7j/Iw+dpNikHslO95QL02LHVu92lATbFL85Gw3EacUxH/ukZyBJgBK0o2R1D5pNEuePdcZDH4hgpqXksDer/xRauuo5TGP9mafVfMczTXN8ZL3MF6OQRHp/CMcVoTlgMjI3PLiofsNdFE" }
