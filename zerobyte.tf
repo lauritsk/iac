@@ -39,6 +39,7 @@ resource "incus_instance" "zerobyte" {
   running     = true
 
   config = {
+    "environment.TZ"                      = "Europe/Tallinn"
     "environment.BASE_URL"                = "https://zerobyte.cormo-tegu.ts.net"
     "environment.TRUSTED_ORIGINS"         = "https://idp.cormo-tegu.ts.net"
     "environment.APP_SECRET_FILE"         = "/run/secrets/zerobyte_app_secret"
