@@ -1,25 +1,32 @@
-# Beszel hub
+# Beszel
+
+# Hub
 
 resource "incus_storage_volume" "beszel_data" {
-  remote  = var.incus_remote
-  project = "default"
-  name    = "beszel-data"
-  pool    = "fast"
+  remote      = var.incus_remote
+  project     = local.project
+  name        = "beszel-data"
+  description = "Beszel hub data"
+  pool        = incus_storage_pool.fast.name
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 
 resource "incus_instance" "beszel" {
   remote      = var.incus_remote
-  project     = "default"
+  project     = local.project
   name        = "beszel"
-  image       = "oci-docker:henrygd/beszel:latest"
+  image       = "oci-docker:henrygd/beszel@sha256:fefb27166f5e1611ebf67f8697ea928a23f44efdb00af922e2ac3b5faa2efd5c"
   description = "Beszel hub"
   profiles    = [incus_profile.oci.name]
   running     = true
 
   config = {
     "environment.TZ"            = var.timezone
-    "environment.APP_URL"       = "https://beszel.cormo-tegu.ts.net"
+    "environment.APP_URL"       = "https://beszel.${local.tailnet_domain}"
     "environment.USER_EMAIL"    = var.beszel_user_email
     "environment.USER_PASSWORD" = var.beszel_user_password
   }
@@ -29,22 +36,22 @@ resource "incus_instance" "beszel" {
     type = "disk"
 
     properties = {
-      "pool"   = "fast"
+      "pool"   = incus_storage_pool.fast.name
       "source" = incus_storage_volume.beszel_data.name
       "path"   = "/beszel_data"
     }
   }
-
 }
 
 
-# Beszel agent for hv01
+# Agent for hv01
 
 resource "incus_storage_volume" "beszel_agent_data" {
-  remote  = var.incus_remote
-  project = "default"
-  name    = "beszel-agent-data"
-  pool    = "local"
+  remote      = var.incus_remote
+  project     = local.project
+  name        = "beszel-agent-data"
+  description = "Beszel agent state and credentials"
+  pool        = "local"
   config = {
     "security.shifted"   = "true"
     "size"               = "1GiB"
@@ -68,14 +75,18 @@ resource "incus_storage_volume" "beszel_agent_data" {
     gid         = 0
     mode        = "0400"
   }
+
+  lifecycle {
+    prevent_destroy = true
+  }
 }
 
 
 resource "incus_instance" "beszel_agent" {
   remote      = var.incus_remote
-  project     = "default"
+  project     = local.project
   name        = "beszel-agent"
-  image       = "oci-docker:henrygd/beszel-agent-intel:latest"
+  image       = "oci-docker:henrygd/beszel-agent-intel@sha256:6bc55a472dd17d865ddbab82baf74aea99107cee5ece2d95ba73c9581084db61"
   description = "Beszel agent for hv01"
   profiles    = [incus_profile.oci.name]
   running     = true
@@ -86,7 +97,7 @@ resource "incus_instance" "beszel_agent" {
     "raw.lxc"                   = "lxc.cap.drop=\nlxc.cap.drop=sys_time sys_module mac_admin mac_override"
     "environment.TZ"            = var.timezone
     "environment.DISABLE_SSH"   = "true"
-    "environment.HUB_URL"       = "https://beszel.cormo-tegu.ts.net"
+    "environment.HUB_URL"       = "https://beszel.${local.tailnet_domain}"
     "environment.SYSTEM_NAME"   = "hv01"
     "environment.FILESYSTEM"    = "/extra-filesystems/host-root__host-root"
     "environment.KEY_FILE"      = "/var/lib/beszel-agent/key"
@@ -177,5 +188,4 @@ resource "incus_instance" "beszel_agent" {
     properties = {
     }
   }
-
 }
