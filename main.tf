@@ -1,6 +1,23 @@
 terraform {
   required_version = ">= 1.10.0"
 
+  backend "s3" {
+    bucket = "terraform-state"
+    key    = "lauritsk-iac/terraform.tfstate"
+    region = "us-east-1"
+
+    endpoints = {
+      s3 = "https://hv01.cormo-tegu.ts.net:8555"
+    }
+
+    use_path_style              = true
+    insecure                    = true
+    skip_credentials_validation = true
+    skip_metadata_api_check     = true
+    skip_region_validation      = true
+    skip_requesting_account_id  = true
+  }
+
   required_providers {
     incus = {
       source  = "lxc/incus"
