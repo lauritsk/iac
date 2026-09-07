@@ -1,12 +1,12 @@
 /*
 
 !/.gitignore
-!/.terraform.lock.hcl
-!/*.tf
 !/*.md
-!/*.json
+!/*.toml
 !/*.yml
 !/*.yaml
+!/*.json
+!/*.tf
 !/*.tftpl
-!/*.toml
+!/.terraform.lock.hcl
 !/mise.lock
