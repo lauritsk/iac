@@ -7,10 +7,6 @@ locals {
   tailnet_domain = "cormo-tegu.ts.net"
 
   tailscale_serve_services = {
-    "svc:beszel" = {
-      TCP = { "443" = { HTTPS = true } }
-      Web = { "beszel.${local.tailnet_domain}:443" = { Handlers = { "/" = { Proxy = "http://beszel:8090" } } } }
-    }
     "svc:uptime-kuma" = {
       TCP = { "443" = { HTTPS = true } }
       Web = { "uptime-kuma.${local.tailnet_domain}:443" = { Handlers = { "/" = { Proxy = "http://uptime-kuma:3001" } } } }
