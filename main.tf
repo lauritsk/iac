@@ -21,6 +21,13 @@ provider "incus" {
   }
 
   remote {
+    name     = "images"
+    address  = "https://images.linuxcontainers.org"
+    protocol = "simplestreams"
+    public   = true
+  }
+
+  remote {
     name     = "oci-docker"
     address  = "https://docker.io"
     protocol = "oci"

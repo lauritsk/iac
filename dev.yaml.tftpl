@@ -1,0 +1,45 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+packages:
+  - fish
+  - git
+  - sudo
+  - tailscale
+  - mise
+  - docker
+  - docker-compose
+  - mosh
+
+groups:
+  - docker
+
+users:
+  - name: karl
+    uid: 1000
+    groups: [wheel, docker]
+    shell: /usr/bin/fish
+    lock_passwd: true
+    sudo: "ALL=(ALL:ALL) NOPASSWD:ALL"
+
+ssh_pwauth: false
+disable_root: true
+
+write_files:
+  - path: /etc/default/tailscaled
+    permissions: '0644'
+    defer: true
+    content: |
+      PORT="41641"
+      FLAGS="--encrypt-state=true"
+  - path: /etc/fish/conf.d/mise.fish
+    permissions: '0644'
+    content: |
+      if status is-interactive
+          mise activate fish | source
+      end
+
+runcmd:
+  - [systemctl, enable, --now, tailscaled.service]
+  - [tailscale, up, ${jsonencode("--auth-key=${tailscale_authkey}")}, --ssh, --operator=karl]
+  - [systemctl, enable, --now, docker.socket]
