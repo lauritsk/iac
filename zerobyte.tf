@@ -107,18 +107,6 @@ resource "incus_instance" "zerobyte" {
   }
 
   device {
-    name = "bichon-backup"
-    type = "disk"
-
-    properties = {
-      "pool"     = "fast"
-      "source"   = incus_storage_volume.bichon_data.name
-      "path"     = "/mnt/src/bichon"
-      "readonly" = "true"
-    }
-  }
-
-  device {
     name = "uptime-kuma-backup"
     type = "disk"
 
@@ -162,18 +150,6 @@ resource "incus_instance" "zerobyte" {
       "pool"     = "local"
       "source"   = incus_storage_volume.tsidp_data.name
       "path"     = "/mnt/src/tsidp"
-      "readonly" = "true"
-    }
-  }
-
-  device {
-    name = "bichon-secret-backup"
-    type = "disk"
-
-    properties = {
-      "pool"     = "fast"
-      "source"   = incus_storage_volume.bichon_secret.name
-      "path"     = "/mnt/src/bichon-secret"
       "readonly" = "true"
     }
   }

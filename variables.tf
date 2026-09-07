@@ -28,12 +28,6 @@ variable "beszel_agent_key" {
   nullable  = false
 }
 
-variable "bichon_encrypt_password" {
-  type      = string
-  sensitive = true
-  nullable  = false
-}
-
 variable "immich_db_name" {
   type      = string
   sensitive = true

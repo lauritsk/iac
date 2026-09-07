@@ -1,21 +1,5 @@
 {
   "Services": {
-    "svc:bichon": {
-      "TCP": {
-        "443": {
-          "HTTPS": true
-        }
-      },
-      "Web": {
-        "bichon.cormo-tegu.ts.net:443": {
-          "Handlers": {
-            "/": {
-              "Proxy": "http://bichon:15630"
-            }
-          }
-        }
-      }
-    },
     "svc:beszel": {
       "TCP": {
         "443": {
