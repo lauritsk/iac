@@ -7,11 +7,11 @@ resource "incus_storage_volume" "recyclarr_data" {
   pool    = "fast"
 
   file {
-    source_path = "${path.module}/recyclarr.yml"
+    content     = file("${path.module}/recyclarr.yml")
     target_path = "/recyclarr.yml"
-    uid         = 0
-    gid         = 0
-    mode        = "0444"
+    uid         = 1000
+    gid         = 1000
+    mode        = "0600"
   }
 }
 
@@ -33,16 +33,16 @@ resource "incus_storage_volume" "recyclarr_secret" {
   file {
     content     = var.radarr_api_key
     target_path = "/radarr_api_key"
-    uid         = 0
-    gid         = 0
+    uid         = 1654
+    gid         = 1654
     mode        = "0400"
   }
 
   file {
     content     = var.sonarr_api_key
     target_path = "/sonarr_api_key"
-    uid         = 0
-    gid         = 0
+    uid         = 1654
+    gid         = 1654
     mode        = "0400"
   }
 }
@@ -59,6 +59,7 @@ resource "incus_instance" "recyclarr" {
 
   config = {
     "environment.TINI_SUBREAPER" = "true"
+    "environment.TZ"             = var.timezone
     "environment.CRON_SCHEDULE"  = "0 4 * * *"
   }
 

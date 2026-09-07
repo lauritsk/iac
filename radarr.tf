@@ -18,6 +18,9 @@ resource "incus_instance" "radarr" {
   running     = true
 
   config = {
+    "environment.PUID"                       = "1000"
+    "environment.PGID"                       = "1000"
+    "environment.TZ"                         = var.timezone
     "environment.FILE__RADARR__AUTH__APIKEY" = "/run/secrets/radarr_api_key"
   }
 

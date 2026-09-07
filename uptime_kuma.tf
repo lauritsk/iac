@@ -17,6 +17,10 @@ resource "incus_instance" "uptime_kuma" {
   profiles    = [incus_profile.oci.name]
   running     = true
 
+  config = {
+    "environment.TZ" = var.timezone
+  }
+
   device {
     name = "data"
     type = "disk"

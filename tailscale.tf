@@ -7,7 +7,7 @@ resource "incus_storage_volume" "tailscale_config" {
   pool    = "fast"
 
   file {
-    source_path = "${path.module}/tailscale-serve.json"
+    content     = file("${path.module}/tailscale-serve.json")
     target_path = "/serve.json"
     uid         = 0
     gid         = 0

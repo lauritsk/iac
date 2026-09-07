@@ -18,6 +18,9 @@ resource "incus_instance" "sonarr" {
   running     = true
 
   config = {
+    "environment.PUID"                       = "1000"
+    "environment.PGID"                       = "1000"
+    "environment.TZ"                         = var.timezone
     "environment.FILE__SONARR__AUTH__APIKEY" = "/run/secrets/sonarr_api_key"
   }
 

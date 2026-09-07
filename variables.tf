@@ -4,6 +4,12 @@ variable "incus_remote" {
   default     = "hv01"
 }
 
+variable "timezone" {
+  description = "IANA time zone passed to containers that support TZ."
+  type        = string
+  default     = "Europe/Tallinn"
+}
+
 variable "beszel_user_email" {
   type      = string
   sensitive = true
