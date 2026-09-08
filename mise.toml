@@ -1,9 +1,11 @@
 [settings]
 experimental = true
+lockfile = true
+locked = true
 
 [tools]
-opentofu = "latest"
-"aqua:lxc/incus" = "latest"
+opentofu = "1.12.6"
+"aqua:lxc/incus" = "7.4.0"
 
 [env]
 AWS_ACCESS_KEY_ID = { age = "YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSA4SWlyYktoZVVBT0QzY0Y1anBuS3djeUE1dVhUenBkRWVVandqa2x2eFhZCmh1eDY2Q2MvYTdka1MramMrM1BDWU9Jai9OT2R2NkhseFRpeWc5WTRsd00KLT4gc3NoLWVkMjU1MTkgZzE3bnFBIFpsQ0h2MmJhMWNNQmh6NUQ2NTQxRjViZHYwNFp1MnhmMGtveURLSURzMUEKOGZMQkVlTmJmaDBpNzgyWkFXakJmTmNxY0tHdmxUQW8rSVJPS2JhVFJ6QQotPiBTe3Q6RD4tZ3JlYXNlIFVsZV9YOyB+RSAvbH1qICs5STh+Oj0KZ0dLZmRsZ2tLcWlqRStPZzFLOTdna3I4cGFRUktid0lSUUZIWEhVU25YcFBHOEJxaE90Sy9leVVOZkVHUHVkSgpWb1VKU1ZMZ1lUN0JGc3RrR0xJWU5oSk9VK1N5TXMzR0t3ZHVkREhOY3cKLS0tIG1YWFg0LzQ1OFNrblZyb1ZzYUFYVFRQZU9MdUZlTFdYRDRIT0xkcWNId2MKz9fwQvUpApzTCk6h1DBP4usb9/VRLiTthrcx/nmWB+6MarR9uh00rWB1s+WZPmZKWkE8BA" }
@@ -44,7 +46,3 @@ run = "tofu plan -out=homelab.tfplan"
 description = "Apply the saved infrastructure plan"
 confirm = "Apply homelab.tfplan?"
 run = "tofu apply homelab.tfplan"
-
-[tasks."tailnet:import"]
-description = "Adopt the existing tailnet policy into shared state (export policy.hujson first)"
-run = "tofu import tailscale_acl.policy acl"
