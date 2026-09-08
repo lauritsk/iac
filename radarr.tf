@@ -17,7 +17,7 @@ resource "incus_instance" "radarr" {
   remote      = var.incus_remote
   project     = local.project
   name        = "radarr"
-  image       = "oci-lscr:linuxserver/radarr@sha256:119aaa4a4f7349bcd2a136c5373a0d7925b5479915c7dfe0c0ad352db2a6d438"
+  image       = "oci-lscr:linuxserver/radarr@sha256:95ba0801df4d9d1d79d0d9a3849f656542497dab061d91b87ad4f53a71aff3ef"
   description = "Radarr"
   profiles    = [incus_profile.oci.name]
   running     = true
