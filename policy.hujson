@@ -1,0 +1,147 @@
+// Example/default ACLs for unrestricted connections.
+{
+	// Declare static groups of users. Use autogroups for all users or users with a specific role.
+	// "groups": {
+	//   "group:example": ["alice@example.com", "bob@example.com"],
+	// },
+
+	// Define the tags which can be applied to devices and by which users.
+	// "tagOwners": {
+	//   "tag:example": ["autogroup:admin"],
+	// },
+
+	// Define grants that govern access for users, groups, autogroups, tags,
+	// Tailscale IP addresses, and subnet ranges.
+	"grants": [
+		// Allow all connections
+		{
+			"src": ["*"],
+			"dst": ["*"],
+			"ip":  ["*"],
+		},
+		// Enable Taildrive
+		{
+			"src": ["*"],
+			"dst": ["*"],
+			"ip":  ["*"],
+
+			"app": {
+				"tailscale.com/cap/drive": [
+					{
+						"access": "rw",
+						"shares": ["*"],
+					},
+				],
+			},
+		},
+		// Enable tsidp
+		{
+			"src": ["autogroup:admin"],
+			"dst": ["tag:tsidp"],
+
+			"app": {
+				"tailscale.com/cap/tsidp": [
+					{
+						"allow_admin_ui": true,
+						"allow_dcr":      true,
+					},
+				],
+			},
+		},
+
+		// Allow users in "group:example" to access "tag:example", but only from
+		// devices that are running macOS and have enabled Tailscale client auto-updating.
+		// {"src": ["group:example"], "dst": ["tag:example"], "ip": ["*"], "srcPosture":["posture:autoUpdateMac"]},
+	],
+
+	// Define postures that will be applied to all rules without any specific
+	// srcPosture definition.
+	// "defaultSrcPosture": [
+	//      "posture:anyMac",
+	// ],
+
+	// Define device posture rules requiring devices to meet
+	// certain criteria to access parts of your system.
+	// "postures": {
+	//      // Require devices running macOS, a stable Tailscale
+	//      // version and auto update enabled for Tailscale.
+	//  "posture:autoUpdateMac": [
+	//      "node:os == 'macos'",
+	//      "node:tsReleaseTrack == 'stable'",
+	//      "node:tsAutoUpdate",
+	//  ],
+	//      // Require devices running macOS and a stable
+	//      // Tailscale version.
+	//  "posture:anyMac": [
+	//      "node:os == 'macos'",
+	//      "node:tsReleaseTrack == 'stable'",
+	//  ],
+	// },
+
+	// Define users and devices that can use Tailscale SSH.
+	"ssh": [
+		// Allow connections to own devices in check mode
+		{
+			"src":    ["autogroup:member"],
+			"dst":    ["autogroup:self"],
+			"users":  ["autogroup:nonroot", "root"],
+			"action": "accept",
+		},
+		// Allow connections to servers
+		{
+			"src":    ["karl@laurits.dev"],
+			"dst":    ["tag:server", "tag:dev"],
+			"users":  ["autogroup:nonroot", "root"],
+			"action": "accept",
+		},
+	],
+
+	"tagOwners": {
+		"tag:server":    ["autogroup:admin"],
+		"tag:container": ["autogroup:admin"],
+		"tag:app":       ["autogroup:admin"],
+		"tag:tsidp":     ["autogroup:admin"],
+		"tag:dev":       ["autogroup:admin"],
+	},
+
+	"nodeAttrs": [
+		// Allow members to use Taildrive
+		{
+			"target": ["autogroup:member"],
+			"attr":   ["drive:access", "drive:share"],
+		},
+		// Allow members and servers to use funnel
+		{
+			"target": ["autogroup:member", "tag:server"],
+			"attr":   ["funnel"],
+		},
+		{
+			"target": ["100.113.246.11"],
+			"attr":   ["mullvad"],
+		},
+		{
+			"target": ["100.118.247.55"],
+			"attr":   ["mullvad"],
+		},
+		{
+			"target": ["100.98.113.54"],
+			"attr":   ["mullvad"],
+		},
+	],
+
+	"autoApprovers": {
+		"services": {
+			"tag:app": ["tag:container"],
+		},
+		"exitNode": ["tag:server"],
+	},
+
+	// Test access rules every time they're saved.
+	// "tests": [
+	//   {
+	//       "src": "alice@example.com",
+	//       "accept": ["tag:example"],
+	//       "deny": ["100.101.102.103:443"],
+	//   },
+	// ],
+}

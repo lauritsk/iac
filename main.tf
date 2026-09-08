@@ -21,6 +21,10 @@ terraform {
   }
 
   required_providers {
+    tailscale = {
+      source  = "tailscale/tailscale"
+      version = "~> 0.29.2"
+    }
     incus = {
       source  = "lxc/incus"
       version = "~> 1.2"
