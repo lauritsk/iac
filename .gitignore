@@ -11,5 +11,6 @@
 !*.tftpl
 !.terraform.lock.hcl
 !mise.lock
+!.github/CODEOWNERS
 
 .terraform/
