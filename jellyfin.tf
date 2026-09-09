@@ -36,6 +36,10 @@ resource "incus_instance" "jellyfin" {
   running     = true
 
   config = {
+    # Live /config/config/system.xml: EnableLegacyAuthorization=true for Sonarr/Radarr.
+    # Revisit and disable after both support modern Jellyfin authorization; verify library updates.
+    "oci.uid"                                 = local.app_uid
+    "oci.gid"                                 = local.app_gid
     "environment.TZ"                          = var.timezone
     "environment.JELLYFIN_PublishedServerUrl" = "https://jellyfin.${local.tailnet_domain}"
   }
