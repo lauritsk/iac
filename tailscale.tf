@@ -68,7 +68,7 @@ resource "incus_instance" "tailscale" {
     type = "disk"
 
     properties = {
-      "pool"   = incus_storage_pool.fast.name
+      "pool"   = incus_storage_volume.tailscale_data.pool
       "source" = incus_storage_volume.tailscale_data.name
       "path"   = "/var/lib/tailscale"
     }
@@ -79,7 +79,7 @@ resource "incus_instance" "tailscale" {
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_pool.fast.name
+      "pool"     = incus_storage_volume.tailscale_config.pool
       "source"   = incus_storage_volume.tailscale_config.name
       "path"     = "/config"
       "readonly" = "true"

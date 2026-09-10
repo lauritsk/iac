@@ -5,13 +5,8 @@ resource "incus_storage_volume" "tsidp_data" {
   project     = local.project
   name        = "tsidp-data"
   description = "Tailscale IdP state"
-  pool        = "local"
-  config = {
-    "size"               = "1GiB"
-    "snapshots.schedule" = "@daily"
-    "snapshots.expiry"   = "7d"
-    "snapshots.pattern"  = "auto-%Y%m%d-%H%M"
-  }
+  pool        = local.root_pool
+  config      = local.snapshot_config
 
   lifecycle {
     prevent_destroy = true
@@ -40,7 +35,7 @@ resource "incus_instance" "tsidp" {
     type = "disk"
 
     properties = {
-      "pool"   = "local"
+      "pool"   = incus_storage_volume.tsidp_data.pool
       "source" = incus_storage_volume.tsidp_data.name
       "path"   = "/data"
     }

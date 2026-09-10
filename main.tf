@@ -38,7 +38,7 @@ provider "incus" {
 
   remote {
     name                = var.incus_remote
-    address             = "https://hv01.cormo-tegu.ts.net:8443"
+    address             = var.incus_address
     protocol            = "incus"
     authentication_type = "tls"
   }

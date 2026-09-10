@@ -23,16 +23,16 @@ resource "incus_storage_volume" "transmission_secret" {
   file {
     content     = var.transmission_username
     target_path = "/transmission_username"
-    uid         = 1000
-    gid         = 1000
+    uid         = local.app_uid
+    gid         = local.app_gid
     mode        = "0400"
   }
 
   file {
     content     = var.transmission_password
     target_path = "/transmission_password"
-    uid         = 1000
-    gid         = 1000
+    uid         = local.app_uid
+    gid         = local.app_gid
     mode        = "0400"
   }
 
@@ -77,7 +77,7 @@ resource "incus_instance" "transmission" {
     type = "disk"
 
     properties = {
-      "pool"   = incus_storage_pool.fast.name
+      "pool"   = incus_storage_volume.transmission_data.pool
       "source" = incus_storage_volume.transmission_data.name
       "path"   = "/config"
     }
@@ -88,7 +88,7 @@ resource "incus_instance" "transmission" {
     type = "disk"
 
     properties = {
-      "pool"   = incus_storage_pool.fast.name
+      "pool"   = incus_storage_volume.transmission_watch.pool
       "source" = incus_storage_volume.transmission_watch.name
       "path"   = "/watch"
     }
@@ -99,7 +99,7 @@ resource "incus_instance" "transmission" {
     type = "disk"
 
     properties = {
-      "pool"   = incus_storage_pool.slow.name
+      "pool"   = incus_storage_volume.media.pool
       "source" = incus_storage_volume.media.name
       "path"   = "/data"
     }
@@ -110,7 +110,7 @@ resource "incus_instance" "transmission" {
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_pool.fast.name
+      "pool"     = incus_storage_volume.transmission_secret.pool
       "source"   = incus_storage_volume.transmission_secret.name
       "path"     = "/run/secrets"
       "readonly" = "true"
