@@ -64,7 +64,7 @@ resource "incus_instance" "immich_postgres" {
   remote      = var.incus_remote
   project     = local.project
   name        = "immich-postgres"
-  image       = "oci-ghcr:immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0"
+  image       = "oci-ghcr:immich-app/postgres:14-vectorchord0.4.3-pgvectors0.2.0@sha256:bcf63357191b76a916ae5eb93464d65c07511da41e3bf7a8416db519b40b1c23"
   description = "Immich PostgreSQL"
   profiles    = [incus_profile.oci.name]
   running     = true
@@ -107,7 +107,7 @@ resource "incus_instance" "immich_valkey" {
   remote      = var.incus_remote
   project     = local.project
   name        = "immich-valkey"
-  image       = "oci-docker:valkey/valkey:9"
+  image       = "oci-docker:valkey/valkey:9@sha256:c123e3715db63d06d4ad6964884037aa0d5d4d703939b9929954112889708e1d"
   description = "Immich Valkey"
   profiles    = [incus_profile.oci.name]
   running     = true
@@ -148,7 +148,7 @@ resource "incus_instance" "immich_machine_learning" {
   remote      = var.incus_remote
   project     = local.project
   name        = "immich-machine-learning"
-  image       = "oci-ghcr:immich-app/immich-machine-learning:release-openvino"
+  image       = "oci-ghcr:immich-app/immich-machine-learning:v3.1.0-openvino@sha256:4b6ef958e7749fc548377bb23ee219c09c74da8decee080d76dc6a388c39b013"
   description = "Immich machine learning"
   profiles    = [incus_profile.oci.name]
   running     = true
@@ -202,7 +202,7 @@ resource "incus_instance" "immich_server" {
   remote      = var.incus_remote
   project     = local.project
   name        = "immich-server"
-  image       = "oci-ghcr:immich-app/immich-server:release"
+  image       = "oci-ghcr:immich-app/immich-server:v3.1.0@sha256:b434cb9287eea1471c9974845914d4dd328c9c2d652e446ed4930f99944f0ceb"
   description = "Immich server"
   profiles    = [incus_profile.oci.name]
   running     = true

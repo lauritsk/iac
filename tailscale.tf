@@ -46,7 +46,7 @@ resource "incus_instance" "tailscale" {
   remote      = var.incus_remote
   project     = local.project
   name        = "tailscale"
-  image       = "oci-docker:tailscale/tailscale@sha256:8c42c4574ab066384fcb72f69e086a2ff1dd3652eb6f56856cee34bcf0d2f680"
+  image       = "oci-ghcr:tailscale/tailscale:v1.102.3@sha256:8c42c4574ab066384fcb72f69e086a2ff1dd3652eb6f56856cee34bcf0d2f680"
   description = "Tailscale for Incus applications"
   profiles    = [incus_profile.oci.name]
   running     = true

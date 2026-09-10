@@ -23,7 +23,7 @@ resource "incus_instance" "tsidp" {
   remote      = var.incus_remote
   project     = local.project
   name        = "tsidp"
-  image       = "oci-ghcr:tailscale/tsidp@sha256:9efe0bc423f08408d3a0427b493e09ff0bd270fb082ff51be5db26eb18a44067"
+  image       = "oci-ghcr:tailscale/tsidp:v0.0.15@sha256:cae91835375efcbf75ecb8f9520e3472cda946e3ca9af1df3bce9540902f289e"
   description = "Tailscale OIDC identity provider"
   profiles    = [incus_profile.oci.name]
   running     = true
