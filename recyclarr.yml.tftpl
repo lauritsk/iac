@@ -1,6 +1,6 @@
 radarr:
   movies:
-    base_url: http://radarr:7878
+    base_url: ${radarr_url}
     api_key: !file /run/secrets/radarr_api_key
     quality_definition:
       type: movie
@@ -51,7 +51,7 @@ radarr:
       propers_and_repacks: do_not_prefer
 sonarr:
   series:
-    base_url: http://sonarr:8989
+    base_url: ${sonarr_url}
     api_key: !file /run/secrets/sonarr_api_key
     quality_definition:
       type: series

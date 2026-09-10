@@ -35,18 +35,14 @@ resource "incus_profile" "default" {
   name        = "default"
   description = "Default Incus profile"
 
-  config = {
-    "snapshots.expiry"   = "7d"
-    "snapshots.pattern"  = "auto-%Y%m%d-%H%M"
-    "snapshots.schedule" = "@daily"
-  }
+  config = local.snapshot_config
 
   device {
     name = "root"
     type = "disk"
 
     properties = {
-      pool = "local"
+      pool = local.root_pool
       path = "/"
     }
   }
@@ -79,7 +75,7 @@ resource "incus_profile" "oci" {
     type = "disk"
 
     properties = {
-      pool = "local"
+      pool = local.root_pool
       path = "/"
     }
   }

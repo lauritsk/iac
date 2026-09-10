@@ -6,6 +6,12 @@ variable "incus_remote" {
   default     = "hv01"
 }
 
+variable "incus_address" {
+  description = "HTTPS API endpoint of the homelab Incus server"
+  type        = string
+  nullable    = false
+}
+
 variable "timezone" {
   description = "IANA time zone passed to containers that support TZ."
   type        = string

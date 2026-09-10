@@ -34,7 +34,7 @@ resource "incus_instance" "radarr" {
     type = "disk"
 
     properties = {
-      "pool"   = incus_storage_pool.fast.name
+      "pool"   = incus_storage_volume.radarr_data.pool
       "source" = incus_storage_volume.radarr_data.name
       "path"   = "/config"
     }
@@ -45,7 +45,7 @@ resource "incus_instance" "radarr" {
     type = "disk"
 
     properties = {
-      "pool"   = incus_storage_pool.slow.name
+      "pool"   = incus_storage_volume.media.pool
       "source" = incus_storage_volume.media.name
       "path"   = "/data"
     }
@@ -56,7 +56,7 @@ resource "incus_instance" "radarr" {
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_pool.fast.name
+      "pool"     = incus_storage_volume.recyclarr_secret.pool
       "source"   = incus_storage_volume.recyclarr_secret.name
       "path"     = "/run/secrets"
       "readonly" = "true"

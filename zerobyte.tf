@@ -6,11 +6,7 @@ resource "incus_storage_volume" "zerobyte_data" {
   name        = "zerobyte-data"
   description = "Zerobyte backup server data"
   pool        = incus_storage_pool.fast.name
-  config = {
-    "snapshots.schedule" = "@daily"
-    "snapshots.expiry"   = "7d"
-    "snapshots.pattern"  = "auto-%Y%m%d-%H%M"
-  }
+  config      = local.snapshot_config
 
   lifecycle {
     prevent_destroy = true
@@ -28,8 +24,8 @@ resource "incus_storage_volume" "zerobyte_secret" {
   file {
     content     = var.zerobyte_app_secret
     target_path = "/zerobyte_app_secret"
-    uid         = 1000
-    gid         = 1000
+    uid         = local.app_uid
+    gid         = local.app_gid
     mode        = "0400"
   }
 
@@ -55,7 +51,7 @@ resource "incus_instance" "zerobyte" {
     "environment.APP_SECRET_FILE"         = "/run/secrets/zerobyte_app_secret"
     "environment.GOMAXPROCS"              = "2"
     "environment.WEBHOOK_TIMEOUT"         = "600"
-    "environment.WEBHOOK_ALLOWED_ORIGINS" = "http://jellyfin:8096"
+    "environment.WEBHOOK_ALLOWED_ORIGINS" = local.jellyfin_internal_url
   }
 
   device {
@@ -63,7 +59,7 @@ resource "incus_instance" "zerobyte" {
     type = "disk"
 
     properties = {
-      "pool"   = incus_storage_pool.fast.name
+      "pool"   = incus_storage_volume.zerobyte_data.pool
       "source" = incus_storage_volume.zerobyte_data.name
       "path"   = "/var/lib/zerobyte"
     }
@@ -74,7 +70,7 @@ resource "incus_instance" "zerobyte" {
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_pool.fast.name
+      "pool"     = incus_storage_volume.zerobyte_secret.pool
       "source"   = incus_storage_volume.zerobyte_secret.name
       "path"     = "/run/secrets"
       "readonly" = "true"
@@ -86,7 +82,7 @@ resource "incus_instance" "zerobyte" {
     type = "disk"
 
     properties = {
-      "pool"     = "local"
+      "pool"     = local.root_pool
       "source"   = "backups"
       "path"     = "/mnt/src/incus-backups"
       "readonly" = "true"
@@ -98,7 +94,7 @@ resource "incus_instance" "zerobyte" {
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_pool.slow.name
+      "pool"     = incus_storage_volume.media.pool
       "source"   = incus_storage_volume.media.name
       "path"     = "/mnt/src/media"
       "readonly" = "true"
@@ -110,7 +106,7 @@ resource "incus_instance" "zerobyte" {
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_pool.fast.name
+      "pool"     = incus_storage_volume.tailscale_data.pool
       "source"   = incus_storage_volume.tailscale_data.name
       "path"     = "/mnt/src/tailscale"
       "readonly" = "true"
@@ -122,7 +118,7 @@ resource "incus_instance" "zerobyte" {
     type = "disk"
 
     properties = {
-      "pool"     = "local"
+      "pool"     = incus_storage_volume.tsidp_data.pool
       "source"   = incus_storage_volume.tsidp_data.name
       "path"     = "/mnt/src/tsidp"
       "readonly" = "true"
@@ -134,7 +130,7 @@ resource "incus_instance" "zerobyte" {
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_pool.fast.name
+      "pool"     = incus_storage_volume.jellyfin_config.pool
       "source"   = incus_storage_volume.jellyfin_config.name
       "path"     = "/mnt/src/jellyfin"
       "readonly" = "true"
@@ -146,7 +142,7 @@ resource "incus_instance" "zerobyte" {
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_pool.fast.name
+      "pool"     = incus_storage_volume.prowlarr_data.pool
       "source"   = incus_storage_volume.prowlarr_data.name
       "path"     = "/mnt/src/prowlarr"
       "readonly" = "true"
@@ -158,7 +154,7 @@ resource "incus_instance" "zerobyte" {
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_pool.fast.name
+      "pool"     = incus_storage_volume.radarr_data.pool
       "source"   = incus_storage_volume.radarr_data.name
       "path"     = "/mnt/src/radarr"
       "readonly" = "true"
@@ -170,7 +166,7 @@ resource "incus_instance" "zerobyte" {
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_pool.fast.name
+      "pool"     = incus_storage_volume.recyclarr_secret.pool
       "source"   = incus_storage_volume.recyclarr_secret.name
       "path"     = "/mnt/src/recyclarr-secret"
       "readonly" = "true"
@@ -182,7 +178,7 @@ resource "incus_instance" "zerobyte" {
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_pool.fast.name
+      "pool"     = incus_storage_volume.sonarr_data.pool
       "source"   = incus_storage_volume.sonarr_data.name
       "path"     = "/mnt/src/sonarr"
       "readonly" = "true"
@@ -194,7 +190,7 @@ resource "incus_instance" "zerobyte" {
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_pool.fast.name
+      "pool"     = incus_storage_volume.transmission_data.pool
       "source"   = incus_storage_volume.transmission_data.name
       "path"     = "/mnt/src/transmission"
       "readonly" = "true"
@@ -206,7 +202,7 @@ resource "incus_instance" "zerobyte" {
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_pool.fast.name
+      "pool"     = incus_storage_volume.transmission_secret.pool
       "source"   = incus_storage_volume.transmission_secret.name
       "path"     = "/mnt/src/transmission-secret"
       "readonly" = "true"
@@ -218,7 +214,7 @@ resource "incus_instance" "zerobyte" {
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_pool.fast.name
+      "pool"     = incus_storage_volume.immich_db_secret.pool
       "source"   = incus_storage_volume.immich_db_secret.name
       "path"     = "/mnt/src/immich-db-secret"
       "readonly" = "true"
@@ -230,7 +226,7 @@ resource "incus_instance" "zerobyte" {
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_pool.fast.name
+      "pool"     = incus_storage_volume.immich_library.pool
       "source"   = incus_storage_volume.immich_library.name
       "path"     = "/mnt/src/immich-library"
       "readonly" = "true"

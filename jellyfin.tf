@@ -49,7 +49,7 @@ resource "incus_instance" "jellyfin" {
     type = "disk"
 
     properties = {
-      "pool"   = incus_storage_pool.fast.name
+      "pool"   = incus_storage_volume.jellyfin_config.pool
       "source" = incus_storage_volume.jellyfin_config.name
       "path"   = "/config"
     }
@@ -60,7 +60,7 @@ resource "incus_instance" "jellyfin" {
     type = "disk"
 
     properties = {
-      "pool"   = incus_storage_pool.fast.name
+      "pool"   = incus_storage_volume.jellyfin_cache.pool
       "source" = incus_storage_volume.jellyfin_cache.name
       "path"   = "/cache"
     }
@@ -71,7 +71,7 @@ resource "incus_instance" "jellyfin" {
     type = "disk"
 
     properties = {
-      "pool"   = incus_storage_pool.slow.name
+      "pool"   = incus_storage_volume.media.pool
       "source" = incus_storage_volume.media.name
       "path"   = "/media"
     }

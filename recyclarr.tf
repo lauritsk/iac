@@ -8,7 +8,10 @@ resource "incus_storage_volume" "recyclarr_data" {
   pool        = incus_storage_pool.fast.name
 
   file {
-    content     = file("${path.module}/recyclarr.yml")
+    content = templatefile("${path.module}/recyclarr.yml.tftpl", {
+      radarr_url = local.radarr_internal_url
+      sonarr_url = local.sonarr_internal_url
+    })
     target_path = "/recyclarr.yml"
     uid         = 1000
     gid         = 1000
@@ -78,7 +81,7 @@ resource "incus_instance" "recyclarr" {
     type = "disk"
 
     properties = {
-      "pool"   = incus_storage_pool.fast.name
+      "pool"   = incus_storage_volume.recyclarr_data.pool
       "source" = incus_storage_volume.recyclarr_data.name
       "path"   = "/config"
     }
@@ -89,7 +92,7 @@ resource "incus_instance" "recyclarr" {
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_pool.fast.name
+      "pool"     = incus_storage_volume.recyclarr_secret.pool
       "source"   = incus_storage_volume.recyclarr_secret.name
       "path"     = "/run/secrets"
       "readonly" = "true"

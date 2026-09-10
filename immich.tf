@@ -12,24 +12,24 @@ resource "incus_storage_volume" "immich_db_secret" {
   file {
     content     = var.immich_db_name
     target_path = "/immich_db_name"
-    uid         = 1000
-    gid         = 1000
+    uid         = local.app_uid
+    gid         = local.app_gid
     mode        = "0400"
   }
 
   file {
     content     = var.immich_db_username
     target_path = "/immich_db_username"
-    uid         = 1000
-    gid         = 1000
+    uid         = local.app_uid
+    gid         = local.app_gid
     mode        = "0400"
   }
 
   file {
     content     = var.immich_db_password
     target_path = "/immich_db_password"
-    uid         = 1000
-    gid         = 1000
+    uid         = local.app_uid
+    gid         = local.app_gid
     mode        = "0400"
   }
 
@@ -81,7 +81,7 @@ resource "incus_instance" "immich_postgres" {
     type = "disk"
 
     properties = {
-      "pool"   = incus_storage_pool.fast.name
+      "pool"   = incus_storage_volume.immich_postgres_data.pool
       "source" = incus_storage_volume.immich_postgres_data.name
       "path"   = "/var/lib/postgresql/data"
     }
@@ -92,7 +92,7 @@ resource "incus_instance" "immich_postgres" {
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_pool.fast.name
+      "pool"     = incus_storage_volume.immich_db_secret.pool
       "source"   = incus_storage_volume.immich_db_secret.name
       "path"     = "/run/secrets"
       "readonly" = "true"
@@ -133,8 +133,8 @@ resource "incus_storage_volume" "immich_machine_learning_cache" {
     target_path        = "/matplotlib/.keep"
     create_directories = true
     directory_mode     = "0700"
-    uid                = 1000
-    gid                = 1000
+    uid                = local.app_uid
+    gid                = local.app_gid
     mode               = "0600"
   }
 
@@ -166,7 +166,7 @@ resource "incus_instance" "immich_machine_learning" {
     type = "disk"
 
     properties = {
-      "pool"   = incus_storage_pool.fast.name
+      "pool"   = incus_storage_volume.immich_machine_learning_cache.pool
       "source" = incus_storage_volume.immich_machine_learning_cache.name
       "path"   = "/cache"
     }
@@ -213,13 +213,13 @@ resource "incus_instance" "immich_server" {
     "environment.TINI_SUBREAPER"              = "true"
     "environment.TZ"                          = var.timezone
     "environment.IMMICH_HOST"                 = "0.0.0.0"
-    "environment.DB_HOSTNAME"                 = "immich-postgres"
+    "environment.DB_HOSTNAME"                 = incus_instance.immich_postgres.name
     "environment.DB_USERNAME_FILE"            = "/run/secrets/immich_db_username"
     "environment.DB_PASSWORD_FILE"            = "/run/secrets/immich_db_password"
     "environment.DB_DATABASE_NAME_FILE"       = "/run/secrets/immich_db_name"
-    "environment.REDIS_HOSTNAME"              = "immich-valkey"
-    "environment.MACHINE_LEARNING_URL"        = "http://immich-machine-learning:3003"
-    "environment.IMMICH_MACHINE_LEARNING_URL" = "http://immich-machine-learning:3003"
+    "environment.REDIS_HOSTNAME"              = incus_instance.immich_valkey.name
+    "environment.MACHINE_LEARNING_URL"        = local.immich_machine_learning_url
+    "environment.IMMICH_MACHINE_LEARNING_URL" = local.immich_machine_learning_url
   }
 
   device {
@@ -227,7 +227,7 @@ resource "incus_instance" "immich_server" {
     type = "disk"
 
     properties = {
-      "pool"   = incus_storage_pool.fast.name
+      "pool"   = incus_storage_volume.immich_library.pool
       "source" = incus_storage_volume.immich_library.name
       "path"   = "/data"
     }
@@ -238,7 +238,7 @@ resource "incus_instance" "immich_server" {
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_pool.fast.name
+      "pool"     = incus_storage_volume.immich_db_secret.pool
       "source"   = incus_storage_volume.immich_db_secret.name
       "path"     = "/run/secrets"
       "readonly" = "true"
