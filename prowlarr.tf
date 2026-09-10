@@ -17,7 +17,7 @@ resource "incus_instance" "prowlarr" {
   remote      = var.incus_remote
   project     = local.project
   name        = "prowlarr"
-  image       = "oci-lscr:linuxserver/prowlarr@sha256:91844fa2c927ad6ede5630127183cc7868b175f6223e83e6a5da1fffea2aa782"
+  image       = "oci-lscr:linuxserver/prowlarr:2.5.2.5491-ls159@sha256:c7502a75b021d964481c129c84590b9cbc40f83aadd4e553f173871bc0deaa3c"
   description = "Prowlarr"
   profiles    = [incus_profile.oci.name]
   running     = true

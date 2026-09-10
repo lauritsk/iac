@@ -59,7 +59,7 @@ resource "incus_instance" "transmission" {
   remote      = var.incus_remote
   project     = local.project
   name        = "transmission"
-  image       = "oci-lscr:linuxserver/transmission@sha256:d38840f24a82c79fa837525fc4d89cf001a95b1fd4edcf41fba327c45d0f19f9"
+  image       = "oci-lscr:linuxserver/transmission:4.1.3-r0-ls361@sha256:fc3b07f2f571c0392edd4dd386067138a0fe157d2158a976769409a292e43936"
   description = "Transmission"
   profiles    = [incus_profile.oci.name]
   running     = true

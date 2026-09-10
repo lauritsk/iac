@@ -43,7 +43,7 @@ resource "incus_instance" "zerobyte" {
   remote      = var.incus_remote
   project     = local.project
   name        = "zerobyte"
-  image       = "oci-ghcr:nicotsx/zerobyte@sha256:08d1766977b28b3530054fc9df8b1a0ba3f7f9861c5367b03aa3e9ab71c2102f"
+  image       = "oci-ghcr:nicotsx/zerobyte:v0.42.0@sha256:08d1766977b28b3530054fc9df8b1a0ba3f7f9861c5367b03aa3e9ab71c2102f"
   description = "Zerobyte backup server"
   profiles    = [incus_profile.oci.name]
   running     = true
