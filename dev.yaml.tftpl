@@ -7,17 +7,14 @@ packages:
   - sudo
   - tailscale
   - mise
-  - docker
-  - docker-compose
+  - podman
+  - podman-compose
   - mosh
-
-groups:
-  - docker
 
 users:
   - name: karl
     uid: 1000
-    groups: [wheel, docker]
+    groups: [wheel]
     shell: /usr/bin/fish
     lock_passwd: true
     sudo: "ALL=(ALL:ALL) NOPASSWD:ALL"
@@ -28,6 +25,16 @@ ssh_pwauth: false
 disable_root: true
 
 write_files:
+  - path: /etc/subuid
+    permissions: '0644'
+    defer: true
+    content: |
+      karl:100000:65536
+  - path: /etc/subgid
+    permissions: '0644'
+    defer: true
+    content: |
+      karl:100000:65536
   - path: /etc/default/tailscaled
     permissions: '0644'
     defer: true
@@ -44,4 +51,3 @@ write_files:
 runcmd:
   - [systemctl, enable, --now, tailscaled.service]
   - [tailscale, up, ${jsonencode("--auth-key=${tailscale_authkey}")}, --ssh, --operator=karl]
-  - [systemctl, enable, --now, docker.socket]
