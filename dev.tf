@@ -14,14 +14,13 @@ resource "incus_instance" "dev" {
     "cloud-init.user-data" = templatefile("${path.module}/dev.yaml.tftpl", {
       tailscale_authkey = trimspace(var.dev_tailscale_authkey)
     })
-    "boot.autostart"                       = "true"
-    "limits.cpu"                           = "4"
-    "limits.memory"                        = "4GiB"
-    "security.idmap.isolated"              = "true"
-    "security.protection.delete"           = "true"
-    "security.nesting"                     = "true"
-    "security.syscalls.intercept.mknod"    = "true"
-    "security.syscalls.intercept.setxattr" = "true"
+    "boot.autostart"             = "true"
+    "limits.cpu"                 = "4"
+    "limits.memory"              = "4GiB"
+    "security.idmap.isolated"    = "true"
+    "security.idmap.size"        = "262144"
+    "security.protection.delete" = "true"
+    "security.nesting"           = "true"
   }
 
   device {
