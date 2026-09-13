@@ -2,43 +2,6 @@
 
 # PostgreSQL
 
-resource "incus_storage_volume" "immich_db_secret" {
-  remote      = var.incus_remote
-  project     = local.project
-  name        = "immich-db-secret"
-  description = "Immich database secrets"
-  pool        = incus_storage_pool.fast.name
-
-  file {
-    content     = var.immich_db_name
-    target_path = "/immich_db_name"
-    uid         = local.app_uid
-    gid         = local.app_gid
-    mode        = "0400"
-  }
-
-  file {
-    content     = var.immich_db_username
-    target_path = "/immich_db_username"
-    uid         = local.app_uid
-    gid         = local.app_gid
-    mode        = "0400"
-  }
-
-  file {
-    content     = var.immich_db_password
-    target_path = "/immich_db_password"
-    uid         = local.app_uid
-    gid         = local.app_gid
-    mode        = "0400"
-  }
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-
 resource "incus_storage_volume" "immich_postgres_data" {
   remote      = var.incus_remote
   project     = local.project
@@ -70,10 +33,10 @@ resource "incus_instance" "immich_postgres" {
   running     = true
 
   config = {
-    "environment.TZ"                     = var.timezone
-    "environment.POSTGRES_DB_FILE"       = "/run/secrets/immich_db_name"
-    "environment.POSTGRES_USER_FILE"     = "/run/secrets/immich_db_username"
-    "environment.POSTGRES_PASSWORD_FILE" = "/run/secrets/immich_db_password"
+    "environment.TZ"                = var.timezone
+    "environment.POSTGRES_DB"       = var.immich_db_name
+    "environment.POSTGRES_USER"     = var.immich_db_username
+    "environment.POSTGRES_PASSWORD" = var.immich_db_password
   }
 
   device {
@@ -84,18 +47,6 @@ resource "incus_instance" "immich_postgres" {
       "pool"   = incus_storage_volume.immich_postgres_data.pool
       "source" = incus_storage_volume.immich_postgres_data.name
       "path"   = "/var/lib/postgresql/data"
-    }
-  }
-
-  device {
-    name = "secret"
-    type = "disk"
-
-    properties = {
-      "pool"     = incus_storage_volume.immich_db_secret.pool
-      "source"   = incus_storage_volume.immich_db_secret.name
-      "path"     = "/run/secrets"
-      "readonly" = "true"
     }
   }
 }
@@ -214,9 +165,9 @@ resource "incus_instance" "immich_server" {
     "environment.TZ"                          = var.timezone
     "environment.IMMICH_HOST"                 = "0.0.0.0"
     "environment.DB_HOSTNAME"                 = incus_instance.immich_postgres.name
-    "environment.DB_USERNAME_FILE"            = "/run/secrets/immich_db_username"
-    "environment.DB_PASSWORD_FILE"            = "/run/secrets/immich_db_password"
-    "environment.DB_DATABASE_NAME_FILE"       = "/run/secrets/immich_db_name"
+    "environment.DB_USERNAME"                 = var.immich_db_username
+    "environment.DB_PASSWORD"                 = var.immich_db_password
+    "environment.DB_DATABASE_NAME"            = var.immich_db_name
     "environment.REDIS_HOSTNAME"              = incus_instance.immich_valkey.name
     "environment.MACHINE_LEARNING_URL"        = local.immich_machine_learning_url
     "environment.IMMICH_MACHINE_LEARNING_URL" = local.immich_machine_learning_url
@@ -230,18 +181,6 @@ resource "incus_instance" "immich_server" {
       "pool"   = incus_storage_volume.immich_library.pool
       "source" = incus_storage_volume.immich_library.name
       "path"   = "/data"
-    }
-  }
-
-  device {
-    name = "secret"
-    type = "disk"
-
-    properties = {
-      "pool"     = incus_storage_volume.immich_db_secret.pool
-      "source"   = incus_storage_volume.immich_db_secret.name
-      "path"     = "/run/secrets"
-      "readonly" = "true"
     }
   }
 

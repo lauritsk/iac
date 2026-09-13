@@ -23,10 +23,10 @@ resource "incus_instance" "prowlarr" {
   running     = true
 
   config = {
-    "environment.PUID"                         = local.app_uid
-    "environment.PGID"                         = local.app_gid
-    "environment.TZ"                           = var.timezone
-    "environment.FILE__PROWLARR__AUTH__APIKEY" = "/run/secrets/prowlarr_api_key"
+    "environment.PUID"                   = local.app_uid
+    "environment.PGID"                   = local.app_gid
+    "environment.TZ"                     = var.timezone
+    "environment.PROWLARR__AUTH__APIKEY" = var.prowlarr_api_key
   }
 
   device {
@@ -40,15 +40,4 @@ resource "incus_instance" "prowlarr" {
     }
   }
 
-  device {
-    name = "secret"
-    type = "disk"
-
-    properties = {
-      "pool"     = incus_storage_volume.recyclarr_secret.pool
-      "source"   = incus_storage_volume.recyclarr_secret.name
-      "path"     = "/run/secrets"
-      "readonly" = "true"
-    }
-  }
 }

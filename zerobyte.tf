@@ -14,27 +14,6 @@ resource "incus_storage_volume" "zerobyte_data" {
 }
 
 
-resource "incus_storage_volume" "zerobyte_secret" {
-  remote      = var.incus_remote
-  project     = local.project
-  name        = "zerobyte-secret"
-  description = "Zerobyte application secrets"
-  pool        = incus_storage_pool.fast.name
-
-  file {
-    content     = var.zerobyte_app_secret
-    target_path = "/zerobyte_app_secret"
-    uid         = local.app_uid
-    gid         = local.app_gid
-    mode        = "0400"
-  }
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-
 resource "incus_instance" "zerobyte" {
   remote      = var.incus_remote
   project     = local.project
@@ -48,7 +27,7 @@ resource "incus_instance" "zerobyte" {
     "environment.TZ"                      = var.timezone
     "environment.BASE_URL"                = "https://zerobyte.${local.tailnet_domain}"
     "environment.TRUSTED_ORIGINS"         = "https://idp.${local.tailnet_domain}"
-    "environment.APP_SECRET_FILE"         = "/run/secrets/zerobyte_app_secret"
+    "environment.APP_SECRET"              = var.zerobyte_app_secret
     "environment.GOMAXPROCS"              = "2"
     "environment.WEBHOOK_TIMEOUT"         = "600"
     "environment.WEBHOOK_ALLOWED_ORIGINS" = local.jellyfin_internal_url
@@ -65,17 +44,6 @@ resource "incus_instance" "zerobyte" {
     }
   }
 
-  device {
-    name = "secret"
-    type = "disk"
-
-    properties = {
-      "pool"     = incus_storage_volume.zerobyte_secret.pool
-      "source"   = incus_storage_volume.zerobyte_secret.name
-      "path"     = "/run/secrets"
-      "readonly" = "true"
-    }
-  }
 
   device {
     name = "incus-backups"
@@ -162,18 +130,6 @@ resource "incus_instance" "zerobyte" {
   }
 
   device {
-    name = "recyclarr-secret-backup"
-    type = "disk"
-
-    properties = {
-      "pool"     = incus_storage_volume.recyclarr_secret.pool
-      "source"   = incus_storage_volume.recyclarr_secret.name
-      "path"     = "/mnt/src/recyclarr-secret"
-      "readonly" = "true"
-    }
-  }
-
-  device {
     name = "sonarr-backup"
     type = "disk"
 
@@ -193,30 +149,6 @@ resource "incus_instance" "zerobyte" {
       "pool"     = incus_storage_volume.transmission_data.pool
       "source"   = incus_storage_volume.transmission_data.name
       "path"     = "/mnt/src/transmission"
-      "readonly" = "true"
-    }
-  }
-
-  device {
-    name = "transmission-secret-backup"
-    type = "disk"
-
-    properties = {
-      "pool"     = incus_storage_volume.transmission_secret.pool
-      "source"   = incus_storage_volume.transmission_secret.name
-      "path"     = "/mnt/src/transmission-secret"
-      "readonly" = "true"
-    }
-  }
-
-  device {
-    name = "immich-db-secret-backup"
-    type = "disk"
-
-    properties = {
-      "pool"     = incus_storage_volume.immich_db_secret.pool
-      "source"   = incus_storage_volume.immich_db_secret.name
-      "path"     = "/mnt/src/immich-db-secret"
       "readonly" = "true"
     }
   }

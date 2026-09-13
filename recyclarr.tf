@@ -24,43 +24,6 @@ resource "incus_storage_volume" "recyclarr_data" {
 }
 
 
-resource "incus_storage_volume" "recyclarr_secret" {
-  remote      = var.incus_remote
-  project     = local.project
-  name        = "recyclarr-secret"
-  description = "Arr API key secrets"
-  pool        = incus_storage_pool.fast.name
-
-  file {
-    content     = var.prowlarr_api_key
-    target_path = "/prowlarr_api_key"
-    uid         = 0
-    gid         = 0
-    mode        = "0400"
-  }
-
-  file {
-    content     = var.radarr_api_key
-    target_path = "/radarr_api_key"
-    uid         = 1654
-    gid         = 1654
-    mode        = "0400"
-  }
-
-  file {
-    content     = var.sonarr_api_key
-    target_path = "/sonarr_api_key"
-    uid         = 1654
-    gid         = 1654
-    mode        = "0400"
-  }
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-
 resource "incus_instance" "recyclarr" {
   remote      = var.incus_remote
   project     = local.project
@@ -74,6 +37,8 @@ resource "incus_instance" "recyclarr" {
     "environment.TINI_SUBREAPER" = "true"
     "environment.TZ"             = var.timezone
     "environment.CRON_SCHEDULE"  = "0 4 * * *"
+    "environment.RADARR_API_KEY" = var.radarr_api_key
+    "environment.SONARR_API_KEY" = var.sonarr_api_key
   }
 
   device {
@@ -87,15 +52,4 @@ resource "incus_instance" "recyclarr" {
     }
   }
 
-  device {
-    name = "secret"
-    type = "disk"
-
-    properties = {
-      "pool"     = incus_storage_volume.recyclarr_secret.pool
-      "source"   = incus_storage_volume.recyclarr_secret.name
-      "path"     = "/run/secrets"
-      "readonly" = "true"
-    }
-  }
 }
