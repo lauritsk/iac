@@ -2,21 +2,15 @@
 package_update: true
 package_upgrade: true
 packages:
-  - fish
-  - git
   - sudo
   - tailscale
-  - mise
-  - usage
   - podman
-  - podman-compose
-  - mosh
 
 users:
   - name: karl
     uid: 1000
     groups: [wheel]
-    shell: /usr/bin/fish
+    shell: /bin/bash
     lock_passwd: true
     sudo: "ALL=(ALL:ALL) NOPASSWD:ALL"
     ssh_authorized_keys:
@@ -26,12 +20,6 @@ ssh_pwauth: false
 disable_root: true
 
 write_files:
-  - path: /home/karl/.config/mise/age.txt
-    owner: karl:karl
-    permissions: '0600'
-    defer: true
-    encoding: b64
-    content: ${base64encode(mise_age_key)}
   - path: /etc/subuid
     permissions: '0644'
     defer: true
@@ -48,19 +36,7 @@ write_files:
     content: |
       PORT="41641"
       FLAGS="--encrypt-state=true"
-  - path: /etc/fish/conf.d/mise.fish
-    permissions: '0644'
-    content: |
-      if status is-interactive
-          mise activate fish | source
-      end
 
 runcmd:
-  - [chown, 'karl:karl', /home/karl/.config, /home/karl/.config/mise]
-  - [chmod, '0700', /home/karl/.config/mise]
-  - [loginctl, enable-linger, karl]
-  - [systemctl, start, user@1000.service]
-  - [runuser, -u, karl, --, env, XDG_RUNTIME_DIR=/run/user/1000, DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus, mise, -C, /home/karl, bootstrap, --yes, --adopt, 'https://github.com/lauritsk/dotfiles.git']
-  - [runuser, -u, karl, --, env, XDG_RUNTIME_DIR=/run/user/1000, DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus, mise, -C, /home/karl, bootstrap, dotfiles, origin, set, 'https://github.com/lauritsk/dotfiles.git', --sync, sync]
   - [systemctl, enable, --now, tailscaled.service]
   - [tailscale, up, ${jsonencode("--auth-key=${tailscale_authkey}")}, --ssh, --operator=karl]
