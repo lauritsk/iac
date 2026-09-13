@@ -54,6 +54,12 @@ variable "sonarr_api_key" {
   nullable  = false
 }
 
+variable "dev_mise_age_key" {
+  type      = string
+  sensitive = true
+  nullable  = false
+}
+
 variable "dev_tailscale_authkey" {
   type      = string
   sensitive = true
