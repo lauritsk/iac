@@ -4,7 +4,7 @@ resource "incus_storage_volume" "proxy_config" {
   remote      = var.incus_remote
   project     = local.project
   name        = "proxy-config"
-  description = "Proxy serve configuration and generated auth secret"
+  description = "Proxy serve configuration"
   pool        = incus_storage_pool.fast.name
 
   file {
@@ -13,14 +13,6 @@ resource "incus_storage_volume" "proxy_config" {
     uid         = 0
     gid         = 0
     mode        = "0444"
-  }
-
-  file {
-    content     = tailscale_oauth_client.proxy.key
-    target_path = "/authkey"
-    uid         = 0
-    gid         = 0
-    mode        = "0400"
   }
 
   lifecycle {
@@ -55,7 +47,7 @@ resource "incus_instance" "proxy" {
     "environment.TS_USERSPACE"                               = "false"
     "environment.TS_HOSTNAME"                                = "proxy"
     "environment.TS_AUTH_ONCE"                               = "true"
-    "environment.TS_AUTHKEY"                                 = "file:/config/authkey"
+    "environment.TS_AUTHKEY"                                 = tailscale_oauth_client.proxy.key
     "environment.TS_STATE_DIR"                               = "/var/lib/tailscale"
     "environment.TS_SERVE_CONFIG"                            = "/config/serve.json"
     "environment.TS_EXTRA_ARGS"                              = "--advertise-tags=tag:container"

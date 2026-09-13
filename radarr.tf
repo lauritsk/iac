@@ -23,10 +23,10 @@ resource "incus_instance" "radarr" {
   running     = true
 
   config = {
-    "environment.PUID"                       = local.app_uid
-    "environment.PGID"                       = local.app_gid
-    "environment.TZ"                         = var.timezone
-    "environment.FILE__RADARR__AUTH__APIKEY" = "/run/secrets/radarr_api_key"
+    "environment.PUID"                 = local.app_uid
+    "environment.PGID"                 = local.app_gid
+    "environment.TZ"                   = var.timezone
+    "environment.RADARR__AUTH__APIKEY" = var.radarr_api_key
   }
 
   device {
@@ -51,15 +51,4 @@ resource "incus_instance" "radarr" {
     }
   }
 
-  device {
-    name = "secret"
-    type = "disk"
-
-    properties = {
-      "pool"     = incus_storage_volume.recyclarr_secret.pool
-      "source"   = incus_storage_volume.recyclarr_secret.name
-      "path"     = "/run/secrets"
-      "readonly" = "true"
-    }
-  }
 }

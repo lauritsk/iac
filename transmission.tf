@@ -13,35 +13,6 @@ resource "incus_storage_volume" "transmission_data" {
 }
 
 
-resource "incus_storage_volume" "transmission_secret" {
-  remote      = var.incus_remote
-  project     = local.project
-  name        = "transmission-secret"
-  description = "Transmission credentials"
-  pool        = incus_storage_pool.fast.name
-
-  file {
-    content     = var.transmission_username
-    target_path = "/transmission_username"
-    uid         = local.app_uid
-    gid         = local.app_gid
-    mode        = "0400"
-  }
-
-  file {
-    content     = var.transmission_password
-    target_path = "/transmission_password"
-    uid         = local.app_uid
-    gid         = local.app_gid
-    mode        = "0400"
-  }
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-
 resource "incus_storage_volume" "transmission_watch" {
   remote      = var.incus_remote
   project     = local.project
@@ -65,11 +36,11 @@ resource "incus_instance" "transmission" {
   running     = true
 
   config = {
-    "environment.PUID"       = local.app_uid
-    "environment.PGID"       = local.app_gid
-    "environment.TZ"         = var.timezone
-    "environment.FILE__USER" = "/run/secrets/transmission_username"
-    "environment.FILE__PASS" = "/run/secrets/transmission_password"
+    "environment.PUID" = local.app_uid
+    "environment.PGID" = local.app_gid
+    "environment.TZ"   = var.timezone
+    "environment.USER" = var.transmission_username
+    "environment.PASS" = var.transmission_password
   }
 
   device {
@@ -105,15 +76,4 @@ resource "incus_instance" "transmission" {
     }
   }
 
-  device {
-    name = "secret"
-    type = "disk"
-
-    properties = {
-      "pool"     = incus_storage_volume.transmission_secret.pool
-      "source"   = incus_storage_volume.transmission_secret.name
-      "path"     = "/run/secrets"
-      "readonly" = "true"
-    }
-  }
 }

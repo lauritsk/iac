@@ -23,10 +23,10 @@ resource "incus_instance" "sonarr" {
   running     = true
 
   config = {
-    "environment.PUID"                       = local.app_uid
-    "environment.PGID"                       = local.app_gid
-    "environment.TZ"                         = var.timezone
-    "environment.FILE__SONARR__AUTH__APIKEY" = "/run/secrets/sonarr_api_key"
+    "environment.PUID"                 = local.app_uid
+    "environment.PGID"                 = local.app_gid
+    "environment.TZ"                   = var.timezone
+    "environment.SONARR__AUTH__APIKEY" = var.sonarr_api_key
   }
 
   device {
@@ -51,15 +51,4 @@ resource "incus_instance" "sonarr" {
     }
   }
 
-  device {
-    name = "secret"
-    type = "disk"
-
-    properties = {
-      "pool"     = incus_storage_volume.recyclarr_secret.pool
-      "source"   = incus_storage_volume.recyclarr_secret.name
-      "path"     = "/run/secrets"
-      "readonly" = "true"
-    }
-  }
 }
