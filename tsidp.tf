@@ -27,7 +27,7 @@ resource "incus_instance" "tsidp" {
     "environment.TAILSCALE_USE_WIP_CODE" = "1"
     "environment.TS_STATE_DIR"           = "/data"
     "environment.TS_ADVERTISE_TAGS"      = "tag:tsidp"
-    "environment.TS_AUTHKEY"             = var.tsidp_oauth_secret
+    "environment.TS_AUTHKEY"             = tailscale_oauth_client.tsidp.key
   }
 
   device {

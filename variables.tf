@@ -54,29 +54,6 @@ variable "sonarr_api_key" {
   nullable  = false
 }
 
-variable "dev_tailscale_authkey" {
-  type      = string
-  sensitive = true
-  nullable  = false
-
-  validation {
-    condition     = length(trimspace(var.dev_tailscale_authkey)) > 0
-    error_message = "The dev Tailscale auth key must not be empty."
-  }
-}
-
-variable "tailscale_oauth_secret" {
-  type      = string
-  sensitive = true
-  nullable  = false
-}
-
-variable "tsidp_oauth_secret" {
-  type      = string
-  sensitive = true
-  nullable  = false
-}
-
 variable "transmission_username" {
   type      = string
   sensitive = true

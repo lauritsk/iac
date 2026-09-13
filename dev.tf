@@ -12,7 +12,7 @@ resource "incus_instance" "dev" {
 
   config = {
     "cloud-init.user-data" = templatefile("${path.module}/dev.yaml.tftpl", {
-      tailscale_authkey = trimspace(var.dev_tailscale_authkey)
+      tailscale_authkey = tailscale_tailnet_key.dev.key
     })
     "boot.autostart"             = "true"
     "limits.cpu"                 = "4"

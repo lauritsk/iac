@@ -9,6 +9,33 @@ variable "policy_path" {
   nullable    = false
 }
 
+resource "tailscale_tailnet_key" "dev" {
+  description         = "dev"
+  expiry              = 86400
+  preauthorized       = true
+  reusable            = false
+  recreate_if_invalid = "never"
+  tags                = ["tag:dev"]
+
+  depends_on = [tailscale_acl.policy]
+}
+
+resource "tailscale_oauth_client" "proxy" {
+  description = "Proxy"
+  scopes      = ["auth_keys"]
+  tags        = ["tag:container"]
+
+  depends_on = [tailscale_acl.policy]
+}
+
+resource "tailscale_oauth_client" "tsidp" {
+  description = "Tailscale identity provider"
+  scopes      = ["auth_keys"]
+  tags        = ["tag:tsidp"]
+
+  depends_on = [tailscale_acl.policy]
+}
+
 resource "tailscale_service" "immich" {
   name    = "svc:immich"
   comment = "Immich"
