@@ -20,6 +20,14 @@ resource "tailscale_tailnet_key" "dev" {
   depends_on = [tailscale_acl.policy]
 }
 
+resource "tailscale_oauth_client" "media" {
+  description = "Taildrive media server"
+  scopes      = ["auth_keys"]
+  tags        = ["tag:media"]
+
+  depends_on = [tailscale_acl.policy]
+}
+
 resource "tailscale_oauth_client" "proxy" {
   description = "Proxy"
   scopes      = ["auth_keys"]

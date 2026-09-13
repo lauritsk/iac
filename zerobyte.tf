@@ -70,6 +70,18 @@ resource "incus_instance" "zerobyte" {
   }
 
   device {
+    name = "media-taildrive-backup"
+    type = "disk"
+
+    properties = {
+      "pool"     = incus_storage_volume.media_taildrive_data.pool
+      "source"   = incus_storage_volume.media_taildrive_data.name
+      "path"     = "/mnt/src/media-taildrive"
+      "readonly" = "true"
+    }
+  }
+
+  device {
     name = "proxy-backup"
     type = "disk"
 

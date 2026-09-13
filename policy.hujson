@@ -58,6 +58,7 @@
 		"tag:server":    ["autogroup:admin"],
 		"tag:container": ["autogroup:admin"],
 		"tag:app":       ["autogroup:admin"],
+		"tag:media":     ["autogroup:admin"],
 		"tag:tsidp":     ["autogroup:admin"],
 		"tag:dev":       ["autogroup:admin"],
 	},
@@ -67,6 +68,11 @@
 		{
 			"target": ["autogroup:member"],
 			"attr":   ["drive:access", "drive:share"],
+		},
+		// Allow the media server to share with Taildrive
+		{
+			"target": ["tag:media"],
+			"attr":   ["drive:share"],
 		},
 		// Allow members and servers to use funnel
 		{
