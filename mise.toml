@@ -26,30 +26,40 @@ TF_VAR_radarr_api_key = { age = "YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBiZ2V
 TF_VAR_sonarr_api_key = { age = "YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBZdHg2ZlZPVmQ3WVc2b29Meld1azBMKy81b2ZaWlF5L1B5aSswaUFCS0FZCnB5ZmdQWDNnejI4VDhIRVhzcnBURE5pM2xuVGhlZlRNaXl6clZyVDZDQ28KLT4gPFNHR04tZ3JlYXNlICUgYXM8RQpSQldPR05KU0JOajNuaWU5eXRtOHZLYUlJOVF0RGNOdCsxV1VGWTJpQzVSTG5Eb1lQb1U0WDRrcVZRdmdhaFQxCnBkMjR2MDY1MEpST1R4dlIKLS0tIEVwN21PNmd5emdLUE5GTUZ0eTJFbWV6aERwMkhzTDAyeGlEaDNSN0ZwVVkKymmhDYeRSMvc/azt22KzooX7TNjY0wDc/5Q+34blxr2EP/WwbEPxN6zzaHPvdN5bKdfjS0wbPGruspMBbmfmxQ" }
 TF_VAR_zerobyte_app_secret = { age = "YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAvUW84QXV4YW5zcWp6TE5xVjNLdFNCaktPVmxQSnhMTGpwTnRYRDNaZDFrCkI2ZmZYUjBnU0hZUmMxU0hsZVNIVitaT2hZSEtyeG5NaklBd1QvY2Myd00KLT4geWFrMi1ncmVhc2UgOjggal5CRVsgNisyRHAyJQo2WmRUQitvcndSaERDNjR0ajJYa2J2SmduTXRzUTJEdXFMa2QzRjRFb0d5K1FTSXNlbFo2S1kxSGpxRWRIditkCmdXMnZqZ0pIUDB3clAzakpCYjZZWG4rZTBHT0F5dVp6d1ZVSHpjeUMrOXBzeTR5U0xoUHJpbDhCU3Q4Ci0tLSBvSkFQZmlHVzBIOHJLaTNOdStXeGxIQWt0aGxzK21ZSUJhdGZPM3Y2YlZZCgWNES+OCdnchA28d4sOQrljE0cf7kUa7RLDR3vZsGjtiHx83AxlcGU1Q7R0RCcodM8poFGtFZKRda3zxEmwH8WREt14JVmiz6NVTv4eFKq7UL4+TClZVahkKWGZF7RslA" }
 
-[tasks.init]
-description = "Install providers and initialize OpenTofu"
+[tasks."tofu:init"]
+description = "Initializes the OpenTofu working directory"
 run = "tofu init"
 
-[tasks.fmt]
-description = "Format OpenTofu files"
-run = "tofu fmt -check -recursive"
+[tasks."tofu:plan"]
+description = "Generates an execution plan for OpenTofu"
+depends = ["tofu:init"]
+run = "tofu plan"
 
-[tasks.validate]
-description = "Validate the OpenTofu configuration"
-depends = ["init", "fmt"]
+[tasks."tofu:apply"]
+description = "Applies the changes required to reach the desired state of the configuration"
+depends = ["tofu:init"]
+interactive = true
+run = "tofu apply"
+
+[tasks."tofu:destroy"]
+description = "Destroy OpenTofu-managed infrastructure"
+depends = ["tofu:init"]
+interactive = true
+run = "tofu destroy"
+
+[tasks."tofu:validate"]
+description = "Validates the OpenTofu files"
+depends = ["tofu:init"]
 run = "tofu validate"
 
-[tasks.plan]
-description = "Preview infrastructure changes"
-depends = ["validate"]
-run = "tofu plan -out=homelab.tfplan"
+[tasks."tofu:format"]
+description = "Formats the OpenTofu files"
+run = "tofu fmt"
 
-[tasks.apply]
-description = "Apply the saved infrastructure plan"
-depends = ["plan"]
-confirm = "Apply homelab.tfplan?"
-run = "tofu apply homelab.tfplan"
+[tasks."tofu:format-check"]
+description = "Check formatting without changing files"
+run = "tofu fmt -check"
 
-[tasks.ci]
-description = "Initialize, check formatting, validate, plan, and apply infrastructure changes"
-depends = ["init", "fmt", "validate", "plan", "apply"]
+[tasks."tofu:check"]
+description = "Check formatting and validate the configuration"
+depends = ["tofu:format-check", "tofu:validate"]
