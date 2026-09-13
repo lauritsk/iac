@@ -102,13 +102,13 @@ resource "incus_instance" "zerobyte" {
   }
 
   device {
-    name = "tailscale-backup"
+    name = "proxy-backup"
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_volume.tailscale_data.pool
-      "source"   = incus_storage_volume.tailscale_data.name
-      "path"     = "/mnt/src/tailscale"
+      "pool"     = incus_storage_volume.proxy_data.pool
+      "source"   = incus_storage_volume.proxy_data.name
+      "path"     = "/mnt/src/proxy"
       "readonly" = "true"
     }
   }
