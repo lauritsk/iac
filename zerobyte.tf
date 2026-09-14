@@ -106,6 +106,18 @@ resource "incus_instance" "zerobyte" {
   }
 
   device {
+    name = "cleanuparr-backup"
+    type = "disk"
+
+    properties = {
+      "pool"     = incus_storage_volume.cleanuparr_data.pool
+      "source"   = incus_storage_volume.cleanuparr_data.name
+      "path"     = "/mnt/src/cleanuparr"
+      "readonly" = "true"
+    }
+  }
+
+  device {
     name = "jellyfin-config-backup"
     type = "disk"
 
