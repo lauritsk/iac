@@ -1,5 +1,21 @@
 {
   "Services": {
+    "svc:cleanuparr": {
+      "TCP": {
+        "443": {
+          "HTTPS": true
+        }
+      },
+      "Web": {
+        "cleanuparr.cormo-tegu.ts.net:443": {
+          "Handlers": {
+            "/": {
+              "Proxy": "http://cleanuparr:11011"
+            }
+          }
+        }
+      }
+    },
     "svc:zerobyte": {
       "TCP": {
         "443": {
