@@ -30,7 +30,7 @@ resource "incus_instance" "jellyfin" {
   remote      = var.incus_remote
   project     = local.project
   name        = "jellyfin"
-  image       = "oci-ghcr:jellyfin/jellyfin:12.0@sha256:74f4d87d9cf262c52d62be6be265c0355c6a7e21d0477ab6c654a49a4f8b1fd4"
+  image       = "oci-ghcr:jellyfin/jellyfin:12.1@sha256:008ec8024bdaaa6f0a3f0de468e185633eeba9d67c56936e8dbf5ef6b8d6200f"
   description = "Jellyfin"
   profiles    = [incus_profile.oci.name]
   running     = true

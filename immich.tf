@@ -58,7 +58,7 @@ resource "incus_instance" "immich_valkey" {
   remote      = var.incus_remote
   project     = local.project
   name        = "immich-valkey"
-  image       = "oci-docker:valkey/valkey:9@sha256:70739f85ad2ee01a726a965584a0f94895f01b0c60b3cc8b0aeef11eaa6888cf"
+  image       = "oci-docker:valkey/valkey:9@sha256:c123e3715db63d06d4ad6964884037aa0d5d4d703939b9929954112889708e1d"
   description = "Immich Valkey"
   profiles    = [incus_profile.oci.name]
   running     = true
@@ -99,7 +99,7 @@ resource "incus_instance" "immich_machine_learning" {
   remote      = var.incus_remote
   project     = local.project
   name        = "immich-machine-learning"
-  image       = "oci-ghcr:immich-app/immich-machine-learning:v3.2.0-openvino@sha256:6387b84ab42da139191c3db686faead6555ab8cac6466d1d20be955735961b98"
+  image       = "oci-ghcr:immich-app/immich-machine-learning:v3.2.1-openvino@sha256:0f8a5a4ee83989cbfffc69d0d81c4714894f5dc27bbb75cbe3ee31a73353557d"
   description = "Immich machine learning"
   profiles    = [incus_profile.oci.name]
   running     = true
@@ -153,7 +153,7 @@ resource "incus_instance" "immich_server" {
   remote      = var.incus_remote
   project     = local.project
   name        = "immich-server"
-  image       = "oci-ghcr:immich-app/immich-server:v3.2.0@sha256:ae13784ffcfcce8f4178113eb6661602a1fd1912f3d539880b8ac0dd95fc8ac2"
+  image       = "oci-ghcr:immich-app/immich-server:v3.2.1@sha256:2ab6a6273755d9b8a5c4f25dbaa2d097fc4a2cc261b70bc73621e6405cc106fe"
   description = "Immich server"
   profiles    = [incus_profile.oci.name]
   running     = true

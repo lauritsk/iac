@@ -4,7 +4,7 @@ resource "incus_instance" "flaresolverr" {
   remote      = var.incus_remote
   project     = local.project
   name        = "flaresolverr"
-  image       = "oci-ghcr:flaresolverr/flaresolverr:v3.5.0@sha256:139dfee1c6f89249c8d665d1333a42e8ec74ec0a86bc6bb1c8461e10d3a66a47"
+  image       = "oci-ghcr:flaresolverr/flaresolverr:v3.5.2@sha256:c80ae007ce2ccdcd217a12426e4f039ef763ff90738c808d38810c3e59323767"
   description = "FlareSolverr"
   profiles    = [incus_profile.oci.name]
   running     = true
