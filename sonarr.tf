@@ -17,7 +17,7 @@ resource "incus_instance" "sonarr" {
   remote      = var.incus_remote
   project     = local.project
   name        = "sonarr"
-  image       = "oci-lscr:linuxserver/sonarr:4.0.20.3014-ls325@sha256:a5c1a5fecbef946927ab90ad68df319ac5fe644057e5fc18cd993f01ac07b2b2"
+  image       = "oci-ghcr:linuxserver/sonarr:4.0.20.3014-ls325@sha256:a5c1a5fecbef946927ab90ad68df319ac5fe644057e5fc18cd993f01ac07b2b2"
   description = "Sonarr"
   profiles    = [incus_profile.oci.name]
   running     = true

@@ -3,23 +3,6 @@
 terraform {
   required_version = ">= 1.10.0"
 
-  backend "s3" {
-    bucket = "terraform-state"
-    key    = "lauritsk-iac/terraform.tfstate"
-    region = "us-east-1"
-
-    endpoints = {
-      s3 = "https://hv01.cormo-tegu.ts.net:8555"
-    }
-
-    use_path_style              = true
-    insecure                    = true
-    skip_credentials_validation = true
-    skip_metadata_api_check     = true
-    skip_region_validation      = true
-    skip_requesting_account_id  = true
-  }
-
   required_providers {
     tailscale = {
       source  = "tailscale/tailscale"
@@ -33,7 +16,7 @@ terraform {
 }
 
 provider "incus" {
-  config_dir     = pathexpand("~/.config/incus")
+  config_dir     = pathexpand("~/Library/Application Support/incus")
   default_remote = var.incus_remote
 
   remote {
@@ -51,24 +34,26 @@ provider "incus" {
   }
 
   remote {
-    name     = "oci-docker"
-    address  = "https://docker.io"
-    protocol = "oci"
-    public   = true
+    name               = "oci-docker"
+    address            = "https://docker.io"
+    protocol           = "oci"
+    public             = true
+    credentials_helper = "docker-credential-osxkeychain"
   }
 
   remote {
-    name     = "oci-ghcr"
-    address  = "https://ghcr.io"
-    protocol = "oci"
-    public   = true
+    name               = "oci-ghcr"
+    address            = "https://ghcr.io"
+    protocol           = "oci"
+    public             = true
+    credentials_helper = "docker-credential-osxkeychain"
   }
 
   remote {
-    name     = "oci-lscr"
-    address  = "https://lscr.io"
-    protocol = "oci"
-    public   = true
+    name               = "oci-dhi"
+    address            = "https://dhi.io"
+    protocol           = "oci"
+    public             = true
+    credentials_helper = "docker-credential-osxkeychain"
   }
 }
-

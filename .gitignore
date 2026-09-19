@@ -2,21 +2,39 @@
 
 !.gitignore
 
-!.github
+!.github/
 !.github/CODEOWNERS
-!.github/workflows/
 
+!AGENTS.md
 !README.md
 !SECURITY.md
 !TODO.md
 
-!mise.lock
-!mise.toml
+!justfile
 
 !.terraform.lock.hcl
-!*.tf
+!cleanuparr.tf
+!dev.tf
+!flaresolverr.tf
+!immich.tf
+!jellyfin.tf
+!locals.tf
+!main.tf
+!media.tf
+!platform.tf
+!prowlarr.tf
+!proxy.tf
+!radarr.tf
+!recyclarr.tf
+!sonarr.tf
+!tailnet.tf
+!transmission.tf
+!tsidp.tf
+!unpackerr.tf
+!variables.tf
+!zerobyte.tf
+!dev.yaml.tftpl
+!recyclarr.yml.tftpl
 
 !policy.hujson
 !serve.json
-!recyclarr.yml.tftpl
-!dev.yaml.tftpl
