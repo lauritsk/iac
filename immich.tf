@@ -88,10 +88,6 @@ resource "incus_storage_volume" "immich_machine_learning_cache" {
     gid                = local.app_gid
     mode               = "0600"
   }
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 

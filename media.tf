@@ -77,8 +77,6 @@ resource "terraform_data" "media_taildrive_slow_share" {
     share_path    = "/data/slow"
   }
 
-  depends_on = [tailscale_acl.policy]
-
   provisioner "local-exec" {
     command = "incus exec ${var.incus_remote}:${incus_instance.media_taildrive.name} -- tailscale drive share slow /data/slow"
   }
@@ -91,8 +89,6 @@ resource "terraform_data" "media_taildrive_fast_share" {
     share_path    = "/data/fast"
     volume_name   = incus_storage_volume.media_fast.name
   }
-
-  depends_on = [tailscale_acl.policy]
 
   provisioner "local-exec" {
     command = "incus exec ${var.incus_remote}:${incus_instance.media_taildrive.name} -- tailscale drive share fast /data/fast"

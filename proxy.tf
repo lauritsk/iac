@@ -14,10 +14,6 @@ resource "incus_storage_volume" "proxy_config" {
     gid         = 0
     mode        = "0444"
   }
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 

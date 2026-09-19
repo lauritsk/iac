@@ -6,10 +6,6 @@ resource "incus_storage_volume" "jellyfin_cache" {
   name        = "jellyfin-cache"
   description = "Jellyfin cache"
   pool        = local.root_pool
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 
