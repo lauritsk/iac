@@ -13,9 +13,6 @@ plan: init
 apply: init
     tofu apply
 
-destroy: init
-    tofu destroy
-
 validate: init
     tofu validate
 
