@@ -5,7 +5,7 @@ resource "incus_storage_volume" "recyclarr_data" {
   project     = local.project
   name        = "recyclarr-data"
   description = "Recyclarr configuration"
-  pool        = incus_storage_pool.fast.name
+  pool        = local.root_pool
 
   file {
     content = templatefile("${path.module}/recyclarr.yml.tftpl", {

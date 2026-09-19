@@ -5,7 +5,7 @@ resource "incus_storage_volume" "media_taildrive_data" {
   project     = local.project
   name        = "media-taildrive-data"
   description = "Taildrive media server state"
-  pool        = incus_storage_pool.fast.name
+  pool        = local.root_pool
 
   lifecycle {
     prevent_destroy = true
@@ -17,7 +17,7 @@ resource "incus_instance" "media_taildrive" {
   remote      = var.incus_remote
   project     = local.project
   name        = "media"
-  image       = "oci-ghcr:tailscale/tailscale:v1.102.3@sha256:8c42c4574ab066384fcb72f69e086a2ff1dd3652eb6f56856cee34bcf0d2f680"
+  image       = "oci-ghcr:tailscale/tailscale:v1.102.4@sha256:2667499ed87ae29218f292556ba062918402dd5e92e93637af14867e4df12dd3"
   description = "Taildrive media server"
   profiles    = [incus_profile.oci.name]
   running     = true
@@ -44,30 +44,57 @@ resource "incus_instance" "media_taildrive" {
   }
 
   device {
-    name = "media"
+    name = "slow"
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_volume.media.pool
-      "source"   = incus_storage_volume.media.name
-      "path"     = "/media"
+      "pool"     = incus_storage_volume.media_slow.pool
+      "source"   = incus_storage_volume.media_slow.name
+      "path"     = "/data/slow"
+      "readonly" = "true"
+    }
+  }
+
+  device {
+    name = "fast"
+    type = "disk"
+
+    properties = {
+      "pool"     = incus_storage_volume.media_fast.pool
+      "source"   = incus_storage_volume.media_fast.name
+      "path"     = "/data/fast"
       "readonly" = "true"
     }
   }
 }
 
 
-resource "terraform_data" "media_taildrive_share" {
+resource "terraform_data" "media_taildrive_slow_share" {
   triggers_replace = {
     instance_name = incus_instance.media_taildrive.name
     state_volume  = incus_storage_volume.media_taildrive_data.name
-    share_name    = "media"
-    share_path    = "/media"
+    share_name    = "slow"
+    share_path    = "/data/slow"
   }
 
   depends_on = [tailscale_acl.policy]
 
   provisioner "local-exec" {
-    command = "incus exec ${var.incus_remote}:${incus_instance.media_taildrive.name} -- tailscale drive share media /media"
+    command = "incus exec ${var.incus_remote}:${incus_instance.media_taildrive.name} -- tailscale drive share slow /data/slow"
+  }
+}
+
+resource "terraform_data" "media_taildrive_fast_share" {
+  triggers_replace = {
+    instance_name = incus_instance.media_taildrive.name
+    share_name    = "fast"
+    share_path    = "/data/fast"
+    volume_name   = incus_storage_volume.media_fast.name
+  }
+
+  depends_on = [tailscale_acl.policy]
+
+  provisioner "local-exec" {
+    command = "incus exec ${var.incus_remote}:${incus_instance.media_taildrive.name} -- tailscale drive share fast /data/fast"
   }
 }

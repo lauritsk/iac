@@ -7,7 +7,7 @@ resource "incus_storage_volume" "immich_postgres_data" {
   project     = local.project
   name        = "immich-postgres-data"
   description = "Immich PostgreSQL data"
-  pool        = incus_storage_pool.fast.name
+  pool        = local.root_pool
 
   file {
     content     = ""
@@ -77,7 +77,7 @@ resource "incus_storage_volume" "immich_machine_learning_cache" {
   project     = local.project
   name        = "immich-machine-learning-cache"
   description = "Immich machine learning cache"
-  pool        = incus_storage_pool.fast.name
+  pool        = local.root_pool
 
   file {
     content            = ""
@@ -99,7 +99,7 @@ resource "incus_instance" "immich_machine_learning" {
   remote      = var.incus_remote
   project     = local.project
   name        = "immich-machine-learning"
-  image       = "oci-ghcr:immich-app/immich-machine-learning:v3.2.1-openvino@sha256:0f8a5a4ee83989cbfffc69d0d81c4714894f5dc27bbb75cbe3ee31a73353557d"
+  image       = "oci-ghcr:immich-app/immich-machine-learning:v3.2.2-openvino@sha256:4013ec28ccf6344d7ae24554743a116d7f61124b98858f5646a401d5c5df12e2"
   description = "Immich machine learning"
   profiles    = [incus_profile.oci.name]
   running     = true
@@ -141,7 +141,7 @@ resource "incus_storage_volume" "immich_library" {
   project     = local.project
   name        = "immich-library"
   description = "Immich photo library"
-  pool        = incus_storage_pool.fast.name
+  pool        = local.root_pool
 
   lifecycle {
     prevent_destroy = true
@@ -153,7 +153,7 @@ resource "incus_instance" "immich_server" {
   remote      = var.incus_remote
   project     = local.project
   name        = "immich-server"
-  image       = "oci-ghcr:immich-app/immich-server:v3.2.1@sha256:2ab6a6273755d9b8a5c4f25dbaa2d097fc4a2cc261b70bc73621e6405cc106fe"
+  image       = "oci-ghcr:immich-app/immich-server:v3.2.2@sha256:79cc1623323d5894922686d8743b4780181428f98eecbfb58ce12c41ef02d1ea"
   description = "Immich server"
   profiles    = [incus_profile.oci.name]
   running     = true

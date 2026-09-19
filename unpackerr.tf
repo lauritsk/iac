@@ -13,22 +13,22 @@ resource "incus_instance" "unpackerr" {
     "environment.TZ"                  = var.timezone
     "environment.UN_RADARR_0_URL"     = local.radarr_internal_url
     "environment.UN_RADARR_0_API_KEY" = var.radarr_api_key
-    "environment.UN_RADARR_0_PATHS_0" = "/data/downloads"
+    "environment.UN_RADARR_0_PATHS_0" = "/data/fast/downloads"
     "environment.UN_SONARR_0_URL"     = local.sonarr_internal_url
     "environment.UN_SONARR_0_API_KEY" = var.sonarr_api_key
-    "environment.UN_SONARR_0_PATHS_0" = "/data/downloads"
+    "environment.UN_SONARR_0_PATHS_0" = "/data/fast/downloads"
     "oci.uid"                         = local.app_uid
     "oci.gid"                         = local.app_gid
   }
 
   device {
-    name = "media"
+    name = "fast"
     type = "disk"
 
     properties = {
-      "pool"   = incus_storage_volume.media.pool
-      "source" = incus_storage_volume.media.name
-      "path"   = "/data"
+      "pool"   = incus_storage_volume.media_fast.pool
+      "source" = incus_storage_volume.media_fast.name
+      "path"   = "/data/fast"
     }
   }
 }

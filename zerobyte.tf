@@ -5,7 +5,7 @@ resource "incus_storage_volume" "zerobyte_data" {
   project     = local.project
   name        = "zerobyte-data"
   description = "Zerobyte backup server data"
-  pool        = incus_storage_pool.fast.name
+  pool        = local.root_pool
   config      = local.snapshot_config
 
   lifecycle {
@@ -58,13 +58,25 @@ resource "incus_instance" "zerobyte" {
   }
 
   device {
-    name = "media"
+    name = "media-slow"
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_volume.media.pool
-      "source"   = incus_storage_volume.media.name
-      "path"     = "/mnt/src/media"
+      "pool"     = incus_storage_volume.media_slow.pool
+      "source"   = incus_storage_volume.media_slow.name
+      "path"     = "/mnt/src/media/slow"
+      "readonly" = "true"
+    }
+  }
+
+  device {
+    name = "media-fast"
+    type = "disk"
+
+    properties = {
+      "pool"     = incus_storage_volume.media_fast.pool
+      "source"   = incus_storage_volume.media_fast.name
+      "path"     = "/mnt/src/media/fast"
       "readonly" = "true"
     }
   }

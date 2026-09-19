@@ -5,7 +5,7 @@ resource "incus_storage_volume" "jellyfin_cache" {
   project     = local.project
   name        = "jellyfin-cache"
   description = "Jellyfin cache"
-  pool        = incus_storage_pool.fast.name
+  pool        = local.root_pool
 
   lifecycle {
     prevent_destroy = true
@@ -18,7 +18,7 @@ resource "incus_storage_volume" "jellyfin_config" {
   project     = local.project
   name        = "jellyfin-config"
   description = "Jellyfin configuration"
-  pool        = incus_storage_pool.fast.name
+  pool        = local.root_pool
 
   lifecycle {
     prevent_destroy = true
@@ -67,13 +67,24 @@ resource "incus_instance" "jellyfin" {
   }
 
   device {
-    name = "media"
+    name = "slow"
     type = "disk"
 
     properties = {
-      "pool"   = incus_storage_volume.media.pool
-      "source" = incus_storage_volume.media.name
-      "path"   = "/media"
+      "pool"   = incus_storage_volume.media_slow.pool
+      "source" = incus_storage_volume.media_slow.name
+      "path"   = "/data/slow"
+    }
+  }
+
+  device {
+    name = "fast"
+    type = "disk"
+
+    properties = {
+      "pool"   = incus_storage_volume.media_fast.pool
+      "source" = incus_storage_volume.media_fast.name
+      "path"   = "/data/fast"
     }
   }
 

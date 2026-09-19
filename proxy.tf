@@ -5,7 +5,7 @@ resource "incus_storage_volume" "proxy_config" {
   project     = local.project
   name        = "proxy-config"
   description = "Proxy serve configuration"
-  pool        = incus_storage_pool.fast.name
+  pool        = local.root_pool
 
   file {
     content     = jsonencode(jsondecode(file("${path.module}/serve.json")))
@@ -26,7 +26,7 @@ resource "incus_storage_volume" "proxy_data" {
   project     = local.project
   name        = "proxy-data"
   description = "Proxy state"
-  pool        = incus_storage_pool.fast.name
+  pool        = local.root_pool
 
   lifecycle {
     prevent_destroy = true
@@ -38,7 +38,7 @@ resource "incus_instance" "proxy" {
   remote      = var.incus_remote
   project     = local.project
   name        = "proxy"
-  image       = "oci-ghcr:tailscale/tailscale:v1.102.3@sha256:8c42c4574ab066384fcb72f69e086a2ff1dd3652eb6f56856cee34bcf0d2f680"
+  image       = "oci-ghcr:tailscale/tailscale:v1.102.4@sha256:2667499ed87ae29218f292556ba062918402dd5e92e93637af14867e4df12dd3"
   description = "Proxy for Incus applications"
   profiles    = [incus_profile.oci.name]
   running     = true

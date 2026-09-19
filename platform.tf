@@ -90,12 +90,24 @@ resource "incus_profile" "oci" {
   }
 }
 
-resource "incus_storage_volume" "media" {
+resource "incus_storage_volume" "media_slow" {
   remote      = var.incus_remote
   project     = local.project
   name        = "media"
   description = "Shared media library and downloads"
   pool        = incus_storage_pool.slow.name
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+resource "incus_storage_volume" "media_fast" {
+  remote      = var.incus_remote
+  project     = local.project
+  name        = "media"
+  description = "Fast shared media library and downloads"
+  pool        = incus_storage_pool.fast.name
 
   lifecycle {
     prevent_destroy = true

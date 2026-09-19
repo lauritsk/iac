@@ -5,7 +5,7 @@ resource "incus_storage_volume" "cleanuparr_data" {
   project     = local.project
   name        = "cleanuparr-data"
   description = "Cleanuparr configuration"
-  pool        = incus_storage_pool.fast.name
+  pool        = local.root_pool
 
   lifecycle {
     prevent_destroy = true
