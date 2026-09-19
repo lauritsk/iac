@@ -55,17 +55,6 @@ resource "tailscale_service" "jellyfin" {
   }
 }
 
-resource "tailscale_service" "cleanuparr" {
-  name    = "svc:cleanuparr"
-  comment = "Cleanuparr"
-  ports   = ["tcp:443"]
-  tags    = ["tag:app"]
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
 resource "tailscale_service" "prowlarr" {
   name    = "svc:prowlarr"
   comment = "Prowlarr"

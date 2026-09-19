@@ -13,7 +13,6 @@
 !justfile
 
 !.terraform.lock.hcl
-!cleanuparr.tf
 !flaresolverr.tf
 !immich.tf
 !jellyfin.tf
