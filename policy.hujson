@@ -48,7 +48,7 @@
 		// Allow connections to servers
 		{
 			"src":    ["karl@laurits.dev"],
-			"dst":    ["tag:server", "tag:dev"],
+			"dst":    ["tag:server"],
 			"users":  ["autogroup:nonroot", "root"],
 			"action": "accept",
 		},
@@ -60,7 +60,6 @@
 		"tag:app":       ["autogroup:admin"],
 		"tag:media":     ["autogroup:admin"],
 		"tag:tsidp":     ["autogroup:admin"],
-		"tag:dev":       ["autogroup:admin"],
 	},
 
 	"nodeAttrs": [

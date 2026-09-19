@@ -9,17 +9,6 @@ variable "policy_path" {
   nullable    = false
 }
 
-resource "tailscale_tailnet_key" "dev" {
-  description         = "dev"
-  expiry              = 86400
-  preauthorized       = true
-  reusable            = false
-  recreate_if_invalid = "never"
-  tags                = ["tag:dev"]
-
-  depends_on = [tailscale_acl.policy]
-}
-
 resource "tailscale_oauth_client" "media" {
   description = "Taildrive media server"
   scopes      = ["auth_keys"]
