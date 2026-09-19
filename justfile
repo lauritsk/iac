@@ -1,5 +1,4 @@
 set dotenv-load
-set dotenv-required
 
 default:
     @just --list

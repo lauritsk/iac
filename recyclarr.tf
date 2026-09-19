@@ -17,10 +17,6 @@ resource "incus_storage_volume" "recyclarr_data" {
     gid         = 1000
     mode        = "0600"
   }
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 

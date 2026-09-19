@@ -19,10 +19,6 @@ resource "incus_storage_volume" "transmission_watch" {
   name        = "transmission-watch"
   description = "Transmission watch directory"
   pool        = local.root_pool
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 

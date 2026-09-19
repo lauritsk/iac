@@ -2,12 +2,6 @@
 
 provider "tailscale" {}
 
-variable "policy_path" {
-  description = "Path relative to this root to the exported, complete tailnet HuJSON policy. No placeholder policy is safe to apply."
-  type        = string
-  default     = "policy.hujson"
-  nullable    = false
-}
 
 resource "tailscale_oauth_client" "media" {
   description = "Taildrive media server"
@@ -111,7 +105,7 @@ resource "tailscale_service" "zerobyte" {
 }
 
 resource "tailscale_acl" "policy" {
-  acl                        = file("${path.module}/${var.policy_path}")
+  acl                        = file("${path.module}/policy.hujson")
   overwrite_existing_content = false
   reset_acl_on_destroy       = false
 
