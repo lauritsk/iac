@@ -1,0 +1,28 @@
+#cloud-config
+timezone: ${timezone}
+package_update: true
+package_upgrade: true
+packages:
+  - curl
+write_files:
+  - path: /run/tailscale-auth-key
+    permissions: "0600"
+    content: |
+      ${tailscale_auth_key}
+  - path: /etc/systemd/system/tailscaled.service.d/encrypt-state.conf
+    permissions: "0644"
+    content: |
+      [Service]
+      ExecStart=
+      ExecStart=/usr/sbin/tailscaled --state=/var/lib/tailscale/tailscaled.state --socket=/run/tailscale/tailscaled.sock --port=41641 --encrypt-state
+runcmd:
+  - [sh, -c, "curl -fsSL https://tailscale.com/install.sh | sh"]
+  - [systemctl, daemon-reload]
+  - [systemctl, restart, tailscaled]
+  - [tailscale, up, "--auth-key=file:/run/tailscale-auth-key", "--hostname=proxy", "--advertise-tags=tag:server", "--accept-dns=false", --ssh]
+  - [rm, -f, /run/tailscale-auth-key]
+%{ for name, target in services ~}
+  - [tailscale, serve, "--service=svc:${name}", "--https=443", "${target}"]
+%{ endfor ~}
+  - [tailscale, drive, share, slow, /data/slow]
+  - [tailscale, drive, share, fast, /data/fast]

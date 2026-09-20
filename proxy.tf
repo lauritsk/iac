@@ -1,75 +1,62 @@
-# Proxy
-
-resource "incus_storage_volume" "proxy_config" {
-  remote      = var.incus_remote
-  project     = local.project
-  name        = "proxy-config"
-  description = "Proxy serve configuration"
-  pool        = local.root_pool
-
-  file {
-    content     = jsonencode(jsondecode(file("${path.module}/serve.json")))
-    target_path = "/serve.json"
-    uid         = 0
-    gid         = 0
-    mode        = "0444"
-  }
-}
-
-
-resource "incus_storage_volume" "proxy_data" {
-  remote      = var.incus_remote
-  project     = local.project
-  name        = "proxy-data"
-  description = "Proxy state"
-  pool        = local.root_pool
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-
 resource "incus_instance" "proxy" {
   remote      = var.incus_remote
   project     = local.project
   name        = "proxy"
-  image       = "oci-ghcr:tailscale/tailscale:v1.102.4@sha256:2667499ed87ae29218f292556ba062918402dd5e92e93637af14867e4df12dd3"
-  description = "Proxy for Incus applications"
-  profiles    = [incus_profile.oci.name]
+  image       = "images:debian/13/cloud"
+  description = "Tailscale proxy and media server"
+  profiles    = [incus_profile.default.name]
   running     = true
 
   config = {
-    "environment.TS_USERSPACE"                               = "false"
-    "environment.TS_HOSTNAME"                                = "proxy"
-    "environment.TS_AUTH_ONCE"                               = "true"
-    "environment.TS_AUTHKEY"                                 = tailscale_oauth_client.proxy.key
-    "environment.TS_STATE_DIR"                               = "/var/lib/tailscale"
-    "environment.TS_SERVE_CONFIG"                            = "/config/serve.json"
-    "environment.TS_EXTRA_ARGS"                              = "--advertise-tags=tag:container"
-    "environment.TS_EXPERIMENTAL_SERVICE_AUTO_ADVERTISEMENT" = "true"
+    "boot.autostart"   = "true"
+    "boot.autorestart" = "true"
+    "cloud-init.user-data" = templatefile("${path.module}/proxy-cloud-init.yml.tftpl", {
+      services           = local.service_backends
+      tailscale_auth_key = tailscale_oauth_client.proxy.key
+      timezone           = var.timezone
+    })
   }
 
-
   device {
-    name = "data"
-    type = "disk"
+    name = "tpm"
+    type = "tpm"
 
     properties = {
-      "pool"   = incus_storage_volume.proxy_data.pool
-      "source" = incus_storage_volume.proxy_data.name
-      "path"   = "/var/lib/tailscale"
+      "path"   = "/dev/tpm0"
+      "pathrm" = "/dev/tpmrm0"
     }
   }
 
   device {
-    name = "config"
+    name = "tun"
+    type = "unix-char"
+
+    properties = {
+      "source" = "/dev/net/tun"
+      "path"   = "/dev/net/tun"
+    }
+  }
+
+  device {
+    name = "slow"
     type = "disk"
 
     properties = {
-      "pool"     = incus_storage_volume.proxy_config.pool
-      "source"   = incus_storage_volume.proxy_config.name
-      "path"     = "/config"
+      "pool"     = incus_storage_volume.media_slow.pool
+      "source"   = incus_storage_volume.media_slow.name
+      "path"     = "/data/slow"
+      "readonly" = "true"
+    }
+  }
+
+  device {
+    name = "fast"
+    type = "disk"
+
+    properties = {
+      "pool"     = incus_storage_volume.media_fast.pool
+      "source"   = incus_storage_volume.media_fast.name
+      "path"     = "/data/fast"
       "readonly" = "true"
     }
   }

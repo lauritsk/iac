@@ -3,18 +3,10 @@
 provider "tailscale" {}
 
 
-resource "tailscale_oauth_client" "media" {
-  description = "Taildrive media server"
-  scopes      = ["auth_keys"]
-  tags        = ["tag:media"]
-
-  depends_on = [tailscale_acl.policy]
-}
-
 resource "tailscale_oauth_client" "proxy" {
-  description = "Proxy"
+  description = "Tailscale proxy and media server"
   scopes      = ["auth_keys"]
-  tags        = ["tag:container"]
+  tags        = ["tag:server"]
 
   depends_on = [tailscale_acl.policy]
 }
@@ -27,81 +19,13 @@ resource "tailscale_oauth_client" "tsidp" {
   depends_on = [tailscale_acl.policy]
 }
 
-resource "tailscale_service" "immich" {
-  name    = "svc:immich"
-  comment = "Immich"
+resource "tailscale_service" "app" {
+  for_each = local.service_backends
+
+  name    = "svc:${each.key}"
+  comment = title(each.key)
   ports   = ["tcp:443"]
   tags    = ["tag:app"]
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "tailscale_service" "jellyfin" {
-  name    = "svc:jellyfin"
-  comment = "Jellyfin"
-  ports   = ["tcp:443"]
-  tags    = ["tag:app"]
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "tailscale_service" "prowlarr" {
-  name    = "svc:prowlarr"
-  comment = "Prowlarr"
-  ports   = ["tcp:443"]
-  tags    = ["tag:app"]
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "tailscale_service" "radarr" {
-  name    = "svc:radarr"
-  comment = "Radarr"
-  ports   = ["tcp:443"]
-  tags    = ["tag:app"]
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "tailscale_service" "sonarr" {
-  name    = "svc:sonarr"
-  comment = "Sonarr"
-  ports   = ["tcp:443"]
-  tags    = ["tag:app"]
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "tailscale_service" "transmission" {
-  name    = "svc:transmission"
-  comment = "Transmission"
-  ports   = ["tcp:443"]
-  tags    = ["tag:app"]
-
-  lifecycle {
-    prevent_destroy = true
-  }
-}
-
-resource "tailscale_service" "zerobyte" {
-  name    = "svc:zerobyte"
-  comment = "Zerobyte"
-  ports   = ["tcp:443"]
-  tags    = ["tag:app"]
-
-  lifecycle {
-    prevent_destroy = true
-  }
 }
 
 resource "tailscale_acl" "policy" {

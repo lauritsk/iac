@@ -24,13 +24,13 @@ resource "incus_instance" "zerobyte" {
   running     = true
 
   config = {
-    "environment.TZ"                      = var.timezone
-    "environment.BASE_URL"                = "https://zerobyte.${local.tailnet_domain}"
-    "environment.TRUSTED_ORIGINS"         = "https://idp.${local.tailnet_domain}"
-    "environment.APP_SECRET"              = var.zerobyte_app_secret
-    "environment.GOMAXPROCS"              = "2"
-    "environment.WEBHOOK_TIMEOUT"         = "600"
-    "environment.WEBHOOK_ALLOWED_ORIGINS" = local.jellyfin_internal_url
+    "environment.TZ"              = var.timezone
+    "environment.BASE_URL"        = "https://zerobyte.${local.tailnet_domain}"
+    "environment.TRUSTED_ORIGINS" = "https://idp.${local.tailnet_domain}"
+    "environment.APP_SECRET"      = var.zerobyte_app_secret
+    "environment.GOMAXPROCS"      = "2"
+
+
   }
 
   device {
@@ -44,18 +44,6 @@ resource "incus_instance" "zerobyte" {
     }
   }
 
-
-  device {
-    name = "incus-backups"
-    type = "disk"
-
-    properties = {
-      "pool"     = local.root_pool
-      "source"   = "backups"
-      "path"     = "/mnt/src/incus-backups"
-      "readonly" = "true"
-    }
-  }
 
   device {
     name = "media-slow"
@@ -77,30 +65,6 @@ resource "incus_instance" "zerobyte" {
       "pool"     = incus_storage_volume.media_fast.pool
       "source"   = incus_storage_volume.media_fast.name
       "path"     = "/mnt/src/media/fast"
-      "readonly" = "true"
-    }
-  }
-
-  device {
-    name = "media-taildrive-backup"
-    type = "disk"
-
-    properties = {
-      "pool"     = incus_storage_volume.media_taildrive_data.pool
-      "source"   = incus_storage_volume.media_taildrive_data.name
-      "path"     = "/mnt/src/media-taildrive"
-      "readonly" = "true"
-    }
-  }
-
-  device {
-    name = "proxy-backup"
-    type = "disk"
-
-    properties = {
-      "pool"     = incus_storage_volume.proxy_data.pool
-      "source"   = incus_storage_volume.proxy_data.name
-      "path"     = "/mnt/src/proxy"
       "readonly" = "true"
     }
   }

@@ -11,10 +11,10 @@ resource "incus_instance" "unpackerr" {
 
   config = {
     "environment.TZ"                  = var.timezone
-    "environment.UN_RADARR_0_URL"     = local.radarr_internal_url
+    "environment.UN_RADARR_0_URL"     = local.service_backends.radarr
     "environment.UN_RADARR_0_API_KEY" = var.radarr_api_key
     "environment.UN_RADARR_0_PATHS_0" = "/data/fast/downloads"
-    "environment.UN_SONARR_0_URL"     = local.sonarr_internal_url
+    "environment.UN_SONARR_0_URL"     = local.service_backends.sonarr
     "environment.UN_SONARR_0_API_KEY" = var.sonarr_api_key
     "environment.UN_SONARR_0_PATHS_0" = "/data/fast/downloads"
     "oci.uid"                         = local.app_uid

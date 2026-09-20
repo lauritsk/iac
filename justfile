@@ -12,13 +12,14 @@ plan: init
 apply: init
     tofu apply
 
-validate: init
-    tofu validate
-
 format:
     tofu fmt
+    just --fmt
+    hujsonfmt -w policy.hujson
 
-format-check:
+check: init
     tofu fmt -check
-
-check: format-check validate
+    just --fmt --check
+    hujsonfmt -d policy.hujson
+    test -z "$(hujsonfmt -l policy.hujson)"
+    tofu validate

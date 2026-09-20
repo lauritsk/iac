@@ -55,11 +55,9 @@
 	],
 
 	"tagOwners": {
-		"tag:server":    ["autogroup:admin"],
-		"tag:container": ["autogroup:admin"],
-		"tag:app":       ["autogroup:admin"],
-		"tag:media":     ["autogroup:admin"],
-		"tag:tsidp":     ["autogroup:admin"],
+		"tag:server": ["autogroup:admin"],
+		"tag:app":    ["autogroup:admin"],
+		"tag:tsidp":  ["autogroup:admin"],
 	},
 
 	"nodeAttrs": [
@@ -68,9 +66,8 @@
 			"target": ["autogroup:member"],
 			"attr":   ["drive:access", "drive:share"],
 		},
-		// Allow the media server to share with Taildrive
 		{
-			"target": ["tag:media"],
+			"target": ["tag:server"],
 			"attr":   ["drive:share"],
 		},
 		// Allow members and servers to use funnel
@@ -94,7 +91,7 @@
 
 	"autoApprovers": {
 		"services": {
-			"tag:app": ["tag:container"],
+			"tag:app": ["tag:server"],
 		},
 		"exitNode": ["tag:server"],
 	},

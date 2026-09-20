@@ -18,7 +18,6 @@
 !jellyfin.tf
 !locals.tf
 !main.tf
-!media.tf
 !platform.tf
 !prowlarr.tf
 !proxy.tf
@@ -31,7 +30,7 @@
 !unpackerr.tf
 !variables.tf
 !zerobyte.tf
+!proxy-cloud-init.yml.tftpl
 !recyclarr.yml.tftpl
 
 !policy.hujson
-!serve.json

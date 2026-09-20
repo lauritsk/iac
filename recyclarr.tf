@@ -9,8 +9,8 @@ resource "incus_storage_volume" "recyclarr_data" {
 
   file {
     content = templatefile("${path.module}/recyclarr.yml.tftpl", {
-      radarr_url = local.radarr_internal_url
-      sonarr_url = local.sonarr_internal_url
+      radarr_url = local.service_backends.radarr
+      sonarr_url = local.service_backends.sonarr
     })
     target_path = "/recyclarr.yml"
     uid         = 1000
