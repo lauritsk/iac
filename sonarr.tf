@@ -23,10 +23,32 @@ resource "incus_instance" "sonarr" {
   running     = true
 
   config = {
-    "environment.PUID"                 = local.app_uid
-    "environment.PGID"                 = local.app_gid
-    "environment.TZ"                   = var.timezone
-    "environment.SONARR__AUTH__APIKEY" = var.sonarr_api_key
+    "environment.PUID"                                = local.app_uid
+    "environment.PGID"                                = local.app_gid
+    "environment.TZ"                                  = var.timezone
+    "environment.SONARR__APP__INSTANCENAME"           = "Sonarr"
+    "environment.SONARR__APP__LAUNCHBROWSER"          = "false"
+    "environment.SONARR__APP__THEME"                  = "auto"
+    "environment.SONARR__AUTH__APIKEY"                = var.sonarr_api_key
+    "environment.SONARR__AUTH__ENABLED"               = "false"
+    "environment.SONARR__AUTH__METHOD"                = "Forms"
+    "environment.SONARR__AUTH__REQUIRED"              = "Enabled"
+    "environment.SONARR__AUTH__TRUSTCGNATIPADDRESSES" = "false"
+    "environment.SONARR__LOG__ANALYTICSENABLED"       = "true"
+    "environment.SONARR__LOG__DBENABLED"              = "true"
+    "environment.SONARR__LOG__FILTERSENTRYEVENTS"     = "true"
+    "environment.SONARR__LOG__LEVEL"                  = "debug"
+    "environment.SONARR__LOG__ROTATE"                 = "50"
+    "environment.SONARR__LOG__SIZELIMIT"              = "1"
+    "environment.SONARR__LOG__SQL"                    = "false"
+    "environment.SONARR__SERVER__ALLOWEDHOSTS"        = "sonarr.${local.tailnet_domain},sonarr.incus"
+    "environment.SONARR__SERVER__BINDADDRESS"         = "*"
+    "environment.SONARR__SERVER__ENABLESSL"           = "false"
+    "environment.SONARR__SERVER__PORT"                = "8989"
+    "environment.SONARR__SERVER__TRUSTEDNETWORKS"     = "${incus_instance.proxy.ipv4_address},${incus_instance.proxy.ipv6_address}"
+    "environment.SONARR__UPDATE__AUTOMATICALLY"       = "false"
+    "environment.SONARR__UPDATE__BRANCH"              = "main"
+    "environment.SONARR__UPDATE__MECHANISM"           = "Docker"
   }
 
   device {
