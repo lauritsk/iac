@@ -9,6 +9,7 @@ variable "incus_remote" {
 variable "incus_address" {
   description = "HTTPS API endpoint of the homelab Incus server"
   type        = string
+  default     = "https://hv01.cormo-tegu.ts.net:8443"
   nullable    = false
 }
 
@@ -67,6 +68,11 @@ variable "transmission_password" {
 }
 
 variable "zerobyte_app_secret" {
+  type      = string
+  sensitive = true
+  nullable  = false
+}
+variable "state_passphrase" {
   type      = string
   sensitive = true
   nullable  = false

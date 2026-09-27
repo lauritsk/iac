@@ -18,5 +18,3 @@ runcmd:
 %{ for name, target in services ~}
   - [tailscale, serve, "--service=svc:${name}", "--https=443", "${target}"]
 %{ endfor ~}
-  - [tailscale, drive, share, slow, /data/slow]
-  - [tailscale, drive, share, fast, /data/fast]

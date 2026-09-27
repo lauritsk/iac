@@ -1,25 +1,29 @@
 {
 	"grants": [
-		// Allow all connections
 		{
-			"src": ["*"],
+			"src": ["autogroup:admin"],
 			"dst": ["*"],
 			"ip":  ["*"],
 		},
-		// Enable Taildrive
 		{
-			"src": ["*"],
-			"dst": ["*"],
+			"src": ["autogroup:member"],
+			"dst": ["autogroup:self"],
 			"ip":  ["*"],
-
-			"app": {
-				"tailscale.com/cap/drive": [
-					{
-						"access": "rw",
-						"shares": ["*"],
-					},
-				],
-			},
+		},
+		{
+			"src": ["autogroup:member", "tag:server"],
+			"dst": ["svc:jellyfin"],
+			"ip":  ["tcp:443"],
+		},
+		{
+			"src": ["mrria@passkey"],
+			"dst": ["svc:immich", "tag:tsidp"],
+			"ip":  ["tcp:443"],
+		},
+		{
+			"src": ["autogroup:member", "tag:server"],
+			"dst": ["autogroup:internet"],
+			"ip":  ["*"],
 		},
 		// Enable tsidp
 		{
@@ -42,15 +46,23 @@
 		{
 			"src":    ["autogroup:member"],
 			"dst":    ["autogroup:self"],
-			"users":  ["autogroup:nonroot", "root"],
+			"users":  ["autogroup:nonroot"],
 			"action": "accept",
+		},
+		{
+			"src":         ["autogroup:member"],
+			"dst":         ["autogroup:self"],
+			"users":       ["root"],
+			"action":      "check",
+			"checkPeriod": "12h",
 		},
 		// Allow connections to servers
 		{
-			"src":    ["karl@laurits.dev"],
-			"dst":    ["tag:server"],
-			"users":  ["autogroup:nonroot", "root"],
-			"action": "accept",
+			"src":         ["autogroup:admin"],
+			"dst":         ["tag:server"],
+			"users":       ["autogroup:nonroot", "root"],
+			"action":      "check",
+			"checkPeriod": "12h",
 		},
 	],
 
@@ -61,31 +73,9 @@
 	},
 
 	"nodeAttrs": [
-		// Allow members to use Taildrive
 		{
-			"target": ["autogroup:member"],
-			"attr":   ["drive:access", "drive:share"],
-		},
-		{
-			"target": ["tag:server"],
-			"attr":   ["drive:share"],
-		},
-		// Allow members and servers to use funnel
-		{
-			"target": ["autogroup:member", "tag:server"],
+			"target": ["autogroup:admin"],
 			"attr":   ["funnel"],
-		},
-		{
-			"target": ["100.113.246.11"],
-			"attr":   ["mullvad"],
-		},
-		{
-			"target": ["100.118.247.55"],
-			"attr":   ["mullvad"],
-		},
-		{
-			"target": ["100.98.113.54"],
-			"attr":   ["mullvad"],
 		},
 	],
 
@@ -95,4 +85,43 @@
 		},
 		"exitNode": ["tag:server"],
 	},
+
+	"tests": [
+		{
+			"src":    "beccam@passkey",
+			"proto":  "tcp",
+			"accept": ["svc:jellyfin:443"],
+		},
+		{
+			"src":    "greenmyshelf@gmail.com",
+			"proto":  "tcp",
+			"accept": ["svc:jellyfin:443"],
+		},
+		{
+			"src":    "juhan@passkey",
+			"proto":  "tcp",
+			"accept": ["svc:jellyfin:443"],
+		},
+		{
+			"src":    "mrria@passkey",
+			"proto":  "tcp",
+			"accept": ["svc:jellyfin:443", "svc:immich:443", "tag:tsidp:443"],
+		},
+		{
+			"src":   "karl@laurits.dev",
+			"proto": "tcp",
+			"accept": [
+				"tag:server:22",
+				"tag:server:8443",
+				"tag:tsidp:443",
+				"svc:immich:443",
+				"svc:jellyfin:443",
+				"svc:prowlarr:443",
+				"svc:radarr:443",
+				"svc:sonarr:443",
+				"svc:transmission:443",
+				"svc:zerobyte:443",
+			],
+		},
+	],
 }
