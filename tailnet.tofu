@@ -7,7 +7,7 @@ resource "tailscale_federated_identity" "ci" {
   scopes      = ["auth_keys"]
   tags        = ["tag:ci"]
   issuer      = "https://token.actions.githubusercontent.com"
-  subject     = "repo:lauritsk/iac:ref:refs/heads/main"
+  subject     = "repo:lauritsk@224454725/iac@1328782743:ref:refs/heads/main"
 
   custom_claim_rules = {
     repository   = "lauritsk/iac"
