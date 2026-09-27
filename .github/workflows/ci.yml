@@ -22,44 +22,27 @@ jobs:
           hostname: iac-ci-${{ github.run_id }}-${{ github.run_attempt }}
           ping: hv01.cormo-tegu.ts.net
 
-      - name: Install Incus CLI
-        shell: bash
-        run: |
-          echo "INCUS_CONF=$RUNNER_TEMP/incus" >> "$GITHUB_ENV"
-          mkdir -p "$RUNNER_TEMP/bin"
-          curl --fail --silent --show-error --location --proto '=https' --tlsv1.2 \
-            https://github.com/lxc/incus/releases/download/v7.5.1/bin.linux.incus.x86_64 \
-            --output "$RUNNER_TEMP/bin/incus"
-          printf '%s  %s\n' \
-            7bd6223b369f4d693fcde695bd8549a73b5b3d403735329212483702aa22c179 \
-            "$RUNNER_TEMP/bin/incus" | sha256sum --check
-          chmod 755 "$RUNNER_TEMP/bin/incus"
-          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
-
-      - name: Configure Incus credentials
-        shell: bash
+      - name: Set up Incus
         env:
           INCUS_CLIENT_CERT: ${{ secrets.INCUS_CLIENT_CERT }}
           INCUS_CLIENT_KEY: ${{ secrets.INCUS_CLIENT_KEY }}
           INCUS_SERVER_CERT: ${{ vars.INCUS_SERVER_CERT }}
         run: |
           umask 077
-          test -n "$INCUS_CLIENT_CERT"
-          test -n "$INCUS_CLIENT_KEY"
-          test -n "$INCUS_SERVER_CERT"
-          mkdir -p "$INCUS_CONF/servercerts"
+          export INCUS_CONF="$RUNNER_TEMP/incus"
+          echo "INCUS_CONF=$INCUS_CONF" >> "$GITHUB_ENV"
+          mkdir -p "$INCUS_CONF/servercerts" "$RUNNER_TEMP/bin"
+          curl -fsSL --proto '=https' \
+            https://github.com/lxc/incus/releases/download/v7.5.1/bin.linux.incus.x86_64 \
+            -o "$RUNNER_TEMP/bin/incus"
+          echo "7bd6223b369f4d693fcde695bd8549a73b5b3d403735329212483702aa22c179  $RUNNER_TEMP/bin/incus" | sha256sum -c
+          chmod +x "$RUNNER_TEMP/bin/incus"
+          export PATH="$RUNNER_TEMP/bin:$PATH"
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
           printf '%s\n' "$INCUS_CLIENT_CERT" > "$INCUS_CONF/client.crt"
           printf '%s\n' "$INCUS_CLIENT_KEY" > "$INCUS_CONF/client.key"
           printf '%s\n' "$INCUS_SERVER_CERT" > "$INCUS_CONF/servercerts/hv01.crt"
-          cat > "$INCUS_CONF/config.yml" <<'EOF'
-          default-remote: hv01
-          remotes:
-            hv01:
-              addr: https://hv01.cormo-tegu.ts.net:8443
-              auth_type: tls
-              project: default
-              protocol: incus
-          EOF
+          incus remote add hv01 https://hv01.cormo-tegu.ts.net:8443 --project default
 
       - name: Verify Incus access
         run: |
@@ -67,5 +50,4 @@ jobs:
 
       - name: Remove Incus credentials
         if: always()
-        shell: bash
         run: rm -rf -- "$RUNNER_TEMP/incus"
