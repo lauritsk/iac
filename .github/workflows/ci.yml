@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  connect:
+    runs-on: ubuntu-26.04
+    timeout-minutes: 10
+    permissions:
+      id-token: write
+    steps:
+      - name: Connect to Tailscale
+        uses: tailscale/github-action@d1b6cd204f8dceda5b3eaad7f1f767be390056cd # v4.2.0
+        with:
+          oauth-client-id: ${{ vars.TS_CLIENT_ID }}
+          audience: ${{ vars.TS_AUDIENCE }}
+          tags: tag:ci
+          version: latest
+          hostname: iac-ci-${{ github.run_id }}-${{ github.run_attempt }}
+          ping: hv01.cormo-tegu.ts.net
+
+      - name: Verify TCP connectivity to hv01
+        shell: bash
+        run: timeout 15 bash -c 'until echo > /dev/tcp/hv01.cormo-tegu.ts.net/8443; do sleep 1; done'
