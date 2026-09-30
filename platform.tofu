@@ -4,14 +4,14 @@ resource "incus_storage_pool" "fast" {
   remote      = "hv01"
   name        = "fast"
   driver      = "zfs"
-  description = "Media library and downloads (external SSD)"
+  description = "Media library (external SSD)"
 }
 
 resource "incus_storage_pool" "slow" {
   remote      = "hv01"
   name        = "slow"
   driver      = "zfs"
-  description = "Media library and downloads (external HDD)"
+  description = "Media library (external HDD)"
 }
 
 resource "incus_network" "incusbr0" {
