@@ -52,13 +52,6 @@
 		"tag:app":    ["autogroup:admin"],
 	},
 
-	"nodeAttrs": [
-		{
-			"target": ["autogroup:admin"],
-			"attr":   ["funnel"],
-		},
-	],
-
 	"autoApprovers": {
 		"services": {
 			"tag:app": ["tag:server"],
