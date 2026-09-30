@@ -4,14 +4,14 @@ resource "incus_storage_pool" "fast" {
   remote      = var.incus_remote
   name        = "fast"
   driver      = "zfs"
-  description = "App storage (external SSD)"
+  description = "Media library and downloads (external SSD)"
 }
 
 resource "incus_storage_pool" "slow" {
   remote      = var.incus_remote
   name        = "slow"
   driver      = "zfs"
-  description = "Media storage (external HDD)"
+  description = "Media library and downloads (external HDD)"
 }
 
 resource "incus_network" "incusbr0" {
@@ -35,7 +35,11 @@ resource "incus_profile" "default" {
   name        = "default"
   description = "Default Incus profile"
 
-  config = local.snapshot_config
+  config = {
+    "snapshots.schedule" = "@daily"
+    "snapshots.expiry"   = "7d"
+    "snapshots.pattern"  = "auto-%Y%m%d-%H%M"
+  }
 
   device {
     name = "root"

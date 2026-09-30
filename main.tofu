@@ -41,7 +41,7 @@ provider "incus" {
 
   remote {
     name                = var.incus_remote
-    address             = var.incus_address
+    address             = "https://hv01.cormo-tegu.ts.net:8443"
     protocol            = "incus"
     authentication_type = "tls"
   }
@@ -87,17 +87,9 @@ locals {
   app_gid        = "1000"
   tailnet_domain = "cormo-tegu.ts.net"
 
-  snapshot_config = {
-    "snapshots.schedule" = "@daily"
-    "snapshots.expiry"   = "7d"
-    "snapshots.pattern"  = "auto-%Y%m%d-%H%M"
-  }
-
   service_backends = {
-    prowlarr     = "http://prowlarr.incus:9696"
-    radarr       = "http://radarr.incus:7878"
-    sonarr       = "http://sonarr.incus:8989"
-    transmission = "http://transmission.incus:9091"
+    radarr = "http://radarr.incus:7878"
+    sonarr = "http://sonarr.incus:8989"
   }
 }
 
@@ -107,13 +99,6 @@ variable "incus_remote" {
   description = "Incus client remote that points at the homelab server"
   type        = string
   default     = "hv01"
-}
-
-variable "incus_address" {
-  description = "HTTPS API endpoint of the homelab Incus server"
-  type        = string
-  default     = "https://hv01.cormo-tegu.ts.net:8443"
-  nullable    = false
 }
 
 variable "timezone" {
