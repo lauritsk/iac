@@ -1,7 +1,7 @@
 # Recyclarr
 
 resource "incus_storage_volume" "recyclarr_data" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "recyclarr-data"
   description = "Recyclarr configuration"
@@ -21,7 +21,7 @@ resource "incus_storage_volume" "recyclarr_data" {
 
 
 resource "incus_instance" "recyclarr" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "recyclarr"
   image       = "oci-ghcr:recyclarr/recyclarr:8.7.2@sha256:6e69e009e1cd7493ff6093e8e187b5d3788c75b4a2c0c5127b6a1beda1c19728"
@@ -31,7 +31,7 @@ resource "incus_instance" "recyclarr" {
 
   config = {
     "environment.TINI_SUBREAPER" = "true"
-    "environment.TZ"             = var.timezone
+    "environment.TZ"             = "Europe/Tallinn"
     "environment.CRON_SCHEDULE"  = "0 4 * * *"
     "environment.RADARR_API_KEY" = var.radarr_api_key
     "environment.SONARR_API_KEY" = var.sonarr_api_key

@@ -1,7 +1,7 @@
 # Jellyfin
 
 resource "incus_storage_volume" "jellyfin_cache" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "jellyfin-cache"
   description = "Jellyfin cache"
@@ -10,7 +10,7 @@ resource "incus_storage_volume" "jellyfin_cache" {
 
 
 resource "incus_storage_volume" "jellyfin_config" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "jellyfin-config"
   description = "Jellyfin configuration"
@@ -23,7 +23,7 @@ resource "incus_storage_volume" "jellyfin_config" {
 
 
 resource "incus_instance" "jellyfin" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "jellyfin"
   image       = "oci-ghcr:jellyfin/jellyfin:12.1@sha256:008ec8024bdaaa6f0a3f0de468e185633eeba9d67c56936e8dbf5ef6b8d6200f"
@@ -34,7 +34,7 @@ resource "incus_instance" "jellyfin" {
   config = {
     "oci.uid"                                 = local.app_uid
     "oci.gid"                                 = local.app_gid
-    "environment.TZ"                          = var.timezone
+    "environment.TZ"                          = "Europe/Tallinn"
     "environment.JELLYFIN_PublishedServerUrl" = "https://jellyfin.${local.tailnet_domain}"
   }
 
@@ -101,7 +101,7 @@ resource "tailscale_oauth_client" "jellyfin" {
 }
 
 resource "incus_storage_volume" "jellyfin_ts_state" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "jellyfin-ts-state"
   description = "Jellyfin Tailscale identity"
@@ -113,7 +113,7 @@ resource "incus_storage_volume" "jellyfin_ts_state" {
 }
 
 resource "incus_storage_volume" "jellyfin_ts_config" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "jellyfin-ts-config"
   description = "Jellyfin Tailscale Serve configuration"
@@ -139,7 +139,7 @@ resource "incus_storage_volume" "jellyfin_ts_config" {
 }
 
 resource "incus_instance" "jellyfin_ts" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "jellyfin-ts"
   image       = "oci-ghcr:tailscale/tailscale:v1.102.5@sha256:c507f3a2a6ab1cabd8d809b98edeb41edbd5c3fb6ad9632ffd098b4c7d0b4065"
@@ -156,7 +156,7 @@ resource "incus_instance" "jellyfin_ts" {
     "environment.TS_USERSPACE"    = "false"
     "environment.TS_STATE_DIR"    = "/var/lib/tailscale"
     "environment.TS_SERVE_CONFIG" = "/etc/tailscale/serve.json"
-    "environment.TZ"              = var.timezone
+    "environment.TZ"              = "Europe/Tallinn"
   }
 
   device {

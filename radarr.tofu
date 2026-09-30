@@ -1,7 +1,7 @@
 # Radarr
 
 resource "incus_storage_volume" "radarr_data" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "radarr-data"
   description = "Radarr configuration"
@@ -14,7 +14,7 @@ resource "incus_storage_volume" "radarr_data" {
 
 
 resource "incus_instance" "radarr" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "radarr"
   image       = "oci-ghcr:linuxserver/radarr:6.4.4.10685-ls318@sha256:adb6c09d6b729ea5e642c99cea35af72702ef476bf4763f153299ac5db9f0b4f"
@@ -25,7 +25,7 @@ resource "incus_instance" "radarr" {
   config = {
     "environment.PUID"                                = local.app_uid
     "environment.PGID"                                = local.app_gid
-    "environment.TZ"                                  = var.timezone
+    "environment.TZ"                                  = "Europe/Tallinn"
     "environment.RADARR__APP__INSTANCENAME"           = "Radarr"
     "environment.RADARR__APP__LAUNCHBROWSER"          = "false"
     "environment.RADARR__APP__THEME"                  = "auto"
@@ -95,7 +95,7 @@ resource "tailscale_oauth_client" "radarr" {
 }
 
 resource "incus_storage_volume" "radarr_ts_state" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "radarr-ts-state"
   description = "Radarr Tailscale identity"
@@ -107,7 +107,7 @@ resource "incus_storage_volume" "radarr_ts_state" {
 }
 
 resource "incus_storage_volume" "radarr_ts_config" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "radarr-ts-config"
   description = "Radarr Tailscale Serve configuration"
@@ -133,7 +133,7 @@ resource "incus_storage_volume" "radarr_ts_config" {
 }
 
 resource "incus_instance" "radarr_ts" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "radarr-ts"
   image       = "oci-ghcr:tailscale/tailscale:v1.102.5@sha256:c507f3a2a6ab1cabd8d809b98edeb41edbd5c3fb6ad9632ffd098b4c7d0b4065"
@@ -150,7 +150,7 @@ resource "incus_instance" "radarr_ts" {
     "environment.TS_USERSPACE"    = "false"
     "environment.TS_STATE_DIR"    = "/var/lib/tailscale"
     "environment.TS_SERVE_CONFIG" = "/etc/tailscale/serve.json"
-    "environment.TZ"              = var.timezone
+    "environment.TZ"              = "Europe/Tallinn"
   }
 
   device {

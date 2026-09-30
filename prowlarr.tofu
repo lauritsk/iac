@@ -1,7 +1,7 @@
 # Prowlarr
 
 resource "incus_storage_volume" "prowlarr_data" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "prowlarr-data"
   description = "Prowlarr configuration"
@@ -14,7 +14,7 @@ resource "incus_storage_volume" "prowlarr_data" {
 
 
 resource "incus_instance" "prowlarr" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "prowlarr"
   image       = "oci-ghcr:linuxserver/prowlarr:2.6.5.5623-ls162@sha256:f2b26429893d4c4cb71941b7ee50b1bdecd9d5f9f9e02d5410615e9f4f7c8d95"
@@ -25,7 +25,7 @@ resource "incus_instance" "prowlarr" {
   config = {
     "environment.PUID"                                  = local.app_uid
     "environment.PGID"                                  = local.app_gid
-    "environment.TZ"                                    = var.timezone
+    "environment.TZ"                                    = "Europe/Tallinn"
     "environment.PROWLARR__APP__INSTANCENAME"           = "Prowlarr"
     "environment.PROWLARR__APP__LAUNCHBROWSER"          = "false"
     "environment.PROWLARR__APP__THEME"                  = "auto"
@@ -73,7 +73,7 @@ resource "tailscale_oauth_client" "prowlarr" {
 }
 
 resource "incus_storage_volume" "prowlarr_ts_state" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "prowlarr-ts-state"
   description = "Prowlarr Tailscale identity"
@@ -85,7 +85,7 @@ resource "incus_storage_volume" "prowlarr_ts_state" {
 }
 
 resource "incus_storage_volume" "prowlarr_ts_config" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "prowlarr-ts-config"
   description = "Prowlarr Tailscale Serve configuration"
@@ -111,7 +111,7 @@ resource "incus_storage_volume" "prowlarr_ts_config" {
 }
 
 resource "incus_instance" "prowlarr_ts" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "prowlarr-ts"
   image       = "oci-ghcr:tailscale/tailscale:v1.102.5@sha256:c507f3a2a6ab1cabd8d809b98edeb41edbd5c3fb6ad9632ffd098b4c7d0b4065"
@@ -128,7 +128,7 @@ resource "incus_instance" "prowlarr_ts" {
     "environment.TS_USERSPACE"    = "false"
     "environment.TS_STATE_DIR"    = "/var/lib/tailscale"
     "environment.TS_SERVE_CONFIG" = "/etc/tailscale/serve.json"
-    "environment.TZ"              = var.timezone
+    "environment.TZ"              = "Europe/Tallinn"
   }
 
   device {

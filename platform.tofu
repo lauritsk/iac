@@ -1,21 +1,21 @@
 # Incus platform
 
 resource "incus_storage_pool" "fast" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   name        = "fast"
   driver      = "zfs"
   description = "Media library and downloads (external SSD)"
 }
 
 resource "incus_storage_pool" "slow" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   name        = "slow"
   driver      = "zfs"
   description = "Media library and downloads (external HDD)"
 }
 
 resource "incus_network" "incusbr0" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "incusbr0"
   type        = "bridge"
@@ -30,7 +30,7 @@ resource "incus_network" "incusbr0" {
 }
 
 resource "incus_profile" "default" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "default"
   description = "Default Incus profile"
@@ -64,7 +64,7 @@ resource "incus_profile" "default" {
 # Shared OCI profile and storage
 
 resource "incus_profile" "oci" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "oci"
   description = "OCI application defaults"
@@ -95,7 +95,7 @@ resource "incus_profile" "oci" {
 }
 
 resource "incus_storage_volume" "media_slow" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "media"
   description = "Shared media library and downloads"
@@ -107,7 +107,7 @@ resource "incus_storage_volume" "media_slow" {
 }
 
 resource "incus_storage_volume" "media_fast" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "media"
   description = "Fast shared media library and downloads"

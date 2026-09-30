@@ -37,10 +37,10 @@ terraform {
 
 provider "incus" {
   config_dir     = pathexpand("~/Library/Application Support/incus")
-  default_remote = var.incus_remote
+  default_remote = "hv01"
 
   remote {
-    name                = var.incus_remote
+    name                = "hv01"
     address             = "https://hv01.cormo-tegu.ts.net:8443"
     protocol            = "incus"
     authentication_type = "tls"
@@ -94,18 +94,6 @@ locals {
 }
 
 # Input variables
-
-variable "incus_remote" {
-  description = "Incus client remote that points at the homelab server"
-  type        = string
-  default     = "hv01"
-}
-
-variable "timezone" {
-  description = "IANA time zone passed to containers that support TZ."
-  type        = string
-  default     = "Europe/Tallinn"
-}
 
 variable "prowlarr_api_key" {
   type      = string

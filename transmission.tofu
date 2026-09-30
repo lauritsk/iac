@@ -1,7 +1,7 @@
 # Transmission
 
 resource "incus_storage_volume" "transmission_data" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "transmission-data"
   description = "Transmission configuration"
@@ -14,7 +14,7 @@ resource "incus_storage_volume" "transmission_data" {
 
 
 resource "incus_storage_volume" "transmission_watch" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "transmission-watch"
   description = "Transmission watch directory"
@@ -23,7 +23,7 @@ resource "incus_storage_volume" "transmission_watch" {
 
 
 resource "incus_instance" "transmission" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "transmission"
   image       = "oci-ghcr:linuxserver/transmission:4.1.3-r0-ls362@sha256:1a12fef3c89eca48b7be9e7d36b17b4eb4e1bcf5e1ee7fbf372e3a38b562939d"
@@ -34,7 +34,7 @@ resource "incus_instance" "transmission" {
   config = {
     "environment.PUID" = local.app_uid
     "environment.PGID" = local.app_gid
-    "environment.TZ"   = var.timezone
+    "environment.TZ"   = "Europe/Tallinn"
     "environment.WHITELIST" = join(",", [
       "127.0.0.1",
       "::1",
@@ -94,7 +94,7 @@ resource "tailscale_oauth_client" "transmission" {
 }
 
 resource "incus_storage_volume" "transmission_ts_state" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "transmission-ts-state"
   description = "Transmission Tailscale identity"
@@ -106,7 +106,7 @@ resource "incus_storage_volume" "transmission_ts_state" {
 }
 
 resource "incus_storage_volume" "transmission_ts_config" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "transmission-ts-config"
   description = "Transmission Tailscale Serve configuration"
@@ -132,7 +132,7 @@ resource "incus_storage_volume" "transmission_ts_config" {
 }
 
 resource "incus_instance" "transmission_ts" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "transmission-ts"
   image       = "oci-ghcr:tailscale/tailscale:v1.102.5@sha256:c507f3a2a6ab1cabd8d809b98edeb41edbd5c3fb6ad9632ffd098b4c7d0b4065"
@@ -149,7 +149,7 @@ resource "incus_instance" "transmission_ts" {
     "environment.TS_USERSPACE"    = "false"
     "environment.TS_STATE_DIR"    = "/var/lib/tailscale"
     "environment.TS_SERVE_CONFIG" = "/etc/tailscale/serve.json"
-    "environment.TZ"              = var.timezone
+    "environment.TZ"              = "Europe/Tallinn"
   }
 
   device {

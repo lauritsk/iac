@@ -1,7 +1,7 @@
 # Unpackerr
 
 resource "incus_instance" "unpackerr" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "unpackerr"
   image       = "oci-ghcr:unpackerr/unpackerr:0.16.1@sha256:406586865431b40b29353d899fb75a788f5384743f7f381444db5fe55d206914"
@@ -10,7 +10,7 @@ resource "incus_instance" "unpackerr" {
   running     = true
 
   config = {
-    "environment.TZ"                  = var.timezone
+    "environment.TZ"                  = "Europe/Tallinn"
     "environment.UN_RADARR_0_URL"     = local.service_backends.radarr
     "environment.UN_RADARR_0_API_KEY" = var.radarr_api_key
     "environment.UN_RADARR_0_PATHS_0" = "/data/fast/downloads"

@@ -1,7 +1,7 @@
 # Sonarr
 
 resource "incus_storage_volume" "sonarr_data" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "sonarr-data"
   description = "Sonarr configuration"
@@ -14,7 +14,7 @@ resource "incus_storage_volume" "sonarr_data" {
 
 
 resource "incus_instance" "sonarr" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "sonarr"
   image       = "oci-ghcr:linuxserver/sonarr:4.0.20.3014-ls326@sha256:f247545d23ba8b233d6604575347e48a623fe6ad75dda02348bf81917f3b5c06"
@@ -25,7 +25,7 @@ resource "incus_instance" "sonarr" {
   config = {
     "environment.PUID"                                = local.app_uid
     "environment.PGID"                                = local.app_gid
-    "environment.TZ"                                  = var.timezone
+    "environment.TZ"                                  = "Europe/Tallinn"
     "environment.SONARR__APP__INSTANCENAME"           = "Sonarr"
     "environment.SONARR__APP__LAUNCHBROWSER"          = "false"
     "environment.SONARR__APP__THEME"                  = "auto"
@@ -95,7 +95,7 @@ resource "tailscale_oauth_client" "sonarr" {
 }
 
 resource "incus_storage_volume" "sonarr_ts_state" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "sonarr-ts-state"
   description = "Sonarr Tailscale identity"
@@ -107,7 +107,7 @@ resource "incus_storage_volume" "sonarr_ts_state" {
 }
 
 resource "incus_storage_volume" "sonarr_ts_config" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "sonarr-ts-config"
   description = "Sonarr Tailscale Serve configuration"
@@ -133,7 +133,7 @@ resource "incus_storage_volume" "sonarr_ts_config" {
 }
 
 resource "incus_instance" "sonarr_ts" {
-  remote      = var.incus_remote
+  remote      = "hv01"
   project     = local.project
   name        = "sonarr-ts"
   image       = "oci-ghcr:tailscale/tailscale:v1.102.5@sha256:c507f3a2a6ab1cabd8d809b98edeb41edbd5c3fb6ad9632ffd098b4c7d0b4065"
@@ -150,7 +150,7 @@ resource "incus_instance" "sonarr_ts" {
     "environment.TS_USERSPACE"    = "false"
     "environment.TS_STATE_DIR"    = "/var/lib/tailscale"
     "environment.TS_SERVE_CONFIG" = "/etc/tailscale/serve.json"
-    "environment.TZ"              = var.timezone
+    "environment.TZ"              = "Europe/Tallinn"
   }
 
   device {
