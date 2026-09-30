@@ -10,7 +10,6 @@
 !.terraform.lock.hcl
 !flaresolverr.tofu
 !jellyfin.tofu
-!locals.tofu
 !main.tofu
 !platform.tofu
 !prowlarr.tofu
@@ -21,7 +20,6 @@
 !tailnet.tofu
 !transmission.tofu
 !unpackerr.tofu
-!variables.tofu
 !proxy-cloud-init.yml.tftpl
 !recyclarr.yml.tftpl
 
