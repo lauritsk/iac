@@ -2,10 +2,10 @@
 
 resource "incus_storage_volume" "sonarr_data" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "sonarr-data"
   description = "Sonarr configuration"
-  pool        = local.root_pool
+  pool        = "local"
 
   lifecycle {
     prevent_destroy = true
@@ -15,7 +15,7 @@ resource "incus_storage_volume" "sonarr_data" {
 
 resource "incus_instance" "sonarr" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "sonarr"
   image       = "oci-ghcr:linuxserver/sonarr:4.0.20.3014-ls326@sha256:f247545d23ba8b233d6604575347e48a623fe6ad75dda02348bf81917f3b5c06"
   description = "Sonarr"
@@ -23,8 +23,8 @@ resource "incus_instance" "sonarr" {
   running     = true
 
   config = {
-    "environment.PUID"                                = local.app_uid
-    "environment.PGID"                                = local.app_gid
+    "environment.PUID"                                = "1000"
+    "environment.PGID"                                = "1000"
     "environment.TZ"                                  = "Europe/Tallinn"
     "environment.SONARR__APP__INSTANCENAME"           = "Sonarr"
     "environment.SONARR__APP__LAUNCHBROWSER"          = "false"
@@ -41,7 +41,7 @@ resource "incus_instance" "sonarr" {
     "environment.SONARR__LOG__ROTATE"                 = "50"
     "environment.SONARR__LOG__SIZELIMIT"              = "1"
     "environment.SONARR__LOG__SQL"                    = "false"
-    "environment.SONARR__SERVER__ALLOWEDHOSTS"        = "sonarr.${local.tailnet_domain},sonarr.incus"
+    "environment.SONARR__SERVER__ALLOWEDHOSTS"        = "sonarr.cormo-tegu.ts.net,sonarr.incus"
     "environment.SONARR__SERVER__BINDADDRESS"         = "*"
     "environment.SONARR__SERVER__ENABLESSL"           = "false"
     "environment.SONARR__SERVER__PORT"                = "8989"
@@ -96,10 +96,10 @@ resource "tailscale_oauth_client" "sonarr" {
 
 resource "incus_storage_volume" "sonarr_ts_state" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "sonarr-ts-state"
   description = "Sonarr Tailscale identity"
-  pool        = local.root_pool
+  pool        = "local"
 
   lifecycle {
     prevent_destroy = true
@@ -108,10 +108,10 @@ resource "incus_storage_volume" "sonarr_ts_state" {
 
 resource "incus_storage_volume" "sonarr_ts_config" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "sonarr-ts-config"
   description = "Sonarr Tailscale Serve configuration"
-  pool        = local.root_pool
+  pool        = "local"
 
   file {
     content = jsonencode({
@@ -134,7 +134,7 @@ resource "incus_storage_volume" "sonarr_ts_config" {
 
 resource "incus_instance" "sonarr_ts" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "sonarr-ts"
   image       = "oci-ghcr:tailscale/tailscale:v1.102.5@sha256:c507f3a2a6ab1cabd8d809b98edeb41edbd5c3fb6ad9632ffd098b4c7d0b4065"
   description = "Sonarr Tailscale HTTPS gateway"

@@ -2,15 +2,15 @@
 
 resource "incus_storage_volume" "recyclarr_data" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "recyclarr-data"
   description = "Recyclarr configuration"
-  pool        = local.root_pool
+  pool        = "local"
 
   file {
     content = templatefile("${path.module}/recyclarr.yml.tftpl", {
-      radarr_url = local.service_backends.radarr
-      sonarr_url = local.service_backends.sonarr
+      radarr_url = "http://radarr.incus:7878"
+      sonarr_url = "http://sonarr.incus:8989"
     })
     target_path = "/recyclarr.yml"
     uid         = 1000
@@ -22,7 +22,7 @@ resource "incus_storage_volume" "recyclarr_data" {
 
 resource "incus_instance" "recyclarr" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "recyclarr"
   image       = "oci-ghcr:recyclarr/recyclarr:8.7.2@sha256:6e69e009e1cd7493ff6093e8e187b5d3788c75b4a2c0c5127b6a1beda1c19728"
   description = "Recyclarr"

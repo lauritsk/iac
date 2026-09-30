@@ -78,21 +78,6 @@ provider "incus" {
   }
 }
 
-# Shared local values
-
-locals {
-  root_pool      = "local"
-  project        = "default"
-  app_uid        = "1000"
-  app_gid        = "1000"
-  tailnet_domain = "cormo-tegu.ts.net"
-
-  service_backends = {
-    radarr = "http://radarr.incus:7878"
-    sonarr = "http://sonarr.incus:8989"
-  }
-}
-
 # Input variables
 
 variable "state_passphrase" {

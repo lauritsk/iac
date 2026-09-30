@@ -2,10 +2,10 @@
 
 resource "incus_storage_volume" "radarr_data" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "radarr-data"
   description = "Radarr configuration"
-  pool        = local.root_pool
+  pool        = "local"
 
   lifecycle {
     prevent_destroy = true
@@ -15,7 +15,7 @@ resource "incus_storage_volume" "radarr_data" {
 
 resource "incus_instance" "radarr" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "radarr"
   image       = "oci-ghcr:linuxserver/radarr:6.4.4.10685-ls318@sha256:adb6c09d6b729ea5e642c99cea35af72702ef476bf4763f153299ac5db9f0b4f"
   description = "Radarr"
@@ -23,8 +23,8 @@ resource "incus_instance" "radarr" {
   running     = true
 
   config = {
-    "environment.PUID"                                = local.app_uid
-    "environment.PGID"                                = local.app_gid
+    "environment.PUID"                                = "1000"
+    "environment.PGID"                                = "1000"
     "environment.TZ"                                  = "Europe/Tallinn"
     "environment.RADARR__APP__INSTANCENAME"           = "Radarr"
     "environment.RADARR__APP__LAUNCHBROWSER"          = "false"
@@ -41,7 +41,7 @@ resource "incus_instance" "radarr" {
     "environment.RADARR__LOG__ROTATE"                 = "50"
     "environment.RADARR__LOG__SIZELIMIT"              = "1"
     "environment.RADARR__LOG__SQL"                    = "false"
-    "environment.RADARR__SERVER__ALLOWEDHOSTS"        = "radarr.${local.tailnet_domain},radarr.incus"
+    "environment.RADARR__SERVER__ALLOWEDHOSTS"        = "radarr.cormo-tegu.ts.net,radarr.incus"
     "environment.RADARR__SERVER__BINDADDRESS"         = "*"
     "environment.RADARR__SERVER__ENABLESSL"           = "false"
     "environment.RADARR__SERVER__PORT"                = "7878"
@@ -96,10 +96,10 @@ resource "tailscale_oauth_client" "radarr" {
 
 resource "incus_storage_volume" "radarr_ts_state" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "radarr-ts-state"
   description = "Radarr Tailscale identity"
-  pool        = local.root_pool
+  pool        = "local"
 
   lifecycle {
     prevent_destroy = true
@@ -108,10 +108,10 @@ resource "incus_storage_volume" "radarr_ts_state" {
 
 resource "incus_storage_volume" "radarr_ts_config" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "radarr-ts-config"
   description = "Radarr Tailscale Serve configuration"
-  pool        = local.root_pool
+  pool        = "local"
 
   file {
     content = jsonencode({
@@ -134,7 +134,7 @@ resource "incus_storage_volume" "radarr_ts_config" {
 
 resource "incus_instance" "radarr_ts" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "radarr-ts"
   image       = "oci-ghcr:tailscale/tailscale:v1.102.5@sha256:c507f3a2a6ab1cabd8d809b98edeb41edbd5c3fb6ad9632ffd098b4c7d0b4065"
   description = "Radarr Tailscale HTTPS gateway"

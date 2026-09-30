@@ -2,19 +2,19 @@
 
 resource "incus_storage_volume" "jellyfin_cache" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "jellyfin-cache"
   description = "Jellyfin cache"
-  pool        = local.root_pool
+  pool        = "local"
 }
 
 
 resource "incus_storage_volume" "jellyfin_config" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "jellyfin-config"
   description = "Jellyfin configuration"
-  pool        = local.root_pool
+  pool        = "local"
 
   lifecycle {
     prevent_destroy = true
@@ -24,7 +24,7 @@ resource "incus_storage_volume" "jellyfin_config" {
 
 resource "incus_instance" "jellyfin" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "jellyfin"
   image       = "oci-ghcr:jellyfin/jellyfin:12.1@sha256:008ec8024bdaaa6f0a3f0de468e185633eeba9d67c56936e8dbf5ef6b8d6200f"
   description = "Jellyfin"
@@ -32,10 +32,10 @@ resource "incus_instance" "jellyfin" {
   running     = true
 
   config = {
-    "oci.uid"                                 = local.app_uid
-    "oci.gid"                                 = local.app_gid
+    "oci.uid"                                 = "1000"
+    "oci.gid"                                 = "1000"
     "environment.TZ"                          = "Europe/Tallinn"
-    "environment.JELLYFIN_PublishedServerUrl" = "https://jellyfin.${local.tailnet_domain}"
+    "environment.JELLYFIN_PublishedServerUrl" = "https://jellyfin.cormo-tegu.ts.net"
   }
 
   device {
@@ -102,10 +102,10 @@ resource "tailscale_oauth_client" "jellyfin" {
 
 resource "incus_storage_volume" "jellyfin_ts_state" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "jellyfin-ts-state"
   description = "Jellyfin Tailscale identity"
-  pool        = local.root_pool
+  pool        = "local"
 
   lifecycle {
     prevent_destroy = true
@@ -114,10 +114,10 @@ resource "incus_storage_volume" "jellyfin_ts_state" {
 
 resource "incus_storage_volume" "jellyfin_ts_config" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "jellyfin-ts-config"
   description = "Jellyfin Tailscale Serve configuration"
-  pool        = local.root_pool
+  pool        = "local"
 
   file {
     content = jsonencode({
@@ -140,7 +140,7 @@ resource "incus_storage_volume" "jellyfin_ts_config" {
 
 resource "incus_instance" "jellyfin_ts" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "jellyfin-ts"
   image       = "oci-ghcr:tailscale/tailscale:v1.102.5@sha256:c507f3a2a6ab1cabd8d809b98edeb41edbd5c3fb6ad9632ffd098b4c7d0b4065"
   description = "Jellyfin Tailscale HTTPS gateway"

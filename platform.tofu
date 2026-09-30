@@ -16,7 +16,7 @@ resource "incus_storage_pool" "slow" {
 
 resource "incus_network" "incusbr0" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "incusbr0"
   type        = "bridge"
   description = "Local network bridge (NAT)"
@@ -31,7 +31,7 @@ resource "incus_network" "incusbr0" {
 
 resource "incus_profile" "default" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "default"
   description = "Default Incus profile"
 
@@ -46,7 +46,7 @@ resource "incus_profile" "default" {
     type = "disk"
 
     properties = {
-      pool = local.root_pool
+      pool = "local"
       path = "/"
     }
   }
@@ -65,7 +65,7 @@ resource "incus_profile" "default" {
 
 resource "incus_profile" "oci" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "oci"
   description = "OCI application defaults"
 
@@ -79,7 +79,7 @@ resource "incus_profile" "oci" {
     type = "disk"
 
     properties = {
-      pool = local.root_pool
+      pool = "local"
       path = "/"
     }
   }
@@ -96,7 +96,7 @@ resource "incus_profile" "oci" {
 
 resource "incus_storage_volume" "media_slow" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "media"
   description = "Shared media library and downloads"
   pool        = incus_storage_pool.slow.name
@@ -108,7 +108,7 @@ resource "incus_storage_volume" "media_slow" {
 
 resource "incus_storage_volume" "media_fast" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "media"
   description = "Fast shared media library and downloads"
   pool        = incus_storage_pool.fast.name

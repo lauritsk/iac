@@ -2,7 +2,7 @@
 
 resource "incus_instance" "unpackerr" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "unpackerr"
   image       = "oci-ghcr:unpackerr/unpackerr:0.16.1@sha256:406586865431b40b29353d899fb75a788f5384743f7f381444db5fe55d206914"
   description = "Extract completed downloads for Radarr and Sonarr"
@@ -11,14 +11,14 @@ resource "incus_instance" "unpackerr" {
 
   config = {
     "environment.TZ"                  = "Europe/Tallinn"
-    "environment.UN_RADARR_0_URL"     = local.service_backends.radarr
+    "environment.UN_RADARR_0_URL"     = "http://radarr.incus:7878"
     "environment.UN_RADARR_0_API_KEY" = var.radarr_api_key
     "environment.UN_RADARR_0_PATHS_0" = "/data/fast/downloads"
-    "environment.UN_SONARR_0_URL"     = local.service_backends.sonarr
+    "environment.UN_SONARR_0_URL"     = "http://sonarr.incus:8989"
     "environment.UN_SONARR_0_API_KEY" = var.sonarr_api_key
     "environment.UN_SONARR_0_PATHS_0" = "/data/fast/downloads"
-    "oci.uid"                         = local.app_uid
-    "oci.gid"                         = local.app_gid
+    "oci.uid"                         = "1000"
+    "oci.gid"                         = "1000"
   }
 
   device {

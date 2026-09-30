@@ -2,10 +2,10 @@
 
 resource "incus_storage_volume" "prowlarr_data" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "prowlarr-data"
   description = "Prowlarr configuration"
-  pool        = local.root_pool
+  pool        = "local"
 
   lifecycle {
     prevent_destroy = true
@@ -15,7 +15,7 @@ resource "incus_storage_volume" "prowlarr_data" {
 
 resource "incus_instance" "prowlarr" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "prowlarr"
   image       = "oci-ghcr:linuxserver/prowlarr:2.6.5.5623-ls162@sha256:f2b26429893d4c4cb71941b7ee50b1bdecd9d5f9f9e02d5410615e9f4f7c8d95"
   description = "Prowlarr"
@@ -23,8 +23,8 @@ resource "incus_instance" "prowlarr" {
   running     = true
 
   config = {
-    "environment.PUID"                                  = local.app_uid
-    "environment.PGID"                                  = local.app_gid
+    "environment.PUID"                                  = "1000"
+    "environment.PGID"                                  = "1000"
     "environment.TZ"                                    = "Europe/Tallinn"
     "environment.PROWLARR__APP__INSTANCENAME"           = "Prowlarr"
     "environment.PROWLARR__APP__LAUNCHBROWSER"          = "false"
@@ -41,7 +41,7 @@ resource "incus_instance" "prowlarr" {
     "environment.PROWLARR__LOG__ROTATE"                 = "50"
     "environment.PROWLARR__LOG__SIZELIMIT"              = "1"
     "environment.PROWLARR__LOG__SQL"                    = "false"
-    "environment.PROWLARR__SERVER__ALLOWEDHOSTS"        = "prowlarr.${local.tailnet_domain},prowlarr.incus"
+    "environment.PROWLARR__SERVER__ALLOWEDHOSTS"        = "prowlarr.cormo-tegu.ts.net,prowlarr.incus"
     "environment.PROWLARR__SERVER__BINDADDRESS"         = "*"
     "environment.PROWLARR__SERVER__ENABLESSL"           = "false"
     "environment.PROWLARR__SERVER__PORT"                = "9696"
@@ -74,10 +74,10 @@ resource "tailscale_oauth_client" "prowlarr" {
 
 resource "incus_storage_volume" "prowlarr_ts_state" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "prowlarr-ts-state"
   description = "Prowlarr Tailscale identity"
-  pool        = local.root_pool
+  pool        = "local"
 
   lifecycle {
     prevent_destroy = true
@@ -86,10 +86,10 @@ resource "incus_storage_volume" "prowlarr_ts_state" {
 
 resource "incus_storage_volume" "prowlarr_ts_config" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "prowlarr-ts-config"
   description = "Prowlarr Tailscale Serve configuration"
-  pool        = local.root_pool
+  pool        = "local"
 
   file {
     content = jsonencode({
@@ -112,7 +112,7 @@ resource "incus_storage_volume" "prowlarr_ts_config" {
 
 resource "incus_instance" "prowlarr_ts" {
   remote      = "hv01"
-  project     = local.project
+  project     = "default"
   name        = "prowlarr-ts"
   image       = "oci-ghcr:tailscale/tailscale:v1.102.5@sha256:c507f3a2a6ab1cabd8d809b98edeb41edbd5c3fb6ad9632ffd098b4c7d0b4065"
   description = "Prowlarr Tailscale HTTPS gateway"
