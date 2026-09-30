@@ -37,18 +37,6 @@ variable "sonarr_api_key" {
   nullable  = false
 }
 
-variable "transmission_username" {
-  type      = string
-  sensitive = true
-  nullable  = false
-}
-
-variable "transmission_password" {
-  type      = string
-  sensitive = true
-  nullable  = false
-}
-
 variable "state_passphrase" {
   type      = string
   sensitive = true
