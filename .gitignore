@@ -2,11 +2,6 @@
 
 !.gitignore
 
-!.github/
-!.github/CODEOWNERS
-!.github/workflows/
-!.github/workflows/ci.yml
-
 !AGENTS.md
 !README.md
 !SECURITY.md

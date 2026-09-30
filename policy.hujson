@@ -1,11 +1,6 @@
 {
 	"grants": [
 		{
-			"src": ["tag:ci"],
-			"dst": ["tag:server"],
-			"ip":  ["tcp:8443"],
-		},
-		{
 			"src": ["autogroup:admin"],
 			"dst": ["*"],
 			"ip":  ["*"],
@@ -53,7 +48,6 @@
 	],
 
 	"tagOwners": {
-		"tag:ci":     ["autogroup:admin"],
 		"tag:server": ["autogroup:admin"],
 		"tag:app":    ["autogroup:admin"],
 	},
@@ -73,11 +67,6 @@
 	},
 
 	"tests": [
-		{
-			"src":    "tag:ci",
-			"proto":  "tcp",
-			"accept": ["tag:server:8443"],
-		},
 		{
 			"src":    "beccam@passkey",
 			"proto":  "tcp",
