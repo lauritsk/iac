@@ -48,12 +48,12 @@
 	],
 
 	"tagOwners": {
-		"tag:server":       ["autogroup:admin"],
+		"tag:jellyfin":     ["autogroup:admin"],
 		"tag:prowlarr":     ["autogroup:admin"],
 		"tag:radarr":       ["autogroup:admin"],
+		"tag:server":       ["autogroup:admin"],
 		"tag:sonarr":       ["autogroup:admin"],
 		"tag:transmission": ["autogroup:admin"],
-		"tag:jellyfin":     ["autogroup:admin"],
 	},
 
 	"autoApprovers": {
@@ -85,11 +85,11 @@
 			"src":   "karl@laurits.dev",
 			"proto": "tcp",
 			"accept": [
-				"tag:server:22",
-				"tag:server:8443",
 				"tag:jellyfin:443",
 				"tag:prowlarr:443",
 				"tag:radarr:443",
+				"tag:server:22",
+				"tag:server:8443",
 				"tag:sonarr:443",
 				"tag:transmission:443",
 			],
