@@ -48,15 +48,15 @@
 	],
 
 	"tagOwners": {
-		"tag:server":   ["autogroup:admin"],
-		"tag:app":      ["autogroup:admin"],
-		"tag:jellyfin": ["autogroup:admin"],
+		"tag:server":       ["autogroup:admin"],
+		"tag:prowlarr":     ["autogroup:admin"],
+		"tag:radarr":       ["autogroup:admin"],
+		"tag:sonarr":       ["autogroup:admin"],
+		"tag:transmission": ["autogroup:admin"],
+		"tag:jellyfin":     ["autogroup:admin"],
 	},
 
 	"autoApprovers": {
-		"services": {
-			"tag:app": ["tag:server"],
-		},
 		"exitNode": ["tag:server"],
 	},
 
@@ -88,10 +88,10 @@
 				"tag:server:22",
 				"tag:server:8443",
 				"tag:jellyfin:443",
-				"svc:prowlarr:443",
-				"svc:radarr:443",
-				"svc:sonarr:443",
-				"svc:transmission:443",
+				"tag:prowlarr:443",
+				"tag:radarr:443",
+				"tag:sonarr:443",
+				"tag:transmission:443",
 			],
 		},
 	],

@@ -13,14 +13,12 @@
 !main.tofu
 !platform.tofu
 !prowlarr.tofu
-!proxy.tofu
 !radarr.tofu
 !recyclarr.tofu
 !sonarr.tofu
 !tailnet.tofu
 !transmission.tofu
 !unpackerr.tofu
-!proxy-cloud-init.yml.tftpl
 !recyclarr.yml.tftpl
 
 !policy.hujson

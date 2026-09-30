@@ -45,7 +45,7 @@ resource "incus_instance" "radarr" {
     "environment.RADARR__SERVER__BINDADDRESS"         = "*"
     "environment.RADARR__SERVER__ENABLESSL"           = "false"
     "environment.RADARR__SERVER__PORT"                = "7878"
-    "environment.RADARR__SERVER__TRUSTEDNETWORKS"     = "${incus_instance.proxy.ipv4_address},${incus_instance.proxy.ipv6_address}"
+    "environment.RADARR__SERVER__TRUSTEDNETWORKS"     = "${incus_instance.radarr_ts.ipv4_address},${incus_instance.radarr_ts.ipv6_address}"
     "environment.RADARR__UPDATE__AUTOMATICALLY"       = "false"
     "environment.RADARR__UPDATE__BRANCH"              = "master"
     "environment.RADARR__UPDATE__MECHANISM"           = "Docker"
@@ -81,6 +81,108 @@ resource "incus_instance" "radarr" {
       "pool"   = incus_storage_volume.media_fast.pool
       "source" = incus_storage_volume.media_fast.name
       "path"   = "/data/fast"
+    }
+  }
+
+}
+
+resource "tailscale_oauth_client" "radarr" {
+  description = "Radarr Tailscale gateway"
+  scopes      = ["auth_keys"]
+  tags        = ["tag:radarr"]
+
+  depends_on = [tailscale_acl.policy]
+}
+
+resource "incus_storage_volume" "radarr_ts_state" {
+  remote      = var.incus_remote
+  project     = local.project
+  name        = "radarr-ts-state"
+  description = "Radarr Tailscale identity"
+  pool        = local.root_pool
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+resource "incus_storage_volume" "radarr_ts_config" {
+  remote      = var.incus_remote
+  project     = local.project
+  name        = "radarr-ts-config"
+  description = "Radarr Tailscale Serve configuration"
+  pool        = local.root_pool
+
+  file {
+    content = jsonencode({
+      TCP = {
+        "443" = { HTTPS = true }
+      }
+      Web = {
+        "$${TS_CERT_DOMAIN}:443" = {
+          Handlers = {
+            "/" = { Proxy = "http://radarr.incus:7878" }
+          }
+        }
+      }
+      AllowFunnel = {}
+    })
+    target_path = "/serve.json"
+    mode        = "0644"
+  }
+}
+
+resource "incus_instance" "radarr_ts" {
+  remote      = var.incus_remote
+  project     = local.project
+  name        = "radarr-ts"
+  image       = "oci-ghcr:tailscale/tailscale:v1.102.5@sha256:c507f3a2a6ab1cabd8d809b98edeb41edbd5c3fb6ad9632ffd098b4c7d0b4065"
+  description = "Radarr Tailscale HTTPS gateway"
+  profiles    = [incus_profile.oci.name]
+  running     = true
+
+  config = {
+    "environment.TS_AUTHKEY"      = "${tailscale_oauth_client.radarr.key}?ephemeral=false"
+    "environment.TS_AUTH_ONCE"    = "true"
+    "environment.TS_HOSTNAME"     = "radarr"
+    "environment.TS_EXTRA_ARGS"   = "--advertise-tags=tag:radarr"
+    "environment.TS_ACCEPT_DNS"   = "false"
+    "environment.TS_USERSPACE"    = "false"
+    "environment.TS_STATE_DIR"    = "/var/lib/tailscale"
+    "environment.TS_SERVE_CONFIG" = "/etc/tailscale/serve.json"
+    "environment.TZ"              = var.timezone
+  }
+
+  device {
+    name = "state"
+    type = "disk"
+
+    properties = {
+      pool   = incus_storage_volume.radarr_ts_state.pool
+      source = incus_storage_volume.radarr_ts_state.name
+      path   = "/var/lib/tailscale"
+    }
+  }
+
+  device {
+    name = "config"
+    type = "disk"
+
+    properties = {
+      pool     = incus_storage_volume.radarr_ts_config.pool
+      source   = incus_storage_volume.radarr_ts_config.name
+      path     = "/etc/tailscale"
+      readonly = "true"
+    }
+  }
+
+  device {
+    name = "tun"
+    type = "unix-char"
+
+    properties = {
+      source = "/dev/net/tun"
+      path   = "/dev/net/tun"
     }
   }
 

@@ -38,8 +38,8 @@ resource "incus_instance" "transmission" {
     "environment.WHITELIST" = join(",", [
       "127.0.0.1",
       "::1",
-      incus_instance.proxy.ipv4_address,
-      incus_instance.proxy.ipv6_address,
+      incus_instance.transmission_ts.ipv4_address,
+      incus_instance.transmission_ts.ipv6_address,
       incus_instance.prowlarr.ipv4_address,
       incus_instance.prowlarr.ipv6_address,
       incus_instance.radarr.ipv4_address,
@@ -80,6 +80,108 @@ resource "incus_instance" "transmission" {
       "pool"   = incus_storage_volume.media_fast.pool
       "source" = incus_storage_volume.media_fast.name
       "path"   = "/data/fast"
+    }
+  }
+
+}
+
+resource "tailscale_oauth_client" "transmission" {
+  description = "Transmission Tailscale gateway"
+  scopes      = ["auth_keys"]
+  tags        = ["tag:transmission"]
+
+  depends_on = [tailscale_acl.policy]
+}
+
+resource "incus_storage_volume" "transmission_ts_state" {
+  remote      = var.incus_remote
+  project     = local.project
+  name        = "transmission-ts-state"
+  description = "Transmission Tailscale identity"
+  pool        = local.root_pool
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
+resource "incus_storage_volume" "transmission_ts_config" {
+  remote      = var.incus_remote
+  project     = local.project
+  name        = "transmission-ts-config"
+  description = "Transmission Tailscale Serve configuration"
+  pool        = local.root_pool
+
+  file {
+    content = jsonencode({
+      TCP = {
+        "443" = { HTTPS = true }
+      }
+      Web = {
+        "$${TS_CERT_DOMAIN}:443" = {
+          Handlers = {
+            "/" = { Proxy = "http://transmission.incus:9091" }
+          }
+        }
+      }
+      AllowFunnel = {}
+    })
+    target_path = "/serve.json"
+    mode        = "0644"
+  }
+}
+
+resource "incus_instance" "transmission_ts" {
+  remote      = var.incus_remote
+  project     = local.project
+  name        = "transmission-ts"
+  image       = "oci-ghcr:tailscale/tailscale:v1.102.5@sha256:c507f3a2a6ab1cabd8d809b98edeb41edbd5c3fb6ad9632ffd098b4c7d0b4065"
+  description = "Transmission Tailscale HTTPS gateway"
+  profiles    = [incus_profile.oci.name]
+  running     = true
+
+  config = {
+    "environment.TS_AUTHKEY"      = "${tailscale_oauth_client.transmission.key}?ephemeral=false"
+    "environment.TS_AUTH_ONCE"    = "true"
+    "environment.TS_HOSTNAME"     = "transmission"
+    "environment.TS_EXTRA_ARGS"   = "--advertise-tags=tag:transmission"
+    "environment.TS_ACCEPT_DNS"   = "false"
+    "environment.TS_USERSPACE"    = "false"
+    "environment.TS_STATE_DIR"    = "/var/lib/tailscale"
+    "environment.TS_SERVE_CONFIG" = "/etc/tailscale/serve.json"
+    "environment.TZ"              = var.timezone
+  }
+
+  device {
+    name = "state"
+    type = "disk"
+
+    properties = {
+      pool   = incus_storage_volume.transmission_ts_state.pool
+      source = incus_storage_volume.transmission_ts_state.name
+      path   = "/var/lib/tailscale"
+    }
+  }
+
+  device {
+    name = "config"
+    type = "disk"
+
+    properties = {
+      pool     = incus_storage_volume.transmission_ts_config.pool
+      source   = incus_storage_volume.transmission_ts_config.name
+      path     = "/etc/tailscale"
+      readonly = "true"
+    }
+  }
+
+  device {
+    name = "tun"
+    type = "unix-char"
+
+    properties = {
+      source = "/dev/net/tun"
+      path   = "/dev/net/tun"
     }
   }
 
