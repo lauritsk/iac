@@ -16,7 +16,7 @@
 			"ip":  ["tcp:443"],
 		},
 		{
-			"src": ["autogroup:member", "tag:server"],
+			"src": ["autogroup:member"],
 			"dst": ["autogroup:internet"],
 			"ip":  ["*"],
 		},
@@ -58,7 +58,7 @@
 	},
 
 	"autoApprovers": {
-		"exitNode": ["tag:server"],
+		"exitNode": ["tag:server", "tag:tv"],
 	},
 
 	"tests": [
