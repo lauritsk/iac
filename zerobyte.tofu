@@ -127,15 +127,4 @@ resource "incus_instance" "zerobyte" {
     }
   }
 
-  device {
-    name = "immich-library-backup"
-    type = "disk"
-
-    properties = {
-      "pool"     = incus_storage_volume.immich_library.pool
-      "source"   = incus_storage_volume.immich_library.name
-      "path"     = "/mnt/src/immich-library"
-      "readonly" = "true"
-    }
-  }
 }

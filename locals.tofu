@@ -14,7 +14,6 @@ locals {
   }
 
   service_backends = {
-    immich       = "http://immich-server.incus:2283"
     jellyfin     = "http://jellyfin.incus:8096"
     prowlarr     = "http://prowlarr.incus:9696"
     radarr       = "http://radarr.incus:7878"
@@ -22,6 +21,4 @@ locals {
     transmission = "http://transmission.incus:9091"
     zerobyte     = "http://zerobyte.incus:4096"
   }
-
-  immich_machine_learning_url = "http://${incus_instance.immich_machine_learning.name}:3003"
 }

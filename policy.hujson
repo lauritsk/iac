@@ -21,11 +21,6 @@
 			"ip":  ["tcp:443"],
 		},
 		{
-			"src": ["mrria@passkey"],
-			"dst": ["svc:immich"],
-			"ip":  ["tcp:443"],
-		},
-		{
 			"src": ["autogroup:member", "tag:server"],
 			"dst": ["autogroup:internet"],
 			"ip":  ["*"],
@@ -101,7 +96,7 @@
 		{
 			"src":    "mrria@passkey",
 			"proto":  "tcp",
-			"accept": ["svc:jellyfin:443", "svc:immich:443"],
+			"accept": ["svc:jellyfin:443"],
 		},
 		{
 			"src":   "karl@laurits.dev",
@@ -109,7 +104,6 @@
 			"accept": [
 				"tag:server:22",
 				"tag:server:8443",
-				"svc:immich:443",
 				"svc:jellyfin:443",
 				"svc:prowlarr:443",
 				"svc:radarr:443",

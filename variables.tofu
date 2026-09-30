@@ -19,24 +19,6 @@ variable "timezone" {
   default     = "Europe/Tallinn"
 }
 
-variable "immich_db_name" {
-  type      = string
-  sensitive = true
-  nullable  = false
-}
-
-variable "immich_db_username" {
-  type      = string
-  sensitive = true
-  nullable  = false
-}
-
-variable "immich_db_password" {
-  type      = string
-  sensitive = true
-  nullable  = false
-}
-
 variable "prowlarr_api_key" {
   type      = string
   sensitive = true

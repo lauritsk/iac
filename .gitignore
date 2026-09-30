@@ -15,7 +15,6 @@
 
 !.terraform.lock.hcl
 !flaresolverr.tofu
-!immich.tofu
 !jellyfin.tofu
 !locals.tofu
 !main.tofu
