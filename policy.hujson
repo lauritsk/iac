@@ -11,7 +11,7 @@
 			"ip":  ["*"],
 		},
 		{
-			"src": ["autogroup:member", "autogroup:shared", "tag:server"],
+			"src": ["autogroup:member", "autogroup:shared", "tag:tv"],
 			"dst": ["tag:jellyfin"],
 			"ip":  ["tcp:443"],
 		},
@@ -49,6 +49,7 @@
 
 	"tagOwners": {
 		"tag:server":       ["autogroup:admin"],
+		"tag:tv":           ["autogroup:admin"],
 		"tag:prowlarr":     ["autogroup:admin"],
 		"tag:radarr":       ["autogroup:admin"],
 		"tag:sonarr":       ["autogroup:admin"],
@@ -61,6 +62,23 @@
 	},
 
 	"tests": [
+		{
+			"src":    "tag:tv",
+			"proto":  "tcp",
+			"accept": ["tag:jellyfin:443"],
+			"deny": [
+				"tag:jellyfin:22",
+				"tag:prowlarr:443",
+				"tag:radarr:443",
+				"tag:sonarr:443",
+				"tag:transmission:443",
+			],
+		},
+		{
+			"src":   "tag:server",
+			"proto": "tcp",
+			"deny":  ["tag:jellyfin:443"],
+		},
 		{
 			"src":    "beccam@passkey",
 			"proto":  "tcp",
