@@ -63,17 +63,25 @@
 
 	"tests": [
 		{
+			"src":   "karl@laurits.dev",
+			"proto": "tcp",
+			"accept": [
+				"tag:server:22",
+				"tag:server:8443",
+				"tag:prowlarr:443",
+				"tag:radarr:443",
+				"tag:sonarr:443",
+				"tag:transmission:443",
+				"tag:jellyfin:443",
+			],
+		},
+		{
 			"src":    "tag:tv",
 			"proto":  "tcp",
 			"accept": ["tag:jellyfin:443"],
 		},
 		{
 			"src":    "beccam@passkey",
-			"proto":  "tcp",
-			"accept": ["tag:jellyfin:443"],
-		},
-		{
-			"src":    "greenmyshelf@gmail.com",
 			"proto":  "tcp",
 			"accept": ["tag:jellyfin:443"],
 		},
@@ -88,17 +96,9 @@
 			"accept": ["tag:jellyfin:443"],
 		},
 		{
-			"src":   "karl@laurits.dev",
-			"proto": "tcp",
-			"accept": [
-				"tag:server:22",
-				"tag:server:8443",
-				"tag:prowlarr:443",
-				"tag:radarr:443",
-				"tag:sonarr:443",
-				"tag:transmission:443",
-				"tag:jellyfin:443",
-			],
+			"src":    "greenmyshelf@gmail.com",
+			"proto":  "tcp",
+			"accept": ["tag:jellyfin:443"],
 		},
 	],
 }
