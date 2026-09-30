@@ -54,14 +54,6 @@ provider "incus" {
   }
 
   remote {
-    name               = "oci-docker"
-    address            = "https://docker.io"
-    protocol           = "oci"
-    public             = true
-    credentials_helper = "docker-credential-osxkeychain"
-  }
-
-  remote {
     name               = "oci-ghcr"
     address            = "https://ghcr.io"
     protocol           = "oci"
@@ -69,13 +61,6 @@ provider "incus" {
     credentials_helper = "docker-credential-osxkeychain"
   }
 
-  remote {
-    name               = "oci-dhi"
-    address            = "https://dhi.io"
-    protocol           = "oci"
-    public             = true
-    credentials_helper = "docker-credential-osxkeychain"
-  }
 }
 
 # Input variables
