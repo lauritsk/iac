@@ -95,24 +95,6 @@ locals {
 
 # Input variables
 
-variable "prowlarr_api_key" {
-  type      = string
-  sensitive = true
-  nullable  = false
-}
-
-variable "radarr_api_key" {
-  type      = string
-  sensitive = true
-  nullable  = false
-}
-
-variable "sonarr_api_key" {
-  type      = string
-  sensitive = true
-  nullable  = false
-}
-
 variable "state_passphrase" {
   type      = string
   sensitive = true

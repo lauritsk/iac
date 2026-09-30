@@ -187,3 +187,9 @@ resource "incus_instance" "radarr_ts" {
   }
 
 }
+
+variable "radarr_api_key" {
+  type      = string
+  sensitive = true
+  nullable  = false
+}

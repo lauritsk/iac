@@ -187,3 +187,9 @@ resource "incus_instance" "sonarr_ts" {
   }
 
 }
+
+variable "sonarr_api_key" {
+  type      = string
+  sensitive = true
+  nullable  = false
+}

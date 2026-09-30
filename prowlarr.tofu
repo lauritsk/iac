@@ -165,3 +165,9 @@ resource "incus_instance" "prowlarr_ts" {
   }
 
 }
+
+variable "prowlarr_api_key" {
+  type      = string
+  sensitive = true
+  nullable  = false
+}
