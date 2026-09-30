@@ -35,14 +35,6 @@ resource "tailscale_oauth_client" "proxy" {
   depends_on = [tailscale_acl.policy]
 }
 
-resource "tailscale_oauth_client" "tsidp" {
-  description = "Tailscale identity provider"
-  scopes      = ["auth_keys"]
-  tags        = ["tag:tsidp"]
-
-  depends_on = [tailscale_acl.policy]
-}
-
 resource "tailscale_service" "app" {
   for_each = local.service_backends
 

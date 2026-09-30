@@ -22,27 +22,13 @@
 		},
 		{
 			"src": ["mrria@passkey"],
-			"dst": ["svc:immich", "tag:tsidp"],
+			"dst": ["svc:immich"],
 			"ip":  ["tcp:443"],
 		},
 		{
 			"src": ["autogroup:member", "tag:server"],
 			"dst": ["autogroup:internet"],
 			"ip":  ["*"],
-		},
-		// Enable tsidp
-		{
-			"src": ["autogroup:admin"],
-			"dst": ["tag:tsidp"],
-
-			"app": {
-				"tailscale.com/cap/tsidp": [
-					{
-						"allow_admin_ui": true,
-						"allow_dcr":      true,
-					},
-				],
-			},
 		},
 	],
 
@@ -75,7 +61,6 @@
 		"tag:ci":     ["autogroup:admin"],
 		"tag:server": ["autogroup:admin"],
 		"tag:app":    ["autogroup:admin"],
-		"tag:tsidp":  ["autogroup:admin"],
 	},
 
 	"nodeAttrs": [
@@ -116,7 +101,7 @@
 		{
 			"src":    "mrria@passkey",
 			"proto":  "tcp",
-			"accept": ["svc:jellyfin:443", "svc:immich:443", "tag:tsidp:443"],
+			"accept": ["svc:jellyfin:443", "svc:immich:443"],
 		},
 		{
 			"src":   "karl@laurits.dev",
@@ -124,7 +109,6 @@
 			"accept": [
 				"tag:server:22",
 				"tag:server:8443",
-				"tag:tsidp:443",
 				"svc:immich:443",
 				"svc:jellyfin:443",
 				"svc:prowlarr:443",

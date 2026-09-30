@@ -24,13 +24,11 @@ resource "incus_instance" "zerobyte" {
   running     = true
 
   config = {
-    "environment.TZ"              = var.timezone
-    "environment.BASE_URL"        = "https://zerobyte.${local.tailnet_domain}"
-    "environment.TRUSTED_ORIGINS" = "https://idp.${local.tailnet_domain}"
-    "environment.APP_SECRET"      = var.zerobyte_app_secret
-    "environment.GOMAXPROCS"      = "2"
-
-
+    "environment.TZ"          = var.timezone
+    "environment.BASE_URL"    = "https://zerobyte.${local.tailnet_domain}"
+    "environment.TRUST_PROXY" = "true"
+    "environment.APP_SECRET"  = var.zerobyte_app_secret
+    "environment.GOMAXPROCS"  = "2"
   }
 
   device {
@@ -65,18 +63,6 @@ resource "incus_instance" "zerobyte" {
       "pool"     = incus_storage_volume.media_fast.pool
       "source"   = incus_storage_volume.media_fast.name
       "path"     = "/mnt/src/media/fast"
-      "readonly" = "true"
-    }
-  }
-
-  device {
-    name = "tsidp-backup"
-    type = "disk"
-
-    properties = {
-      "pool"     = incus_storage_volume.tsidp_data.pool
-      "source"   = incus_storage_volume.tsidp_data.name
-      "path"     = "/mnt/src/tsidp"
       "readonly" = "true"
     }
   }

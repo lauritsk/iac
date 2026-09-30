@@ -10,7 +10,6 @@
 !AGENTS.md
 !README.md
 !SECURITY.md
-!TODO.md
 
 !justfile
 
@@ -28,7 +27,6 @@
 !sonarr.tofu
 !tailnet.tofu
 !transmission.tofu
-!tsidp.tofu
 !unpackerr.tofu
 !variables.tofu
 !zerobyte.tofu
