@@ -66,18 +66,6 @@
 			"src":    "tag:tv",
 			"proto":  "tcp",
 			"accept": ["tag:jellyfin:443"],
-			"deny": [
-				"tag:jellyfin:22",
-				"tag:prowlarr:443",
-				"tag:radarr:443",
-				"tag:sonarr:443",
-				"tag:transmission:443",
-			],
-		},
-		{
-			"src":   "tag:server",
-			"proto": "tcp",
-			"deny":  ["tag:jellyfin:443"],
 		},
 		{
 			"src":    "beccam@passkey",
