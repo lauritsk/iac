@@ -28,7 +28,6 @@
 !transmission.tofu
 !unpackerr.tofu
 !variables.tofu
-!zerobyte.tofu
 !proxy-cloud-init.yml.tftpl
 !recyclarr.yml.tftpl
 

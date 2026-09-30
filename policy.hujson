@@ -109,7 +109,6 @@
 				"svc:radarr:443",
 				"svc:sonarr:443",
 				"svc:transmission:443",
-				"svc:zerobyte:443",
 			],
 		},
 	],

@@ -49,11 +49,6 @@ variable "transmission_password" {
   nullable  = false
 }
 
-variable "zerobyte_app_secret" {
-  type      = string
-  sensitive = true
-  nullable  = false
-}
 variable "state_passphrase" {
   type      = string
   sensitive = true

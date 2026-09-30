@@ -19,6 +19,5 @@ locals {
     radarr       = "http://radarr.incus:7878"
     sonarr       = "http://sonarr.incus:8989"
     transmission = "http://transmission.incus:9091"
-    zerobyte     = "http://zerobyte.incus:4096"
   }
 }
