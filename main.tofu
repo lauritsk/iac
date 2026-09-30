@@ -94,7 +94,6 @@ locals {
   }
 
   service_backends = {
-    jellyfin     = "http://jellyfin.incus:8096"
     prowlarr     = "http://prowlarr.incus:9696"
     radarr       = "http://radarr.incus:7878"
     sonarr       = "http://sonarr.incus:8989"

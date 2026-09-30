@@ -11,8 +11,8 @@
 			"ip":  ["*"],
 		},
 		{
-			"src": ["autogroup:member", "tag:server"],
-			"dst": ["svc:jellyfin"],
+			"src": ["autogroup:member", "autogroup:shared", "tag:server"],
+			"dst": ["tag:jellyfin"],
 			"ip":  ["tcp:443"],
 		},
 		{
@@ -48,8 +48,9 @@
 	],
 
 	"tagOwners": {
-		"tag:server": ["autogroup:admin"],
-		"tag:app":    ["autogroup:admin"],
+		"tag:server":   ["autogroup:admin"],
+		"tag:app":      ["autogroup:admin"],
+		"tag:jellyfin": ["autogroup:admin"],
 	},
 
 	"autoApprovers": {
@@ -63,22 +64,22 @@
 		{
 			"src":    "beccam@passkey",
 			"proto":  "tcp",
-			"accept": ["svc:jellyfin:443"],
+			"accept": ["tag:jellyfin:443"],
 		},
 		{
 			"src":    "greenmyshelf@gmail.com",
 			"proto":  "tcp",
-			"accept": ["svc:jellyfin:443"],
+			"accept": ["tag:jellyfin:443"],
 		},
 		{
 			"src":    "juhan@passkey",
 			"proto":  "tcp",
-			"accept": ["svc:jellyfin:443"],
+			"accept": ["tag:jellyfin:443"],
 		},
 		{
 			"src":    "mrria@passkey",
 			"proto":  "tcp",
-			"accept": ["svc:jellyfin:443"],
+			"accept": ["tag:jellyfin:443"],
 		},
 		{
 			"src":   "karl@laurits.dev",
@@ -86,7 +87,7 @@
 			"accept": [
 				"tag:server:22",
 				"tag:server:8443",
-				"svc:jellyfin:443",
+				"tag:jellyfin:443",
 				"svc:prowlarr:443",
 				"svc:radarr:443",
 				"svc:sonarr:443",
