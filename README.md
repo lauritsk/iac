@@ -8,6 +8,6 @@ Requires OpenTofu, Incus, just, hujsonfmt, and `docker-credential-osxkeychain`. 
 
 Run `just` to list commands. Use `just plan` to review infrastructure changes before `just apply`.
 
-Jellyfin uses the dedicated `jellyfin-ts` Incus container, with Tailscale hostname `jellyfin`, kernel networking, and HTTPS Serve at https://jellyfin.cormo-tegu.ts.net. Its gateway, persistent identity, and Serve configuration are declared in `jellyfin.tofu`. Prowlarr, Radarr, Sonarr, and Transmission follow the same pattern in their respective `.tofu` files, using `<app>-ts` containers and a matching `tag:<app>` for admin access. Each gateway retains its identity in a protected state volume.
+Prowlarr, Radarr, Sonarr, Transmission, and Jellyfin each use a dedicated `<app>-ts` Incus container, a matching Tailscale hostname and `tag:<app>`, kernel networking, and hostname-based HTTPS Serve. Each gateway and its persistent identity and Serve configuration are declared in the corresponding service’s `.tofu` file. Gateway state volumes are protected. The management services allow admin access; Jellyfin additionally allows members and shared recipients at https://jellyfin.cormo-tegu.ts.net.
 
 To test cross-tailnet access, share the `jellyfin` node from the Tailscale Machines page with one external user. Have them accept while using their own tailnet, open the HTTPS URL, sign in to Jellyfin, and test playback and seeking. The policy permits shared recipients only TCP 443 on this node. Confirm your tailnet user count stays unchanged and revoking the share removes their access.

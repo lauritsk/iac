@@ -8,17 +8,19 @@
 !justfile
 
 !.terraform.lock.hcl
-!flaresolverr.tofu
-!jellyfin.tofu
 !main.tofu
 !platform.tofu
+!tailnet.tofu
+
+!flaresolverr.tofu
 !prowlarr.tofu
 !radarr.tofu
-!recyclarr.tofu
 !sonarr.tofu
-!tailnet.tofu
 !transmission.tofu
 !unpackerr.tofu
+!recyclarr.tofu
+!jellyfin.tofu
+
 !recyclarr.yml.tftpl
 
 !policy.hujson
