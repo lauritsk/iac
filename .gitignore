@@ -1,17 +1,12 @@
 **
-
 !.gitignore
-
 !AGENTS.md
 !README.md
-
 !justfile
-
 !.terraform.lock.hcl
 !main.tofu
 !platform.tofu
 !tailnet.tofu
-
 !flaresolverr.tofu
 !prowlarr.tofu
 !radarr.tofu
@@ -19,7 +14,5 @@
 !transmission.tofu
 !recyclarr.tofu
 !jellyfin.tofu
-
 !recyclarr.yml.tftpl
-
 !policy.hujson

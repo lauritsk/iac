@@ -24,7 +24,7 @@ resource "incus_instance" "recyclarr" {
   remote      = "hv01"
   project     = "default"
   name        = "recyclarr"
-  image       = "oci-ghcr:recyclarr/recyclarr:8.7.2@sha256:6e69e009e1cd7493ff6093e8e187b5d3788c75b4a2c0c5127b6a1beda1c19728"
+  image       = "oci-ghcr:recyclarr/recyclarr:8.7.3@sha256:9c6c74d52cfc6f740a5a3624aa83867e171bb70b90453ddb7a4048b8c80445f9"
   description = "Recyclarr"
   profiles    = [incus_profile.oci.name]
   running     = true
