@@ -1,5 +1,7 @@
 # Homelab IaC
 
+[IncusOS host configuration](INCUSOS.md) records live host settings that are not managed by OpenTofu, including updates, networking, Tailscale, and backing storage.
+
 Requires:
 
 - Homebrew: `opentofu`, `incus`, `just`, `docker-credential-helper`, `go`.
