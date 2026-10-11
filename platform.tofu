@@ -35,34 +35,6 @@ resource "incus_profile" "default" {
   name        = "default"
   description = "Default Incus profile"
 
-  device {
-    name = "root"
-    type = "disk"
-
-    properties = {
-      pool = "local"
-      path = "/"
-    }
-  }
-
-  device {
-    name = "eth0"
-    type = "nic"
-
-    properties = {
-      network = incus_network.incusbr0.name
-    }
-  }
-}
-
-# Shared OCI profile and storage
-
-resource "incus_profile" "oci" {
-  remote      = "hv01"
-  project     = "default"
-  name        = "oci"
-  description = "OCI application defaults"
-
   config = {
     "boot.autostart"     = "true"
     "boot.autorestart"   = "true"

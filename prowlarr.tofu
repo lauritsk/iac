@@ -19,7 +19,7 @@ resource "incus_instance" "prowlarr" {
   name        = "prowlarr"
   image       = "oci-ghcr:linuxserver/prowlarr:2.6.5.5623-ls162@sha256:f2b26429893d4c4cb71941b7ee50b1bdecd9d5f9f9e02d5410615e9f4f7c8d95"
   description = "Prowlarr"
-  profiles    = [incus_profile.oci.name]
+  profiles    = [incus_profile.default.name]
   running     = true
 
   config = {
@@ -116,7 +116,7 @@ resource "incus_instance" "prowlarr_ts" {
   name        = "prowlarr-ts"
   image       = "oci-ghcr:tailscale/tailscale:v1.102.5@sha256:c507f3a2a6ab1cabd8d809b98edeb41edbd5c3fb6ad9632ffd098b4c7d0b4065"
   description = "Prowlarr Tailscale HTTPS gateway"
-  profiles    = [incus_profile.oci.name]
+  profiles    = [incus_profile.default.name]
   running     = true
 
   config = {

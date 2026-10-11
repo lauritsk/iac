@@ -28,7 +28,7 @@ resource "incus_instance" "jellyfin" {
   name        = "jellyfin"
   image       = "oci-ghcr:jellyfin/jellyfin:12.2@sha256:c3efa69a22f2691fc88d6bb035e87a8560e395a6047f062fb381c61c3185e8f5"
   description = "Jellyfin"
-  profiles    = [incus_profile.oci.name]
+  profiles    = [incus_profile.default.name]
   running     = true
 
   config = {
@@ -144,7 +144,7 @@ resource "incus_instance" "jellyfin_ts" {
   name        = "jellyfin-ts"
   image       = "oci-ghcr:tailscale/tailscale:v1.102.5@sha256:c507f3a2a6ab1cabd8d809b98edeb41edbd5c3fb6ad9632ffd098b4c7d0b4065"
   description = "Jellyfin Tailscale HTTPS gateway"
-  profiles    = [incus_profile.oci.name]
+  profiles    = [incus_profile.default.name]
   running     = true
 
   config = {

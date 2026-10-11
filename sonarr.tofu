@@ -19,7 +19,7 @@ resource "incus_instance" "sonarr" {
   name        = "sonarr"
   image       = "oci-ghcr:linuxserver/sonarr:4.0.20.3014-ls326@sha256:f247545d23ba8b233d6604575347e48a623fe6ad75dda02348bf81917f3b5c06"
   description = "Sonarr"
-  profiles    = [incus_profile.oci.name]
+  profiles    = [incus_profile.default.name]
   running     = true
 
   config = {
@@ -138,7 +138,7 @@ resource "incus_instance" "sonarr_ts" {
   name        = "sonarr-ts"
   image       = "oci-ghcr:tailscale/tailscale:v1.102.5@sha256:c507f3a2a6ab1cabd8d809b98edeb41edbd5c3fb6ad9632ffd098b4c7d0b4065"
   description = "Sonarr Tailscale HTTPS gateway"
-  profiles    = [incus_profile.oci.name]
+  profiles    = [incus_profile.default.name]
   running     = true
 
   config = {

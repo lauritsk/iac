@@ -19,7 +19,7 @@ resource "incus_instance" "radarr" {
   name        = "radarr"
   image       = "oci-ghcr:linuxserver/radarr:6.4.4.10685-ls319@sha256:7dfd049e79c00b16fbc29c3f5d96a9e7b9e73a23930b4c5b3c4541d60b366814"
   description = "Radarr"
-  profiles    = [incus_profile.oci.name]
+  profiles    = [incus_profile.default.name]
   running     = true
 
   config = {
@@ -138,7 +138,7 @@ resource "incus_instance" "radarr_ts" {
   name        = "radarr-ts"
   image       = "oci-ghcr:tailscale/tailscale:v1.102.5@sha256:c507f3a2a6ab1cabd8d809b98edeb41edbd5c3fb6ad9632ffd098b4c7d0b4065"
   description = "Radarr Tailscale HTTPS gateway"
-  profiles    = [incus_profile.oci.name]
+  profiles    = [incus_profile.default.name]
   running     = true
 
   config = {

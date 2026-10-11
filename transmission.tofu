@@ -28,7 +28,7 @@ resource "incus_instance" "transmission" {
   name        = "transmission"
   image       = "oci-ghcr:linuxserver/transmission:4.1.3-r0-ls363@sha256:4813745e2c721997d8849f5718786fd4406b3c656fbef479f87a161e51383cbd"
   description = "Transmission"
-  profiles    = [incus_profile.oci.name]
+  profiles    = [incus_profile.default.name]
   running     = true
 
   config = {
@@ -137,7 +137,7 @@ resource "incus_instance" "transmission_ts" {
   name        = "transmission-ts"
   image       = "oci-ghcr:tailscale/tailscale:v1.102.5@sha256:c507f3a2a6ab1cabd8d809b98edeb41edbd5c3fb6ad9632ffd098b4c7d0b4065"
   description = "Transmission Tailscale HTTPS gateway"
-  profiles    = [incus_profile.oci.name]
+  profiles    = [incus_profile.default.name]
   running     = true
 
   config = {
