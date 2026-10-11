@@ -35,12 +35,6 @@ resource "incus_profile" "default" {
   name        = "default"
   description = "Default Incus profile"
 
-  config = {
-    "snapshots.schedule" = "@daily"
-    "snapshots.expiry"   = "7d"
-    "snapshots.pattern"  = "auto-%Y%m%d-%H%M"
-  }
-
   device {
     name = "root"
     type = "disk"
@@ -70,8 +64,11 @@ resource "incus_profile" "oci" {
   description = "OCI application defaults"
 
   config = {
-    "boot.autostart"   = "true"
-    "boot.autorestart" = "true"
+    "boot.autostart"     = "true"
+    "boot.autorestart"   = "true"
+    "snapshots.schedule" = "@daily"
+    "snapshots.expiry"   = "7d"
+    "snapshots.pattern"  = "auto-%Y%m%d-%H%M"
   }
 
   device {
