@@ -17,7 +17,7 @@ resource "incus_instance" "sonarr" {
   remote      = "hv01"
   project     = "default"
   name        = "sonarr"
-  image       = "oci-ghcr:linuxserver/sonarr:4.0.20.3014-ls326@sha256:f247545d23ba8b233d6604575347e48a623fe6ad75dda02348bf81917f3b5c06"
+  image       = "oci-ghcr:linuxserver/sonarr:4.0.20.3014-ls328@sha256:0deb8db6c839ac475e9cd86277712772c40ba7f929a003d7e1de36c4b666bc13"
   description = "Sonarr"
   profiles    = [incus_profile.default.name]
   running     = true
