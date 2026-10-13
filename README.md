@@ -19,7 +19,7 @@ To close access at the router, disable both NAT rules by their exact comments. R
 
 ## Blog: Cloudflare Tunnel
 
-`cloudflare.tofu` manages a remotely configured `blog` tunnel, routing for `blog.laurits.dev`, and a proxied CNAME in the `laurits.dev` zone. Caddy, Hugo publishing, and the cloudflared connector are not yet deployed by this configuration.
+`blog.tofu` manages a remotely configured `blog` tunnel, routing for `blog.laurits.dev`, and a proxied CNAME in the `laurits.dev` zone. Caddy, Hugo publishing, and the cloudflared connector are not yet deployed by this configuration.
 
 Create a Cloudflare API token with **Account → Cloudflare Tunnel → Edit** for the intended account and **Zone → DNS → Edit** restricted to `laurits.dev`. Set these values in the ignored local `.env`:
 
