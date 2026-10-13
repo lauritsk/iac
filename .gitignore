@@ -8,8 +8,17 @@
 !main.tofu
 !platform.tofu
 !tailnet.tofu
-!blog.tofu
+!flaresolverr.tofu
+!prowlarr.tofu
+!radarr.tofu
+!sonarr.tofu
+!transmission.tofu
+!recyclarr.tofu
+!jellyfin.tofu
+!recyclarr.yml.tftpl
+!policy.hujson
 
+!blog.tofu
 !blog/
 !blog/Caddyfile
 !blog/hugo.toml
@@ -22,12 +31,3 @@
 !blog/static/
 !blog/static/**/
 !blog/static/**/*.css
-!flaresolverr.tofu
-!prowlarr.tofu
-!radarr.tofu
-!sonarr.tofu
-!transmission.tofu
-!recyclarr.tofu
-!jellyfin.tofu
-!recyclarr.yml.tftpl
-!policy.hujson

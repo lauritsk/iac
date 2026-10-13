@@ -14,7 +14,7 @@ apply: init blog-build
 
 blog-build:
     mkdir -p blog/public
-    docker run --rm --user "$(id -u):$(id -g)" -v "{{ justfile_directory() }}/blog:/data" registry.access.redhat.com/hi/hugo:latest@sha256:396e58615dbb2323a0da641606bd5ae5d291132db52e2c08131e4070291eaafd --minify --cleanDestinationDir --cacheDir /tmp/hugo-cache
+    docker run --rm --user "$(id -u):$(id -g)" -v "{{ justfile_directory() }}/blog:/data" registry.access.redhat.com/hi/hugo:0.167.0@sha256:396e58615dbb2323a0da641606bd5ae5d291132db52e2c08131e4070291eaafd --minify --cleanDestinationDir --cacheDir /tmp/hugo-cache
 
 format:
     tofu fmt

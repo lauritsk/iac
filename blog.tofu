@@ -32,7 +32,7 @@ resource "incus_instance" "blog" {
   remote      = "hv01"
   project     = "default"
   name        = "blog"
-  image       = "oci-redhat:hi/caddy:latest@sha256:cf5dd97f6116c7b6e548d9522376e066e4fe76b1d1fd606fd6e2baf73fdc5b80"
+  image       = "oci-redhat:hi/caddy:2.11.7@sha256:cf5dd97f6116c7b6e548d9522376e066e4fe76b1d1fd606fd6e2baf73fdc5b80"
   description = "Blog (Caddy)"
   profiles    = [incus_profile.default.name]
   running     = true
