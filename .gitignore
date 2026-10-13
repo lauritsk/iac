@@ -2,7 +2,7 @@
 !.gitignore
 !AGENTS.md
 !README.md
-!INCUSOS.md
+
 !justfile
 !.terraform.lock.hcl
 !main.tofu
