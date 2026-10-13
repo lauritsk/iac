@@ -1,0 +1,10 @@
+:root { color-scheme: light dark; font-family: system-ui, sans-serif; line-height: 1.65; }
+body { max-width: 44rem; margin: auto; padding: 2rem 1.25rem; }
+header, footer { padding: 1rem 0; }
+header a { font-weight: 650; }
+a { color: inherit; text-underline-offset: .2em; }
+h1, h2 { line-height: 1.25; }
+article { margin: 2.5rem 0; }
+time, footer { opacity: .7; }
+pre { overflow-x: auto; padding: 1rem; background: light-dark(#f2f2f2, #222); }
+img { max-width: 100%; height: auto; }

@@ -19,22 +19,19 @@ To close access at the router, disable both NAT rules by their exact comments. R
 
 ## Blog: Cloudflare Tunnel
 
-`blog.tofu` manages a remotely configured `blog` tunnel, routing for `blog.laurits.dev`, and a proxied CNAME in the `laurits.dev` zone. Caddy, Hugo publishing, and the cloudflared connector are not yet deployed by this configuration.
+`blog.tofu` manages Caddy (`blog`), its read-only site volume, the Cloudflare connector (`blog-cf`), a remotely managed tunnel, and DNS for `blog.laurits.dev`. The tunnel connects to `http://blog.incus:8080`; no host port forwarding is needed. Caddy uses its image's default command and configuration path.
 
-Create a Cloudflare API token with **Account → Cloudflare Tunnel → Edit** for the intended account and **Zone → DNS → Edit** restricted to `laurits.dev`. Set these values in the ignored local `.env`:
+The Hugo source is in `blog/`, with no external theme dependency. Edit Markdown in `blog/content/`. `just blog-build` builds locally using the pinned Red Hat Hugo image; `just plan` and `just apply` also build before running OpenTofu. Generated `blog/public/` files are ignored by Git and uploaded through the storage volume resource. This initial workflow supports text assets only; binary images need a different upload mechanism.
+
+Create a Cloudflare API token with **Cloudflare One Connector: cloudflared → Edit** for the account and **DNS → Edit** restricted to `laurits.dev`. Store it in the ignored local `.env`:
 
 ```dotenv
 CLOUDFLARE_API_TOKEN=your-scoped-api-token
-TF_VAR_cloudflare_account_id=your-32-character-account-id
-TF_VAR_cloudflare_zone_id=your-32-character-laurits-dev-zone-id
-TF_VAR_blog_origin_url=http://your-internal-caddy-address:8080
 ```
 
-The account and zone IDs are available in the Cloudflare dashboard. The origin must be reachable from the future cloudflared connector; it is not the public blog URL. The provider reads `CLOUDFLARE_API_TOKEN` directly, without using the cloudflared login certificate.
+The account and zone IDs are fixed in `blog.tofu`. OpenTofu retrieves the tunnel-specific runtime token; the account API token and cloudflared login certificate are not deployed to the connector. Incus administrators can read the connector token from its configuration, so restrict administrative access. Site files and the runtime token are stored in the existing encrypted state.
 
-Run `just plan` and review it before `just apply`. If a DNS record for `blog.laurits.dev` or a tunnel named `blog` already exists, import it before applying rather than creating a duplicate. Applying this configuration without a running connector does not produce a working blog.
-
-The connector will need its tunnel-specific token, not the account API token or login certificate. Do not commit credentials or print tunnel tokens in outputs. Any tunnel credentials later managed through OpenTofu must remain protected by the existing encrypted state and plan configuration.
+Run `just plan` and review it before `just apply`. Import an existing `blog` tunnel or `blog.laurits.dev` DNS record before applying rather than creating a duplicate. Docker must be running for Hugo builds, and local registry credentials must allow pulls from `dhi.io`.
 
 ## Requirements
 

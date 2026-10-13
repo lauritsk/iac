@@ -60,6 +60,21 @@ provider "incus" {
   }
 
   remote {
+    name     = "oci-redhat"
+    address  = "https://registry.access.redhat.com"
+    protocol = "oci"
+    public   = true
+  }
+
+  remote {
+    name               = "oci-dhi"
+    address            = "https://dhi.io"
+    protocol           = "oci"
+    public             = true
+    credentials_helper = "docker-credential-osxkeychain"
+  }
+
+  remote {
     name               = "oci-ghcr"
     address            = "https://ghcr.io"
     protocol           = "oci"

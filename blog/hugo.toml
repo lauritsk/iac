@@ -1,0 +1,5 @@
+baseURL = 'https://blog.laurits.dev/'
+locale = 'en'
+title = 'Karl Hans Laurits'
+enableRobotsTXT = true
+disableKinds = ['taxonomy', 'term', 'section']
