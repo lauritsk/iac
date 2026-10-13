@@ -85,6 +85,31 @@ resource "incus_instance" "transmission" {
 
 }
 
+resource "incus_network_forward" "transmission_peer" {
+  remote         = "hv01"
+  project        = "default"
+  network        = incus_network.incusbr0.name
+  listen_address = "10.1.10.8"
+  description    = "Transmission peer traffic"
+
+  ports = [
+    {
+      protocol       = "tcp"
+      listen_port    = "51413"
+      target_address = incus_instance.transmission.ipv4_address
+      target_port    = "51413"
+      description    = "BitTorrent TCP peers"
+    },
+    {
+      protocol       = "udp"
+      listen_port    = "51413"
+      target_address = incus_instance.transmission.ipv4_address
+      target_port    = "51413"
+      description    = "BitTorrent uTP and DHT"
+    }
+  ]
+}
+
 resource "tailscale_oauth_client" "transmission" {
   description = "Transmission Tailscale gateway"
   scopes      = ["auth_keys"]
