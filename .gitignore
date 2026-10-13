@@ -8,6 +8,7 @@
 !main.tofu
 !platform.tofu
 !tailnet.tofu
+!cloudflare.tofu
 !flaresolverr.tofu
 !prowlarr.tofu
 !radarr.tofu

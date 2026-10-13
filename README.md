@@ -17,6 +17,25 @@ Verify externally from Transmission with `curl -4 https://portcheck.transmission
 
 To close access at the router, disable both NAT rules by their exact comments. Remove `incus_network_forward.transmission_peer` and apply OpenTofu to remove the host forward as well.
 
+## Blog: Cloudflare Tunnel
+
+`cloudflare.tofu` manages a remotely configured `blog` tunnel, routing for `blog.laurits.dev`, and a proxied CNAME in the `laurits.dev` zone. Caddy, Hugo publishing, and the cloudflared connector are not yet deployed by this configuration.
+
+Create a Cloudflare API token with **Account → Cloudflare Tunnel → Edit** for the intended account and **Zone → DNS → Edit** restricted to `laurits.dev`. Set these values in the ignored local `.env`:
+
+```dotenv
+CLOUDFLARE_API_TOKEN=your-scoped-api-token
+TF_VAR_cloudflare_account_id=your-32-character-account-id
+TF_VAR_cloudflare_zone_id=your-32-character-laurits-dev-zone-id
+TF_VAR_blog_origin_url=http://your-internal-caddy-address:8080
+```
+
+The account and zone IDs are available in the Cloudflare dashboard. The origin must be reachable from the future cloudflared connector; it is not the public blog URL. The provider reads `CLOUDFLARE_API_TOKEN` directly, without using the cloudflared login certificate.
+
+Run `just plan` and review it before `just apply`. If a DNS record for `blog.laurits.dev` or a tunnel named `blog` already exists, import it before applying rather than creating a duplicate. Applying this configuration without a running connector does not produce a working blog.
+
+The connector will need its tunnel-specific token, not the account API token or login certificate. Do not commit credentials or print tunnel tokens in outputs. Any tunnel credentials later managed through OpenTofu must remain protected by the existing encrypted state and plan configuration.
+
 ## Requirements
 
 
