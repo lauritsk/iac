@@ -41,6 +41,8 @@ terraform {
 
 provider "cloudflare" {}
 
+provider "tailscale" {}
+
 provider "incus" {
   config_dir     = pathexpand("~/Library/Application Support/incus")
   default_remote = "hv01"
