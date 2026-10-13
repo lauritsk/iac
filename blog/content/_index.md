@@ -2,4 +2,4 @@
 title = 'Karl Hans Laurits'
 +++
 
-A personal blog.
+Personal blog by Karl Hans Laurits.
