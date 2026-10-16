@@ -114,7 +114,7 @@ resource "incus_instance" "prowlarr_ts" {
   remote      = "hv01"
   project     = "default"
   name        = "prowlarr-ts"
-  image       = "oci-ghcr:tailscale/tailscale:v1.102.5@sha256:c507f3a2a6ab1cabd8d809b98edeb41edbd5c3fb6ad9632ffd098b4c7d0b4065"
+  image       = "oci-dhi:tailscale:1.104.1@sha256:edd3f21753cf205327ca101a3cab449d8ec959f888ea2955737ce4a1e5173260"
   description = "Prowlarr Tailscale HTTPS gateway"
   profiles    = [incus_profile.default.name]
   running     = true
