@@ -142,15 +142,16 @@ resource "incus_instance" "sonarr_ts" {
   running     = true
 
   config = {
-    "environment.TS_AUTHKEY"      = "${tailscale_oauth_client.sonarr.key}?ephemeral=false"
-    "environment.TS_AUTH_ONCE"    = "true"
-    "environment.TS_HOSTNAME"     = "sonarr"
-    "environment.TS_EXTRA_ARGS"   = "--advertise-tags=tag:sonarr"
-    "environment.TS_ACCEPT_DNS"   = "false"
-    "environment.TS_USERSPACE"    = "false"
-    "environment.TS_STATE_DIR"    = "/var/lib/tailscale"
-    "environment.TS_SERVE_CONFIG" = "/etc/tailscale/serve.json"
-    "environment.TZ"              = "Europe/Tallinn"
+    "environment.TS_AUTHKEY"             = "${tailscale_oauth_client.sonarr.key}?ephemeral=false"
+    "environment.TS_AUTH_ONCE"           = "true"
+    "environment.TS_HOSTNAME"            = "sonarr"
+    "environment.TS_EXTRA_ARGS"          = "--advertise-tags=tag:sonarr"
+    "environment.TS_ACCEPT_DNS"          = "false"
+    "environment.TS_USERSPACE"           = "false"
+    "environment.TS_DEBUG_FIREWALL_MODE" = "nftables"
+    "environment.TS_STATE_DIR"           = "/var/lib/tailscale"
+    "environment.TS_SERVE_CONFIG"        = "/etc/tailscale/serve.json"
+    "environment.TZ"                     = "Europe/Tallinn"
   }
 
   device {
