@@ -8,15 +8,88 @@ draft = true
 
 - **Alternative title:** You Bought the Device. Did You Buy Its Future?
 - **Subtitle:** Working hardware shouldn’t become useless because a server disappears.
+- **Angle to explore:** Whether working devices should depend on a manufacturer's continued existence, and what buyers should be told about that dependency.
+- **Indirect connection:** Dependence on providers.
+- **Reader:** Someone buying a connected appliance who expects the physical product to remain useful beyond a service's commercial lifetime.
+- **Core question:** Which functions should survive when a manufacturer can no longer run the service that supports them?
+- **Working position:** Prefer useful local operation and explicit support expectations; manufacturers should plan for service withdrawal rather than leave continuity to buyers.
+- **Boundaries:** Focus on household devices and graceful degradation, not a full smart-home buying guide or a claim that everything should run without updates.
 
-- **Angle to explore:** Whether working devices should depend on a manufacturer’s continued existence.
-- **Indirect connection:** Dependence on providers
+## Context and distinctions
 
-## Brainstorm
+- Distinguish hardware failure, internet failure, provider outage, service shutdown, and end of security support; the symptoms and remedies differ.
+- Separate core operation from remote access, account setup, automation, and firmware updates. A device can retain one function while losing another.
+- “Local control” may still require a cloud account for initial setup, a proprietary hub, or a vendor app to recover after a reset.
+- An open protocol can reduce dependency without guaranteeing continued updates, replacement parts, compatibility, or an easy migration.
+- Ownership of the object and ongoing provision of a service are different relationships; explore how clearly the purchase communicates that distinction.
 
-- **Opening:** Imagine a working light bulb that stops responding because its maker closes down.
-- **Explore:** Owning the hardware versus depending on a service; local controls, repair, and avoidable waste.
-- **Counterpoint:** Remote access and updates need ongoing support; local operation doesn’t solve every security problem.
-- **Possible ending:** Ask what still works offline before buying, and what exit plan manufacturers should provide.
+## Possible opening
+
+- Use the original hypothetical: a physically working light bulb stops responding because its maker closes down.
+- Ask what still works at the wall switch, through the app, and after a factory reset; these are separate questions, not one blanket claim of uselessness.
+- If replacing the scene with a named shutdown, verify which features actually disappeared and which survived.
+
+## Section-by-section outline
+
+### 1. Establish what the buyer thinks they are buying
+
+- Compare the expected useful life of a household object with the uncertain lifespan of its connected service; avoid unsupported lifespan figures.
+- Identify the promise that matters: illumination, heating, access, or convenience. Keep safety-critical examples distinct from a decorative light.
+
+### 2. Draw the hidden dependency chain
+
+- Map physical controls, device firmware, local network, hub, phone app, account, and vendor server for one verified example.
+- Ask which links are necessary for everyday use, setup, and recovery. A short diagram could make the distinction clearer than technical jargon.
+
+### 3. Walk through three kinds of interruption
+
+- Compare a temporary internet outage, a permanent vendor shutdown, and discontinued security updates. Describe what each test reveals and what it cannot establish.
+- Explore inconvenience versus loss of an essential function; include other household members who did not choose the system.
+
+### 4. Examine what continued ownership should mean
+
+- Consider independent physical controls, documented local interfaces, configuration export, replacement hubs, and an announced shutdown plan.
+- Ask whether the device remains useful after a phone change or reset. Avoid equating a clever enthusiast workaround with a reasonable consumer remedy.
+
+### 5. Give ongoing services their fair defence
+
+- Explain that remote access, security response, integrations, and support require money and work. Question unrealistic promises of indefinite free service.
+- Explore transparent support periods or funded service models without implying that every subscription is fair or that local systems maintain themselves.
+
+### 6. Turn the concern into practical expectations
+
+- Propose buyer questions: what works offline, what needs an account, what happens after reset, and what support commitments are documented?
+- Propose manufacturer duties to discuss: clear dependency information, advance notice, useful fallback behaviour, and a feasible exit route. Separate desired standards from existing legal obligations.
+
+## Counterarguments worth taking seriously
+
+- **Cloud services make advanced features possible:** Accept the benefit; ask whether their loss must also disable the product's basic function.
+- **Local-only devices can become insecure too:** Explicitly separate availability from security; continuing to work is not enough if safe operation depends on absent updates.
+- **Designing an exit route costs money:** Consider where that cost belongs and what limitations should be disclosed before purchase, rather than promising a free universal solution.
+
+## Examples and research to gather
+
+- Choose one documented shutdown; use the manufacturer's notice, support material, and independent reporting to establish dates and exact lost functions.
+- Compare two current products' offline behaviour, reset requirements, and published support commitments. Verify rather than trust a “local” label.
+- If testing equipment, keep it to non-critical devices and document conditions; do not experiment with occupied-home locks, heating, or safety systems.
+- Seek repair or waste evidence if making an environmental claim; avoid assuming every discontinued device was discarded.
+- Verify current consumer-law guidance before describing any right to updates, repairs, refunds, or continued service.
+
+## Personal prompts
+
+- Which functions would I expect to survive without internet, and have I actually checked?
+- Could someone else in my household operate or recover the system without me?
+- When would I willingly pay for a service, and what end-of-service commitment would make that relationship feel fair?
+
+## Possible ending
+
+- **Takeaway:** Ask what still works offline and after service withdrawal; expect manufacturers to explain and plan for that future before selling the device.
+- **Possible final question:** When the service ends, does the product still belong to the person who bought it in any useful sense?
+- Return to the bulb and its ordinary purpose, rather than ending with a list of protocols to buy.
+
+## Connections to other drafts
+
+- [Is Self-Hosting Really More Independent?](./is-self-hosting-really-more-independent.md) — local control shifts responsibility rather than eliminating dependency.
+- [Do We Own the Digital Books We Buy?](./do-we-own-the-digital-books-we-buy.md) — another gap between purchase language and lasting practical control.
 
 ## Draft
