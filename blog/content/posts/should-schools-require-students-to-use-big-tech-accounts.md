@@ -1,19 +1,20 @@
 +++
-title = 'Should Schools Require Students to Use Big Tech Accounts?'
+title = 'Student Privacy in School Cloud Accounts'
 date = 2026-10-13
 draft = true
 +++
 
 ## Writing notes
 
-- **Alternative title:** A School Login Shouldn’t Mean Giving Up Choice
-- **Subtitle:** When classroom convenience makes someone else’s platform compulsory.
-- **Angle to explore:** Convenience versus students' freedom to choose where their data goes when a school selects a platform for them.
+- **Alternative title:** What Happens to Data in a School-Managed Account?
+- **Subtitle:** Account permissions, required data, and deletion when a student leaves.
+- **Angle to explore:** How a school-managed cloud account handles student data and which settings or policies affect privacy.
 - **Indirect connection:** Choice and control.
-- **Reader:** A parent, student, or teacher who sees the usefulness of shared tools but wonders what compulsory participation should require.
-- **Core question:** What obligations does a school take on when it makes a particular account a condition of ordinary learning?
+- **Reader:** A fellow IT student who uses a school-managed account and wants to understand how it differs from a personal account.
+- **Core question:** What data is required, who can access it, and what happens to it when the account is closed?
 - **Working position:** Schools should justify required services, minimise what participation demands, and provide meaningful alternatives where possible.
-- **Boundaries:** Examine institutional responsibility, not whether individual teachers are good people or whether one brand is always preferable.
+- **Boundaries:** Use one education platform's documented account lifecycle, not a verdict on all large providers or a complete school procurement policy.
+- **Course-sized scope:** Follow account creation, everyday use, and closure for one school-managed service; distinguish provider documentation from any school-specific settings that remain unknown.
 
 ## Context and distinctions
 
@@ -25,7 +26,7 @@ draft = true
 
 ## Possible opening
 
-- Keep the original scene: a student needs an account just to receive homework. Is that really a choice?
+- Start with a familiar task: submitting homework through a school-managed account. List the account details and files involved before asking who can access them.
 - Map the practical consequence of declining: missed instructions, delayed feedback, or an equivalent alternative. Use a hypothetical unless a real case is documented.
 - Establish that the concern is access to education, not simply personal dislike of a provider.
 
@@ -56,7 +57,7 @@ draft = true
 - Give a serious account of shared documents, account administration, safeguarding, support, training, and limited budgets.
 - Compare realistic alternatives with those same criteria. Include security and maintenance costs rather than suggesting schools can simply host everything themselves.
 
-### 6. Set a proportionate standard for schools
+### 6. Summarise the account's privacy questions
 
 - Outline a short procurement checklist: educational purpose, necessary data, account type, access controls, accessibility, retention, and an exit route.
 - Ask for understandable explanations, named responsibility, periodic review, and a route for concerns; avoid placing the entire burden on individual families.
@@ -84,12 +85,12 @@ draft = true
 ## Possible ending
 
 - **Takeaway:** Schools should be able to explain why a service is necessary, what it requires, and how students remain supported when difficulties or objections arise.
-- **Possible final question:** If a student cannot reasonably say no, how much more carefully should the school be required to choose?
+- **Possible final question:** Can a student find a clear explanation of who can access their work and when it will be deleted?
 - Return to the homework task and describe what fair participation would look like, without promising a perfect platform.
 
 ## Connections to other drafts
 
-- [Is It Fair to Expect Everyone to Understand Privacy Settings?](./is-it-fair-to-expect-everyone-to-understand-privacy-settings.md) — institutional safeguards versus individual expertise.
-- [Should Everyday Services Still Work Without a Smartphone?](./should-everyday-services-still-work-without-a-smartphone.md) — an alternative is meaningful only if people can actually use it.
+- [Privacy Settings: Defaults, Labels, and User Control](./is-it-fair-to-expect-everyone-to-understand-privacy-settings.md) — institutional safeguards versus individual expertise.
+- [App-Only Parking Payments and Accessibility](./should-everyday-services-still-work-without-a-smartphone.md) — an alternative is meaningful only if people can actually use it.
 
 ## Draft

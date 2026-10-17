@@ -1,19 +1,20 @@
 +++
-title = 'Is Self-Hosting Really More Independent?'
+title = 'Self-Hosting: Updates, Backups, and Maintenance'
 date = 2026-10-17
 draft = true
 +++
 
 ## Writing notes
 
-- **Alternative title:** Independence, With Maintenance Attached
-- **Subtitle:** Moving a service changes who carries the responsibility; it does not remove every dependency.
-- **Angle:** Evaluate self-hosting as a transfer of operational responsibility, not an automatic escape from other people's systems.
-- **Indirect connection:** Invisible labour, resilience, and the difference between having control and being able to exercise it.
-- **Reader:** A technically curious person considering alternatives to hosted services, including someone responsible for a household's shared tools.
-- **Core question:** Which dependencies become more manageable, and which new obligations arrive with the server?
+- **Alternative title:** What Needs Maintaining After a Self-Hosted App Is Installed?
+- **Subtitle:** The ongoing tasks behind running a small service yourself.
+- **Angle:** Identify the updates, monitoring, backups, and recovery work required after installing a self-hosted application.
+- **Indirect connection:** Systems administration, service reliability, and operational responsibility.
+- **Reader:** A fellow IT student considering a small self-hosted service as a learning project.
+- **Core question:** What needs maintaining, how often should it be checked, and how would the service be recovered?
 - **Working position:** Self-hosting can provide meaningful autonomy when the responsibilities are understood and sustainable.
-- **Boundaries:** No claims about Karl's equipment, uptime, backups, or expertise; no installation guide or purity test.
+- **Boundaries:** Use one low-stakes application, not a complete homelab design or a claim that self-hosting is always better. Do not invent details about Karl's setup.
+- **Course-sized scope:** Choose a small notes or file-sharing service and draft a maintenance checklist covering updates, backups, restore checks, and handover instructions.
 
 ## Context and distinctions
 
@@ -29,7 +30,7 @@ draft = true
 
 ## Section-by-section outline
 
-### 1. Ask what independence is meant to solve
+### 1. Define the service and its maintenance needs
 
 - Offer possible motives: avoiding unilateral changes, controlling retention, learning, or keeping an exportable copy. Keep these motives separate.
 - Ask readers to name their actual frustration before choosing infrastructure; a different hosted provider might solve some problems more simply.
@@ -49,7 +50,7 @@ draft = true
 - Explore a shared calendar or document store as a hypothetical example; ask who can restore access if its operator is unavailable.
 - Examine whether household members have real choice, understandable support, and an exit route, rather than becoming involuntary users of someone else's hobby.
 
-### 5. Test reversibility, not just control
+### 5. Check backup restoration and data export
 
 - Propose a practical test: export data, document recovery, and describe how to move elsewhere. Treat an untested backup as an unanswered question.
 - Ask whether another person could interpret the instructions without the operator; discuss documentation and usable credentials without publishing sensitive details.
@@ -80,12 +81,12 @@ draft = true
 
 ## Possible ending
 
-- **Takeaway:** Independence is stronger when responsibilities are visible, transferable, and realistically maintainable.
-- **Possible final question:** Am I choosing more freedom, or becoming the only person who can keep this particular service alive?
+- **Takeaway:** Installing the application is only the start; running it requires a manageable plan for updates, backups, recovery, and access.
+- **Possible final question:** If this service failed next week, would I know which backup to restore and which steps to follow?
 
 ## Connections to other drafts
 
-- [What Happens to a Smart Home When the Company Shuts Down?](./what-happens-to-a-smart-home-when-the-company-shuts-down.md) — compare failure and exit paths without equating them.
-- [What Happens to Our Digital Lives After We Die?](./what-happens-to-our-digital-lives-after-we-die.md) — continuity when the usual operator is absent.
+- [Smart Home Devices: Local Control vs. Cloud Services](./what-happens-to-a-smart-home-when-the-company-shuts-down.md) — compare failure and exit paths without equating them.
+- [Digital Legacy Features: Account Access and Privacy](./what-happens-to-our-digital-lives-after-we-die.md) — continuity when the usual operator is absent.
 
 ## Draft

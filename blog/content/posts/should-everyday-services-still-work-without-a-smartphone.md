@@ -1,19 +1,20 @@
 +++
-title = 'Should Everyday Services Still Work Without a Smartphone?'
+title = 'App-Only Parking Payments and Accessibility'
 date = 2026-10-17
 draft = true
 +++
 
 ## Writing notes
 
-- **Alternative title:** An App Should Not Be the Only Door
-- **Subtitle:** Convenience for many people can become a condition of participation for everyone else.
-- **Angle:** Examine whether everyday services preserve a usable alternative when access moves to a smartphone.
-- **Indirect connection:** Equal participation, public space, and who bears the cost of supposedly frictionless systems.
-- **Reader:** Someone who usually appreciates apps but has encountered a flat battery, inaccessible interface, or compulsory download.
-- **Core question:** When a service matters in ordinary life, what should happen if someone cannot use its app?
+- **Alternative title:** Paying for Parking Without Installing an App
+- **Subtitle:** Looking at payment steps, device requirements, and usable alternatives.
+- **Angle:** Use one parking-payment service to examine what happens when a user cannot install or operate the required app.
+- **Indirect connection:** Accessibility, usability, and fallback design.
+- **Reader:** A fellow IT student interested in how software requirements affect access to a real-world service.
+- **Core question:** Can someone complete the parking payment without a compatible smartphone, and how usable is the alternative?
 - **Working position:** Digital convenience should coexist with proportionate, dependable alternatives, especially where exclusion has serious consequences.
-- **Boundaries:** Not an argument against smartphones, a school-account debate, or a demand to preserve every historical service channel indefinitely.
+- **Boundaries:** Examine one parking-payment flow, not all public services or a general argument against smartphones. If the chosen service is not app-only, say so.
+- **Course-sized scope:** Trace the app route and one advertised alternative; compare required devices, registration, steps, fees, and accessibility using current public information.
 
 ## Context and distinctions
 
@@ -24,14 +25,14 @@ draft = true
 
 ## Possible opening
 
-- Sketch a hypothetical person trying to pay for parking or access an appointment with a dead phone; do not attribute the episode to Karl.
+- Sketch a hypothetical driver trying to pay for parking with a dead phone or an unsupported device; do not attribute the episode to Karl.
 - Prompt: trace what happens next. Is another route visible at the point of need, or must the person first use the missing device to discover it?
 
 ## Section-by-section outline
 
 ### 1. Begin with an ordinary dependency failure
 
-- Choose one service rather than piling up complaints. Identify the task, location, urgency, and consequence of not completing it.
+- Choose one parking location and its payment provider. Identify the payment task, time pressure, and documented consequence of not completing it.
 - Establish that even an enthusiastic smartphone user can temporarily lose access; avoid framing exclusion as an unusual personal failing.
 
 ### 2. Ask who the assumed user leaves out
@@ -41,7 +42,7 @@ draft = true
 
 ### 3. Evaluate the alternative in practice
 
-- Test a card terminal, telephone line, staffed desk, paper ticket, or accessible web route as relevant to the chosen example.
+- Check which alternatives are actually offered, such as a card terminal, phone or SMS payment, or a browser-based route; do not assume that any is available.
 - Ask about opening hours, waiting time, extra charges, discoverability, and successful completion; nominal availability is not enough.
 
 ### 4. Acknowledge why organisations choose apps
@@ -49,12 +50,12 @@ draft = true
 - Explore possible benefits such as timely updates, simpler transactions, or lower administration; verify these rather than assigning motives.
 - Ask which features genuinely require a smartphone and which merely use it as a convenient interface to a wider service.
 
-### 5. Match the obligation to the stakes
+### 5. Compare the routes against the same task
 
-- Contrast a loyalty perk with a necessary journey or healthcare interaction. Consider urgency, available substitutes, and the harm caused by failure.
-- Propose a proportional test, not a universal channel checklist: can someone reasonably complete the essential task without owning a compatible phone?
+- Make a short table of prerequisites, registration, payment steps, fees, support, and failure points for the app and the advertised alternative.
+- Explain what each route does not solve: an SMS option still needs a working phone, while a browser route may still require connectivity and an account.
 
-### 6. Describe inclusive digital convenience
+### 6. Suggest improvements to the payment flow
 
 - Sketch clear signage, equivalent core functionality, accessible support, and a fallback during outages. Treat these as design goals, not verified existing features.
 - Ask who checks that alternatives still work after the digital route becomes dominant; include feedback from people who rely on them.
@@ -67,7 +68,7 @@ draft = true
 
 ## Examples and research to gather
 
-- Pick a local parking, transport, or appointment service; inspect official access instructions and verify current non-app routes, prices, and opening hours.
+- Pick a local parking operator; inspect its official payment instructions and verify current non-app routes, charges, and support availability.
 - Trace one advertised alternative from discovery to completion using public information; record gaps without inventing a personal failed transaction.
 - Seek relevant national statistics on device access and digital exclusion; check dates, definitions, and whether population averages conceal important groups.
 - Consult accessibility guidance and applicable public-service obligations; verify legal scope and jurisdiction before suggesting any particular service breaches a duty.
@@ -80,12 +81,12 @@ draft = true
 
 ## Possible ending
 
-- **Takeaway:** A useful app improves a service; it need not become the only legitimate way to participate.
-- **Possible final question:** If my phone stopped working today, which ordinary parts of life would suddenly stop admitting me?
+- **Takeaway:** A parking app can be convenient while still creating access barriers; judge the fallback by whether someone can actually discover and complete it.
+- **Possible final question:** Could someone standing at this parking sign pay successfully without installing the app?
 
 ## Connections to other drafts
 
-- [Should Schools Require Students to Use Big Tech Accounts?](./should-schools-require-students-to-use-big-tech-accounts.md) — meaningful alternatives when participation is not freely avoidable.
-- [Is It Fair to Expect Everyone to Understand Privacy Settings?](./is-it-fair-to-expect-everyone-to-understand-privacy-settings.md) — questioning the capabilities designers silently assume.
+- [Student Privacy in School Cloud Accounts](./should-schools-require-students-to-use-big-tech-accounts.md) — meaningful alternatives when participation is not freely avoidable.
+- [Privacy Settings: Defaults, Labels, and User Control](./is-it-fair-to-expect-everyone-to-understand-privacy-settings.md) — questioning the capabilities designers silently assume.
 
 ## Draft

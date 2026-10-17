@@ -1,19 +1,20 @@
 +++
-title = 'Is It Fair to Expect Everyone to Understand Privacy Settings?'
+title = 'Privacy Settings: Defaults, Labels, and User Control'
 date = 2026-10-13
 draft = true
 +++
 
 ## Writing notes
 
-- **Alternative title:** Privacy Shouldn’t Require Expertise
-- **Subtitle:** A settings menu is not the same as a fair choice.
-- **Angle to explore:** How much responsibility belongs to users versus designers when privacy depends on understanding and maintaining settings.
+- **Alternative title:** What Makes a Privacy Setting Easy to Understand?
+- **Subtitle:** Looking at how one app explains visibility settings and default choices.
+- **Angle to explore:** How the wording, placement, and default value of a privacy setting affect a user's ability to control what they share.
 - **Indirect connection:** Technical skills and responsibility.
-- **Reader:** Someone who has been told to change a setting, but is not sure what the setting means or whether it solves the problem.
-- **Core question:** Is a choice meaningful if making it safely requires expertise, spare time, and repeated attention?
+- **Reader:** A fellow IT student learning about interface design and privacy.
+- **Core question:** Can a user find a setting and correctly predict who will see their content after changing it?
 - **Working position:** Controls and digital literacy matter, but they cannot substitute for protective defaults and understandable consequences.
-- **Boundaries:** Focus on ordinary product decisions, not a complete privacy guide or an argument that users have no responsibility at all.
+- **Boundaries:** Analyse one privacy-setting flow, not every platform or the whole question of personal responsibility online.
+- **Course-sized scope:** Walk through one app's photo-visibility setting, note its default and labels, and suggest two specific interface improvements.
 
 ## Context and distinctions
 
@@ -56,7 +57,7 @@ draft = true
 - Acknowledge different needs: a public organiser and a private family group may reasonably choose different visibility.
 - Explain why removing every option would be paternalistic. Explore layered controls: clear everyday choices with advanced detail available when needed.
 
-### 6. Propose a fairer division of work
+### 6. Suggest two improvements to the setting
 
 - Sketch criteria: protective defaults, plain-language examples, settings close to the relevant action, and an honest account of what a control cannot change.
 - Give users a bounded role—make informed choices and review significant changes—without requiring them to become permanent auditors of every service.
@@ -83,12 +84,12 @@ draft = true
 ## Possible ending
 
 - **Takeaway:** Put responsibility on designers to make defaults protective and consequences understandable, while keeping meaningful choices available.
-- **Possible final question:** If privacy depends on everyone becoming an expert, have we really designed a choice?
+- **Possible final question:** Could a new user predict who sees a photo from this setting's label and explanation?
 - Return to the opening setting and describe what the person should have been told before needing to search for it.
 
 ## Connections to other drafts
 
-- [Should Every App Need an Account?](./should-every-app-need-an-account.md) — question unnecessary collection before asking users to manage it.
-- [Should Schools Require Students to Use Big Tech Accounts?](./should-schools-require-students-to-use-big-tech-accounts.md) — the limits of choice when participation is compulsory.
+- [When Does an App Need a User Account?](./should-every-app-need-an-account.md) — question unnecessary collection before asking users to manage it.
+- [Student Privacy in School Cloud Accounts](./should-schools-require-students-to-use-big-tech-accounts.md) — the limits of choice when participation is compulsory.
 
 ## Draft

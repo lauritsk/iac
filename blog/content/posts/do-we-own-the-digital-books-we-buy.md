@@ -1,19 +1,20 @@
 +++
-title = 'Do We Own the Digital Books We Buy?'
+title = 'How DRM Affects E-Book Access'
 date = 2026-10-17
 draft = true
 +++
 
 ## Writing notes
 
-- **Alternative title:** What Does Buy Mean on a Digital Bookshelf?
-- **Subtitle:** Reading access, file possession, and lasting rights are not necessarily the same thing.
-- **Angle:** Examine the gap between the familiar language of buying books and the specific permissions attached to a digital edition.
-- **Indirect connection:** Consumer expectations, cultural memory, and the power to define an ordinary transaction's terms.
-- **Reader:** Someone who likes digital reading but has never examined what a purchase lets them retain or transfer.
-- **Core question:** Which practical freedoms should a reader reasonably expect when a store says buy?
+- **Alternative title:** DRM, File Formats, and Moving E-Books Between Devices
+- **Subtitle:** Separating file compatibility, account restrictions, and licence terms.
+- **Angle:** Explain how digital rights management (DRM), reading software, and account access affect everyday use of a purchased e-book.
+- **Indirect connection:** Interoperability, access control, and software licensing.
+- **Reader:** A fellow IT student learning why having a digital file does not always mean any compatible app can open it.
+- **Core question:** What determines whether an e-book can be read offline or moved to another device?
 - **Working position:** Digital convenience is valuable, but restrictions should be understandable before payment and preservation should be taken seriously.
-- **Boundaries:** Not legal advice, a guide to bypassing DRM, or a claim that every digital book has identical terms.
+- **Boundaries:** Explain access restrictions, not DRM circumvention or a universal legal definition of digital ownership.
+- **Course-sized scope:** Compare one documented DRM-restricted offering with one DRM-free offering for offline reading and device changes; keep file-format compatibility separate from licence permissions.
 
 ## Context and distinctions
 
@@ -29,10 +30,10 @@ draft = true
 
 ## Section-by-section outline
 
-### 1. Unpack the promise on the button
+### 1. Start with moving a book to another device
 
-- Begin with the ordinary expectations attached to a purchase: repeated use, continued possession, and some freedom to choose where to read.
-- Contrast those expectations with the actual offer; reserve judgement until the selected store's wording and terms have been checked.
+- Use an illustrative reader who wants to open a purchased e-book on a second device; identify the file, reading app, and account involved.
+- Define DRM in plain language and distinguish it from the file format. Check the selected offering's documentation before explaining why access is allowed or blocked.
 
 ### 2. Separate the layers of a digital book
 
@@ -44,7 +45,7 @@ draft = true
 - Ask about reading offline, changing devices, lending, gifting, annotations, and accessibility tools. Compare permissions and usability separately.
 - Choose two activities for closer treatment rather than implying every reader needs every freedom or every seller prohibits them.
 
-### 4. Consider the long-lived bookshelf
+### 4. Check access after device or account changes
 
 - Explore what happens when devices change, software support ends, or account access is lost; frame these as scenarios to investigate, not established incidents.
 - Separate keeping readable text from retaining notes and reading history. Ask what a reader can export and what remains service-dependent.
@@ -54,7 +55,7 @@ draft = true
 - Explain the concern about effortless redistribution without treating all paying readers as likely infringers.
 - Examine possible tensions among author income, pricing, distribution, accessibility, and preservation. Seek evidence before claiming a restriction achieves its intended goal.
 
-### 6. Propose a clearer purchase conversation
+### 6. Summarise the practical differences
 
 - Outline a pre-purchase disclosure: what is supplied, where it works, what can be downloaded, and which permissions or dependencies remain.
 - Consider DRM-free editions and transparent licensing as options, while making clear that neither automatically settles every legal or preservation question.
@@ -80,12 +81,12 @@ draft = true
 
 ## Possible ending
 
-- **Takeaway:** The useful question is not only whether a purchase counts as ownership, but which lasting freedoms the transaction provides.
-- **Possible final question:** If buy means something narrower here, should the difference be visible before we pay?
+- **Takeaway:** File format, DRM, account access, and licence terms impose different limits; check each rather than assuming a downloaded e-book works everywhere.
+- **Possible final question:** Could I still open this book on another supported device if I changed reading apps or lost access to the original account?
 
 ## Connections to other drafts
 
-- [Should Every App Need an Account?](./should-every-app-need-an-account.md) — when access to a purchase depends on an ongoing identity relationship.
-- [What Happens to a Smart Home When the Company Shuts Down?](./what-happens-to-a-smart-home-when-the-company-shuts-down.md) — shared questions about continuity, with distinct rights and formats here.
+- [When Does an App Need a User Account?](./should-every-app-need-an-account.md) — when access to a purchase depends on an ongoing identity relationship.
+- [Smart Home Devices: Local Control vs. Cloud Services](./what-happens-to-a-smart-home-when-the-company-shuts-down.md) — shared questions about continuity, with distinct rights and formats here.
 
 ## Draft

@@ -1,19 +1,20 @@
 +++
-title = 'Should Every App Need an Account?'
+title = 'When Does an App Need a User Account?'
 date = 2026-10-17
 draft = true
 +++
 
 ## Writing notes
 
-- **Alternative title:** Before I Sign Up, Tell Me Why
-- **Subtitle:** The difference between using a tool and entering a relationship.
-- **Angle:** Ask whether identifying a person is necessary for the job, rather than treating registration as a neutral first step.
-- **Indirect connection:** Data minimisation, proportionality, and the quiet expansion of obligations in everyday life.
-- **Reader:** Someone tired of creating accounts, but still happy to use genuinely useful online services.
-- **Core question:** What should an app need to know before it lets someone do one simple thing?
+- **Alternative title:** User Accounts vs. Guest Access in Apps
+- **Subtitle:** Matching registration requirements to local use, synchronisation, and shared features.
+- **Angle:** Identify which app features need a persistent account and which could work with local storage or guest access.
+- **Indirect connection:** Authentication, data minimisation, and application design.
+- **Reader:** A fellow IT student deciding whether to add registration to a small app.
+- **Core question:** Which features need an account, and what data is actually required to support them?
 - **Working position:** Require identity only where the function justifies it; offer local use or a guest route where practical.
-- **Boundaries:** Not a school-procurement argument, an account-security tutorial, or a claim that every login is exploitative.
+- **Boundaries:** Compare access models for one small app, not every online service or the implementation of a full authentication system.
+- **Course-sized scope:** Use a notes or task-list app as an example; compare local-only use, optional sync, and collaboration in a small feature-versus-account table.
 
 ## Context and distinctions
 
@@ -31,8 +32,8 @@ draft = true
 
 ### 1. Start with the job, not the signup screen
 
-- Choose one modest task, such as setting a timer; identify the minimum information needed to complete it.
-- Contrast that with sharing a project between devices. Establish functional differences before judging the design.
+- Choose one modest task, such as saving a note on one device; identify the minimum storage and information needed to complete it.
+- Contrast that with syncing the note across devices or sharing it with another person. Establish functional differences before judging the design.
 
 ### 2. Identify what an account actually enables
 
@@ -67,7 +68,7 @@ draft = true
 
 ## Examples and research to gather
 
-- Compare current signup flows for a local utility and a collaborative service; record dates, mandatory fields, and what works before registration.
+- Compare local and collaborative modes in the chosen type of app; record dates, mandatory fields, and what works before registration.
 - Seek an app's own documentation explaining why an account is required; distinguish stated reasons from guesses about commercial motives.
 - Inspect current guest-use, deletion, and recovery documentation for chosen examples; verify provider details before naming them.
 - Find authoritative data-minimisation guidance for the relevant jurisdiction; verify applicability and avoid turning a design preference into a legal conclusion.
@@ -81,11 +82,11 @@ draft = true
 ## Possible ending
 
 - **Takeaway:** An account should have a reason connected to the person's task, not simply be the default doorway.
-- **Possible final question:** Before asking who I am, could this tool first explain why it needs to know?
+- **Possible final question:** Which feature would stop working without an account, and does the signup form ask only for what that feature needs?
 
 ## Connections to other drafts
 
-- [Is It Fair to Expect Everyone to Understand Privacy Settings?](./is-it-fair-to-expect-everyone-to-understand-privacy-settings.md) — responsibility should not disappear into configuration.
-- [Should Everyday Services Still Work Without a Smartphone?](./should-everyday-services-still-work-without-a-smartphone.md) — another prerequisite that can quietly become compulsory.
+- [Privacy Settings: Defaults, Labels, and User Control](./is-it-fair-to-expect-everyone-to-understand-privacy-settings.md) — responsibility should not disappear into configuration.
+- [App-Only Parking Payments and Accessibility](./should-everyday-services-still-work-without-a-smartphone.md) — another prerequisite that can quietly become compulsory.
 
 ## Draft

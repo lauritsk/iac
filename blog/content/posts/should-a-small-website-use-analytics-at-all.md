@@ -1,19 +1,20 @@
 +++
-title = 'Should a Small Website Use Analytics at All?'
+title = 'Choosing Analytics for a Personal Blog'
 date = 2026-10-13
 draft = true
 +++
 
 ## Writing notes
 
-- **Alternative title:** Does My Website Need to Count You?
-- **Subtitle:** Curiosity about readers isn’t automatically a reason to measure them.
-- **Angle to explore:** Whether learning about visitors justifies collecting information about them, especially on a small personal site.
+- **Alternative title:** What Data Does a Personal Blog Need?
+- **Subtitle:** Comparing useful visitor metrics with the data needed to collect them.
+- **Angle to explore:** How to decide whether a personal blog needs analytics and which information is necessary for one specific purpose.
 - **Indirect connection:** Privacy-conscious decisions.
-- **Reader:** Someone building a blog or small website who assumes analytics belongs on the launch checklist.
+- **Reader:** A fellow IT student building a personal site and considering analytics for the first time.
 - **Core question:** What decision would these numbers change, and what is the least intrusive way to answer it?
 - **Working position:** Start without analytics unless there is a concrete question; if measurement is justified, keep its scope and retention proportionate.
-- **Boundaries:** A personal publishing decision, not a claim that every business can operate without measurement or a ranking of analytics products.
+- **Boundaries:** Focus on a small static blog, not commercial conversion tracking or an exhaustive analytics-product comparison.
+- **Course-sized scope:** Choose one useful metric, compare server-log analysis with one analytics tool and no additional collection, and summarise their data and retention tradeoffs.
 
 ## Context and distinctions
 
@@ -83,12 +84,12 @@ draft = true
 ## Possible ending
 
 - **Takeaway:** A small website can begin without analytics, or measure one justified thing with clear limits; neither choice should hide its tradeoffs.
-- **Possible final question:** What do I need to know about a reader that I cannot learn without quietly watching them?
+- **Possible final question:** Which metric would change a decision about this blog, and what is the minimum data needed to produce it?
 - Return to the dashboard: identify a concrete decision worth measuring, or accept that publishing can proceed without a number.
 
 ## Connections to other drafts
 
-- [Is It Fair to Expect Everyone to Understand Privacy Settings?](./is-it-fair-to-expect-everyone-to-understand-privacy-settings.md) — reducing collection before shifting responsibility onto visitor controls.
-- [Is Self-Hosting Really More Independent?](./is-self-hosting-really-more-independent.md) — knowing where data goes does not remove the work of handling it responsibly.
+- [Privacy Settings: Defaults, Labels, and User Control](./is-it-fair-to-expect-everyone-to-understand-privacy-settings.md) — reducing collection before shifting responsibility onto visitor controls.
+- [Self-Hosting: Updates, Backups, and Maintenance](./is-self-hosting-really-more-independent.md) — knowing where data goes does not remove the work of handling it responsibly.
 
 ## Draft

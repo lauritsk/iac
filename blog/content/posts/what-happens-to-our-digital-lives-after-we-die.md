@@ -1,19 +1,20 @@
 +++
-title = 'What Happens to Our Digital Lives After We Die?'
+title = 'Digital Legacy Features: Account Access and Privacy'
 date = 2026-10-17
 draft = true
 +++
 
 ## Writing notes
 
-- **Alternative title:** Leaving Instructions, Not Just Passwords
-- **Subtitle:** Digital continuity involves privacy, consent, and people, not simply recovering files.
-- **Angle:** Consider what others should be able to preserve, close, or continue when the person managing a digital life is gone.
-- **Indirect connection:** Care work, relational privacy, and the difference between technical access and legitimate authority.
-- **Reader:** Someone with everyday accounts and shared responsibilities, not only a large archive or a technically elaborate setup.
-- **Core question:** How can we reduce the burden on others without assuming they should inherit unrestricted access to everything?
+- **Alternative title:** Comparing Legacy Contacts and Deceased-User Account Procedures
+- **Subtitle:** What account providers allow a designated person to retrieve, manage, or close.
+- **Angle:** Compare documented account-handling features after a user's death, focusing on the access granted and the information kept private.
+- **Indirect connection:** Access control, data retention, and account lifecycle management.
+- **Reader:** A fellow IT student learning how account permissions and recovery processes handle an exceptional lifecycle event.
+- **Core question:** What can a designated contact or authorised representative actually do, and what verification does the provider require?
 - **Working position:** Leave understandable intentions and appropriate routes to act, while respecting other people's privacy and verifying formal requirements.
-- **Boundaries:** Not legal advice, a password-sharing recipe, a bereavement anecdote, or merely a discussion of photo backups.
+- **Boundaries:** Compare account features and documented processes, not inheritance law generally or ways to sign in as someone else.
+- **Course-sized scope:** Compare two providers' current legacy-contact or deceased-user procedures in a table: setup, activation evidence, available data, excluded data, and closure options.
 
 ## Context and distinctions
 
@@ -24,17 +25,17 @@ draft = true
 
 ## Possible opening
 
-- Suggest a hypothetical list: a recurring bill, a shared document, a private conversation, and a website that needs renewal. Ask which actions each requires.
+- Start with a hypothetical account containing shared documents and private messages; ask whether a designated contact receives both, neither, or a limited export.
 - Keep the tone practical and gentle; do not invent a death, family dispute, or experience of grief to give the argument emotional weight.
 
 ## Section-by-section outline
 
-### 1. Start with the people left to decide
+### 1. Define the account-management problem
 
 - Identify possible needs: stopping charges, finding essential information, maintaining a shared service, or deciding what should remain public.
 - Ask how uncertainty compounds administrative work. Avoid assuming every family is close, safe, or agreed about a person's wishes.
 
-### 2. Sort the digital life by purpose
+### 2. Identify the data and actions involved
 
 - Propose a small inventory organised by action: preserve, transfer where permitted, close, or leave private. Allow undecided items.
 - Separate records needed for practical administration from sentimental material; an archive need not be opened in full to resolve one bill.
@@ -80,12 +81,12 @@ draft = true
 
 ## Possible ending
 
-- **Takeaway:** A considerate digital legacy makes intentions and responsibilities clearer, rather than simply making every account accessible.
-- **Possible final question:** Would the people left behind know what I hoped they would do, and what I hoped they would leave alone?
+- **Takeaway:** Legacy features grant specific permissions rather than unrestricted account access; their setup, verification, and privacy limits need to be understood separately.
+- **Possible final question:** Could a designated contact explain what this feature grants them and what it deliberately keeps inaccessible?
 
 ## Connections to other drafts
 
-- [Why Do We Keep Digital Photos We Never Look At?](./why-do-we-keep-digital-photos-we-never-look-at.md) — preservation choices, without reducing a digital estate to images.
-- [Is Self-Hosting Really More Independent?](./is-self-hosting-really-more-independent.md) — transferring responsibility when the usual operator cannot continue.
+- [Photo Storage: Cloud Sync vs. Backups](./why-do-we-keep-digital-photos-we-never-look-at.md) — preservation choices, without reducing a digital estate to images.
+- [Self-Hosting: Updates, Backups, and Maintenance](./is-self-hosting-really-more-independent.md) — transferring responsibility when the usual operator cannot continue.
 
 ## Draft

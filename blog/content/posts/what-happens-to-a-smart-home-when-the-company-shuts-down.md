@@ -1,19 +1,20 @@
 +++
-title = 'What Happens to a Smart Home When the Company Shuts Down?'
+title = 'Smart Home Devices: Local Control vs. Cloud Services'
 date = 2026-10-13
 draft = true
 +++
 
 ## Writing notes
 
-- **Alternative title:** You Bought the Device. Did You Buy Its Future?
-- **Subtitle:** Working hardware shouldn’t become useless because a server disappears.
-- **Angle to explore:** Whether working devices should depend on a manufacturer's continued existence, and what buyers should be told about that dependency.
+- **Alternative title:** What Works When a Smart Device Loses Its Cloud Connection?
+- **Subtitle:** Comparing everyday operation, setup, and recovery with and without vendor services.
+- **Angle to explore:** Which functions of a connected household device run locally and which depend on the manufacturer's servers.
 - **Indirect connection:** Dependence on providers.
-- **Reader:** Someone buying a connected appliance who expects the physical product to remain useful beyond a service's commercial lifetime.
-- **Core question:** Which functions should survive when a manufacturer can no longer run the service that supports them?
+- **Reader:** A fellow IT student learning about IoT architecture and service dependencies.
+- **Core question:** What still works during an internet outage or after a vendor service shuts down, and why?
 - **Working position:** Prefer useful local operation and explicit support expectations; manufacturers should plan for service withdrawal rather than leave continuity to buyers.
-- **Boundaries:** Focus on household devices and graceful degradation, not a full smart-home buying guide or a claim that everything should run without updates.
+- **Boundaries:** Focus on one non-critical device type, such as smart bulbs, not whole-home automation or safety systems.
+- **Course-sized scope:** Draw one device's dependency diagram and make a small table of local and cloud-dependent features; use a second product or documented shutdown only as a comparison.
 
 ## Context and distinctions
 
@@ -46,7 +47,7 @@ draft = true
 - Compare a temporary internet outage, a permanent vendor shutdown, and discontinued security updates. Describe what each test reveals and what it cannot establish.
 - Explore inconvenience versus loss of an essential function; include other household members who did not choose the system.
 
-### 4. Examine what continued ownership should mean
+### 4. Check local controls and recovery options
 
 - Consider independent physical controls, documented local interfaces, configuration export, replacement hubs, and an announced shutdown plan.
 - Ask whether the device remains useful after a phone change or reset. Avoid equating a clever enthusiast workaround with a reasonable consumer remedy.
@@ -84,12 +85,12 @@ draft = true
 ## Possible ending
 
 - **Takeaway:** Ask what still works offline and after service withdrawal; expect manufacturers to explain and plan for that future before selling the device.
-- **Possible final question:** When the service ends, does the product still belong to the person who bought it in any useful sense?
+- **Possible final question:** Could this device still be set up and used if the manufacturer's servers were unavailable?
 - Return to the bulb and its ordinary purpose, rather than ending with a list of protocols to buy.
 
 ## Connections to other drafts
 
-- [Is Self-Hosting Really More Independent?](./is-self-hosting-really-more-independent.md) — local control shifts responsibility rather than eliminating dependency.
-- [Do We Own the Digital Books We Buy?](./do-we-own-the-digital-books-we-buy.md) — another gap between purchase language and lasting practical control.
+- [Self-Hosting: Updates, Backups, and Maintenance](./is-self-hosting-really-more-independent.md) — local control shifts responsibility rather than eliminating dependency.
+- [How DRM Affects E-Book Access](./do-we-own-the-digital-books-we-buy.md) — another gap between purchase language and lasting practical control.
 
 ## Draft

@@ -1,19 +1,20 @@
 +++
-title = 'Why Do We Keep Digital Photos We Never Look At?'
+title = 'Photo Storage: Cloud Sync vs. Backups'
 date = 2026-10-13
 draft = true
 +++
 
 ## Writing notes
 
-- **Alternative title:** The Photos We Keep for Someday
-- **Subtitle:** An unread archive can still hold memories we aren’t ready to lose.
-- **Angle to explore:** The value of digital memories, collecting habits, and the consequences of losing images we seldom revisit.
-- **Indirect connection:** Why personal data matters.
-- **Reader:** Someone with a crowded photo library who feels both attached to it and slightly guilty about never sorting it.
-- **Core question:** What are we preserving when we keep a photo: an image, a future possibility, or reassurance that part of life has not disappeared?
-- **Working position:** Rarely viewed does not mean worthless; make a small collection easier to revisit without treating deletion of the wider archive as a moral duty.
-- **Boundaries:** A reflection on memory and stewardship, not a productivity challenge, a storage-product review, or a claim that everyone should save everything.
+- **Alternative title:** Is a Synced Photo Library Also a Backup?
+- **Subtitle:** Comparing protection against device loss, accidental deletion, and account lockout.
+- **Angle to explore:** How cloud synchronisation, independent backups, and exports protect a personal photo library against different kinds of loss.
+- **Indirect connection:** Why personal data matters and how to protect it.
+- **Reader:** A fellow IT student using cloud photo storage who wants to understand what can actually be recovered.
+- **Core question:** Which failures does cloud sync protect against, and which need a separate backup or recovery route?
+- **Working position:** Sync is useful for access across devices, but recovery depends on the service's retention and restore features; an independent, tested copy covers different risks.
+- **Boundaries:** Explain the distinction using one photo service, not a complete backup tutorial or a psychological account of why people keep photos.
+- **Course-sized scope:** Compare three failure scenarios for one photo library and inspect a small export or documented restore process; never test deletion on irreplaceable originals.
 
 ## Context and distinctions
 
@@ -25,71 +26,71 @@ draft = true
 
 ## Possible opening
 
-- Keep the original contrast: thousands of photos, rarely opened—but imagine discovering they were gone.
-- Invite a small observation: open an older month and note what feels meaningful, surprising, or impossible to remember without the images.
-- Do not invent a bereavement or a lost archive. Use a real, bounded experience if available, or clearly frame the loss as hypothetical.
+- Start with an illustrative assumption: photos appear on both a phone and a laptop, so the owner thinks there are two independent backups.
+- Ask what happens if a deletion synchronises to both devices. Check the chosen service's actual deletion and recovery behaviour before describing the outcome.
+- Briefly explain why a photo library is worth protecting; do not invent a lost archive or use a real library for destructive tests.
 
 ## Section-by-section outline
 
-### 1. Explore the difference between not looking and not caring
+### 1. Explain what cloud sync does
 
-- Ask why the possibility of loss feels stronger than the urge to browse. Offer possibilities—future access, continuity, connection—rather than a psychological diagnosis.
-- Contrast the value of a frequently used object with a record that matters only on a particular occasion.
+- Trace a photo from one device to the cloud and another device; distinguish keeping a library consistent from preserving an earlier state.
+- Check whether originals are stored locally or only downloaded on demand. A visible thumbnail does not establish that an independent full-resolution copy exists.
 
-### 2. Name what the archive is doing for us
+### 2. Define backup, retention, and export
 
-- Consider ordinary scenes, people at different ages, places that changed, and details outside the intended subject.
-- Include mundane uses such as remembering a date or finding information; not every kept image needs to carry profound emotional meaning.
+- Explain an independent recoverable copy, previous versions, and recovery windows in plain language. Note that a cloud service may offer backup-like features as well as sync.
+- Distinguish an exported set of files from a recurring backup process. Ask when the copy was made and how someone would restore from it.
 
-### 3. Explain how abundance changes the work
+### 3. Compare three failure scenarios
 
-- Trace the small friction of keeping versus the larger effort of reviewing, labelling, and deciding what to remove.
-- Explore duplicates, screenshots, and near-identical shots without calling an unsorted library a personal failure. Ask when quantity makes retrieval or enjoyment harder.
+- Make a table for device loss, accidental deletion, and loss of account access; record what the chosen service documents for each.
+- Identify what an independent copy changes in each scenario, including its limits if it is old, incomplete, or stored with the lost device.
 
-### 4. Consider who might value a photo later
+### 4. Check what an export preserves
 
-- An image unimportant to its photographer may matter to someone pictured in it or someone learning about a shared past.
-- Balance that possibility against privacy and consent. Keeping an image privately is not the same decision as sharing it or granting future access.
+- Inspect a small, non-sensitive sample for original resolution, file readability, capture dates, captions, and album information; distinguish observed results from documented promises.
+- Explain why usable context matters: keeping image files is not necessarily the same as preserving the organisation shown in the app.
 
-### 5. Face the practical fragility without turning it into a tutorial
+### 5. Include privacy and access risks
 
-- Distinguish losing a device, losing an account, accidental deletion, and being unable to open an export; each suggests a different safeguard.
-- Ask whether a small sample can be recovered and understood, including dates or captions that provide context. Keep implementation details for a separate guide.
+- Consider faces, location metadata, shared albums, and who can access an additional copy; more copies also mean more places to protect.
+- Discuss access control and encryption at a conceptual level, including the risk of losing recovery information; avoid turning the post into a product-specific security guide.
 
-### 6. Suggest a gentle experiment, not a complete reorganisation
+### 6. Summarise a proportionate recovery plan
 
-- Try selecting a small album around one event or period, adding a few names or captions, and choosing an occasion to revisit it.
-- Leave the larger archive intact unless there is a reason to change it. Compare deliberate access with endless sorting as two different uses of time.
+- Suggest a small independent copy, an appropriate update schedule, and a safe sample restore check; make clear these are planning ideas, not a guarantee of recovery.
+- Finish with a checklist: what is copied, where it lives, what failures it covers, and when it was last checked. No need to sort or delete the entire library first.
 
 ## Counterarguments worth taking seriously
 
-- **Most images will never matter:** Accept that possibility; ask whether future value can be known cheaply enough to justify reviewing everything now.
-- **Keeping everything has costs:** Acknowledge storage bills, organisation, privacy, and maintenance; allow different people to choose different limits.
-- **An archive can replace living in the moment:** Explore the tension without blaming photography itself or assuming fewer images always create better memories.
+- **The cloud service already has a recovery feature:** Acknowledge it; verify its time limits, coverage, and dependence on account access before deciding which risks remain.
+- **Independent backups add cost and work:** Compare effort with the value and size of the collection; avoid presenting one expensive setup as the only responsible choice.
+- **Extra copies create privacy risks:** Agree that retention and access need thought; explain that recovery and confidentiality must be planned together.
 
 ## Examples and research to gather
 
-- Use a private, limited selection to note why certain images matter; get permission before publishing identifiable people or sensitive context.
+- Draw a simple sync-versus-backup diagram for the chosen service; verify device-storage settings and distinguish local originals from placeholders.
 - Check current export documentation and inspect a small export for usable files, dates, captions, and album structure; do not assume every service preserves these identically.
 - Find library or archive guidance on family-photo description and preservation; borrow proportionate ideas rather than imposing professional standards on a camera roll.
-- If discussing memory research, verify what the study actually measured; avoid unsupported claims that taking photos necessarily improves or damages memory.
-- Consider a short conversation with someone who values an old family image, with permission; one account illustrates a possibility, not a universal pattern.
+- Check current documentation on deletion propagation, recovery windows, and account recovery; record dates and avoid treating one provider's behaviour as universal.
+- Use sample images with no sensitive content when illustrating export or restoration; do not publish account details, private metadata, or real backup locations.
 
 ## Personal prompts
 
-- Which unremarkable photo became more valuable only later, and why?
-- Do I want a searchable record, a small album, something to pass on, or some combination?
-- What part of keeping photos feels like care, and what part feels like an obligation I inherited without choosing?
+- Have I checked whether my devices hold full-resolution originals or just previews?
+- Which failure could I recover from today, and which answer am I only assuming?
+- Could I open and understand a small exported sample without using the original photo app?
 
 ## Possible ending
 
-- **Takeaway:** Make a small album worth revisiting while keeping proportionate safeguards and an exportable wider archive; there is no requirement to justify every image today.
-- **Possible final question:** What would help these photos become part of my life again, rather than another collection I feel behind on managing?
-- Return to one ordinary image and the context that makes it matter, not a target number of files to delete.
+- **Takeaway:** Cloud sync and independent backups serve different purposes; choose safeguards based on specific failure scenarios and verify a small recovery path.
+- **Possible final question:** If I lost access to this account tomorrow, which photos could I still recover and open?
+- Return to the two synced devices and explain why the number of visible copies alone does not answer the backup question.
 
 ## Connections to other drafts
 
-- [What Happens to Our Digital Lives After We Die?](./what-happens-to-our-digital-lives-after-we-die.md) — who should inherit access, and what should remain private.
-- [Do We Own the Digital Books We Buy?](./do-we-own-the-digital-books-we-buy.md) — the difference between seeing a collection in an app and being able to preserve it independently.
+- [Digital Legacy Features: Account Access and Privacy](./what-happens-to-our-digital-lives-after-we-die.md) — who should inherit access, and what should remain private.
+- [How DRM Affects E-Book Access](./do-we-own-the-digital-books-we-buy.md) — the difference between seeing a collection in an app and being able to preserve it independently.
 
 ## Draft
