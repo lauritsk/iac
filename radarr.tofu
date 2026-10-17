@@ -17,7 +17,7 @@ resource "incus_instance" "radarr" {
   remote      = "hv01"
   project     = "default"
   name        = "radarr"
-  image       = "oci-ghcr:linuxserver/radarr:6.4.4.10685-ls320@sha256:cfbc4fa09dc9d78f7cedc898f4ec48c6277cacedc523c4e159db6ff1c741959c"
+  image       = "oci-ghcr:linuxserver/radarr:6.4.4.10685-ls321@sha256:ea6822c956d26db648b237919f41340318f32e5b7dcc4ba702cf256a0f5f3c12"
   description = "Radarr"
   profiles    = [incus_profile.default.name]
   running     = true

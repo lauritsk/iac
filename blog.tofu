@@ -32,7 +32,7 @@ resource "incus_instance" "blog" {
   remote      = "hv01"
   project     = "default"
   name        = "blog"
-  image       = "oci-redhat:hi/caddy:2.11.7@sha256:cf5dd97f6116c7b6e548d9522376e066e4fe76b1d1fd606fd6e2baf73fdc5b80"
+  image       = "oci-redhat:hi/caddy:2.11.7@sha256:e7349895c9855475e72cc5a1067c4aee98c7b4e6633fa4c75f9326c4b2f36691"
   description = "Blog (Caddy)"
   profiles    = [incus_profile.default.name]
   running     = true
@@ -94,7 +94,7 @@ resource "incus_instance" "blog_cf" {
   remote      = "hv01"
   project     = "default"
   name        = "blog-cf"
-  image       = "oci-dhi:cloudflared:2026@sha256:e0c7bbb4e0361781d80f5d2865a3139b43d858b9c1e446b15cca07894bf6c4c8"
+  image       = "oci-dhi:cloudflared:2026@sha256:9074da1ca4d9d0285233215dcf0ebae8de06f6775a6701f404f38e8c6bc393f9"
   description = "Blog (Cloudflare Tunnel)"
   profiles    = [incus_profile.default.name]
   running     = true
