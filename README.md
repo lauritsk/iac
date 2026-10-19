@@ -39,7 +39,7 @@ Observed 2026-10-11; not managed by OpenTofu or a restore script.
 | Network             | `eno1`, MAC `1c:69:7a:62:b9:73`; DHCPv4 + SLAAC; hostname `hv01`, empty domain; `required_for_online: "no"`               |
 | Ethernet            | EEE, GRO, GSO, IPv4/IPv6 TSO disabled; rationale unknown                                                                  |
 | Time                | `Europe/Tallinn`; NTP `time.cloudflare.com`                                                                               |
-| Host Tailscale      | Enabled; `accept_dns: true`; `accept_routes`, `advertise_exit_node`, `exit_node_allow_lan_access`, `serve_enabled`: false |
+| Host Tailscale      | Enabled; `accept_dns: true`; `advertised_routes: [10.1.10.0/24]` (requires Tailscale route approval); `accept_routes`, `advertise_exit_node`, `exit_node_allow_lan_access`, `serve_enabled`: false |
 | Other services      | iSCSI, LVM, multipath, NetBird, NVMe, OVN, USB/IP disabled                                                                |
 | Storage maintenance | Scrub `0 4 * * 0`; trim `0 4 * * 6`                                                                                       |
 | Fallback listener   | `persistent: false`; one trusted certificate; retain client certificate/private key separately                            |
