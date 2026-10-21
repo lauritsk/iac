@@ -20,13 +20,6 @@ resource "incus_network" "incusbr0" {
   name        = "incusbr0"
   type        = "bridge"
   description = "Local network bridge (NAT)"
-
-  config = {
-    "ipv4.address" = "10.100.0.1/24"
-    "ipv4.nat"     = "true"
-    "ipv6.address" = "fd42:fd4:f478:bae8::1/64"
-    "ipv6.nat"     = "true"
-  }
 }
 
 resource "incus_profile" "default" {
