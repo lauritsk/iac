@@ -35,19 +35,6 @@ resource "incus_instance" "transmission" {
     "environment.PUID" = "1000"
     "environment.PGID" = "1000"
     "environment.TZ"   = "Europe/Tallinn"
-    "environment.WHITELIST" = join(",", [
-      "127.0.0.1",
-      "::1",
-      incus_instance.prowlarr.ipv4_address,
-      incus_instance.prowlarr.ipv6_address,
-      incus_instance.radarr.ipv4_address,
-      incus_instance.radarr.ipv6_address,
-      incus_instance.sonarr.ipv4_address,
-      incus_instance.sonarr.ipv6_address,
-      incus_instance.transmission_ts.ipv4_address,
-      incus_instance.transmission_ts.ipv6_address,
-    ])
-    "environment.HOST_WHITELIST" = "transmission.cormo-tegu.ts.net,transmission.incus,transmission"
   }
 
   device {
