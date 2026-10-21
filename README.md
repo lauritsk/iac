@@ -16,10 +16,9 @@ just apply
 
 ## Transmission
 
-- TCP/UDP `51413`: RouterOS WAN → `10.1.10.8:51413` → container (`transmission.tofu`). No `9091` or IPv6 forwarding.
-- Router `admin@10.1.10.1`: external-to-OpenTofu `dstnat` rules `Transmission peer tcp` / `Transmission peer udp`, matching WAN, local destination, port `51413`. Existing firewall permits destination NAT.
-- Check: `curl -4 https://portcheck.transmissionbt.com/51413` (`1` = open).
-- Close: disable both router rules; remove `incus_network_forward.transmission_peer` and apply.
+- No Incus network forwards are configured for Transmission; the obsolete TCP/UDP `51413` forward on `10.1.10.8` has been removed.
+- Legacy RouterOS `dstnat` rules `Transmission peer tcp` / `Transmission peer udp` are outside OpenTofu and were not changed during the Incus cleanup.
+- Tailscale HTTPS access remains unchanged.
 
 ## Blog
 
